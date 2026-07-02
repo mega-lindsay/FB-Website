@@ -1,3 +1,6 @@
 node_modules
 .DS_Store
 *.log
+originals/
+logo_opt.jpg
+report_mockup_opt.jpg

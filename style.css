@@ -23,7 +23,7 @@
   /* Text */
   --color-text: #1A1F2E;
   --color-text-muted: #5A6178;
-  --color-text-faint: #9BA3BB;
+  --color-text-faint: #7A8399;
   --color-text-inverse: #FFFFFF;
 
   /* Status */
@@ -1636,8 +1636,7 @@ button { cursor: pointer; background: none; border: none; }
    INDEPENDENCE DISCLAIMER BAR
    ========================================================= */
 .disclaimer-bar {
-  background: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
+  background: var(--color-navy-dark);
   padding: var(--space-1) 0;
   text-align: center;
 }
