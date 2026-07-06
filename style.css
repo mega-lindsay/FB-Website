@@ -1791,3 +1791,178 @@ button { cursor: pointer; background: none; border: none; }
   font-size: var(--text-base);
   max-width: 48ch;
 }
+
+/* =========================================================
+   FAQ PAGE
+   ========================================================= */
+.faq-section {
+  padding: var(--space-16) 0;
+}
+
+/* --- Table of Contents --- */
+.faq-toc {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: var(--space-8);
+  margin-bottom: var(--space-12);
+}
+.faq-toc h2 {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  color: var(--color-navy);
+  margin-bottom: var(--space-4);
+}
+.faq-toc ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-2) var(--space-6);
+}
+.faq-toc a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-size: var(--text-sm);
+  padding: var(--space-1) 0;
+  display: block;
+  transition: color 0.2s;
+  border-bottom: 1px solid transparent;
+}
+.faq-toc a:hover {
+  color: var(--color-orange);
+}
+
+/* --- FAQ Categories --- */
+.faq-categories {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+.faq-category h2 {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  color: var(--color-navy);
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-3);
+  border-bottom: 3px solid var(--color-orange);
+  display: inline-block;
+}
+
+/* --- FAQ Items (Accordion) --- */
+.faq-item {
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  margin-bottom: var(--space-3);
+  background: var(--color-bg);
+  transition: box-shadow 0.2s, border-color 0.2s;
+  overflow: hidden;
+}
+.faq-item:hover {
+  border-color: var(--color-navy-light);
+  box-shadow: 0 2px 8px rgba(27, 43, 94, 0.06);
+}
+.faq-item[open] {
+  border-color: var(--color-orange);
+  box-shadow: 0 2px 12px rgba(242, 101, 34, 0.08);
+}
+.faq-item summary {
+  padding: var(--space-5) var(--space-6);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  line-height: 1.4;
+  transition: color 0.2s;
+}
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+.faq-item summary::after {
+  content: '+';
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-orange);
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--color-orange-light);
+  transition: transform 0.2s, background 0.2s;
+}
+.faq-item[open] summary::after {
+  content: '−';
+  background: var(--color-orange);
+  color: white;
+  transform: rotate(180deg);
+}
+.faq-item summary:hover {
+  color: var(--color-navy);
+}
+
+/* --- FAQ Answer --- */
+.faq-answer {
+  padding: 0 var(--space-6) var(--space-6);
+  animation: faq-fade-in 0.25s ease;
+}
+.faq-answer p {
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-3);
+}
+.faq-answer p:last-child {
+  margin-bottom: 0;
+}
+.faq-source {
+  font-size: var(--text-xs) !important;
+  color: var(--color-text-faint) !important;
+  margin-top: var(--space-2);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border);
+}
+.faq-source a {
+  color: var(--color-orange);
+  text-decoration: none;
+  font-weight: 500;
+}
+.faq-source a:hover {
+  text-decoration: underline;
+}
+
+@keyframes faq-fade-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* --- FAQ CTA --- */
+.faq-cta {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .faq-toc ul {
+    grid-template-columns: 1fr;
+  }
+  .faq-item summary {
+    padding: var(--space-4) var(--space-5);
+    font-size: var(--text-sm);
+  }
+  .faq-answer {
+    padding: 0 var(--space-5) var(--space-5);
+  }
+  .faq-category h2 {
+    font-size: var(--text-lg);
+  }
+}
