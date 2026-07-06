@@ -4,3 +4,4 @@ node_modules
 originals/
 logo_opt.jpg
 report_mockup_opt.jpg
+.vercel
