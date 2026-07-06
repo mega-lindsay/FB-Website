@@ -1729,63 +1729,70 @@ button { cursor: pointer; background: none; border: none; }
    FAQ PAGE
    ========================================================= */
 .faq-section {
-  padding: var(--space-12) 0 var(--space-16);
+  padding: var(--space-12) 0 var(--space-20);
+}
+.faq-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--space-12);
+  align-items: start;
 }
 
-/* --- Table of Contents (Pill Chips) --- */
-.faq-toc {
+/* --- Sticky Sidebar Nav --- */
+.faq-sidebar {
+  position: sticky;
+  top: 100px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: 16px;
-  padding: var(--space-6) var(--space-8);
-  margin-bottom: var(--space-12);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
 }
-.faq-toc h2 {
-  font-family: var(--font-heading);
-  font-size: var(--text-base);
+.faq-sidebar h3 {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   color: var(--color-text-muted);
   margin-bottom: var(--space-4);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-weight: 600;
 }
-.faq-toc ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.faq-nav {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
+  flex-direction: column;
+  gap: var(--space-1);
 }
-.faq-toc li {
-  display: inline-flex;
-}
-.faq-toc a {
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 18px;
-  border-radius: 100px;
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  color: var(--color-text);
+.faq-nav-item {
+  display: block;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
   text-decoration: none;
   font-size: var(--text-sm);
   font-weight: 500;
-  transition: all 0.2s ease;
-  white-space: nowrap;
+  transition: all var(--transition);
 }
-.faq-toc a:hover {
-  background: var(--color-orange);
+.faq-nav-item:hover {
+  background: var(--color-surface-2);
+  color: var(--color-navy);
+}
+.faq-nav-item.active {
+  background: var(--color-navy);
   color: white;
-  border-color: var(--color-orange);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(242, 101, 34, 0.2);
 }
 
-/* --- FAQ Categories --- */
-.faq-categories {
-  display: block;
+@media (max-width: 1024px) {
+  .faq-layout {
+    grid-template-columns: 1fr;
+  }
+  .faq-sidebar {
+    position: static;
+    margin-bottom: var(--space-8);
+  }
+  .faq-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
 }
+
+/* --- Category Headers --- */
 .faq-category {
   scroll-margin-top: 100px;
   margin-top: var(--space-16);
@@ -1814,6 +1821,12 @@ button { cursor: pointer; background: none; border: none; }
   background: var(--color-orange);
   border-radius: 2px;
   flex-shrink: 0;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
 }
 .faq-item:last-child {
   margin-bottom: 0;

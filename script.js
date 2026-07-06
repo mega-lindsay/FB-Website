@@ -1,30 +1,71 @@
 /* Federal Benefits Exchange — Landing Page JS */
 const pageLoadTimestamp = Date.now();
 
-// --- Scroll-aware header fallback ---
-if (!CSS.supports('animation-timeline', 'scroll()')) {
-  (function () {
-    const header = document.getElementById('header');
+// --- Global Header Injection & Navigation ---
+(function() {
+  const header = document.getElementById('header');
+  if (!header) return;
+
+  const isIndex = window.location.pathname === '/' || window.location.pathname.endsWith('index.html');
+  const baseUrl = isIndex ? '' : 'index.html';
+
+  header.innerHTML = `
+    <div class="container">
+      <div class="header-inner">
+        <a href="${isIndex ? '#' : 'index.html'}" class="logo" aria-label="Federal Benefits Exchange">
+          <img src="logo.png" alt="Federal Benefits Exchange Logo" class="logo-img" width="2502" height="350" fetchpriority="high" />
+        </a>
+        <nav class="header-nav">
+          <a href="about.html">About</a>
+          <a href="blog.html">Blog</a>
+          <a href="faq.html">FAQ</a>
+          <a href="resources.html">Resources</a>
+          <a href="glossary.html">Glossary</a>
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          </button>
+          <a href="${baseUrl}#save-your-seat" class="btn btn-outline btn-sm">Register Free</a>
+        </nav>
+        <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="mobile-nav" id="mobileNav">
+        <a href="about.html" onclick="closeMobileNav()">About</a>
+        <a href="blog.html" onclick="closeMobileNav()">Blog</a>
+        <a href="faq.html" onclick="closeMobileNav()">FAQ</a>
+        <a href="resources.html" onclick="closeMobileNav()">Resources</a>
+        <a href="glossary.html" onclick="closeMobileNav()">Glossary</a>
+      </div>
+    </div>
+  `;
+
+    // --- Scroll-aware header fallback ---
+  if (!CSS.supports('animation-timeline', 'scroll()')) {
     window.addEventListener('scroll', () => {
       if (window.scrollY > 60) header.classList.add('header--scrolled');
       else header.classList.remove('header--scrolled');
     }, { passive: true });
-  })();
-}
+  }
 
-// --- Mobile Nav ---
-const menuBtn = document.getElementById('menuBtn');
-const mobileNav = document.getElementById('mobileNav');
-if (menuBtn && mobileNav) {
-  menuBtn.addEventListener('click', () => {
-    const isOpen = mobileNav.classList.toggle('is-open');
-    menuBtn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
-    menuBtn.innerHTML = isOpen
-      ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
-      : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
-  });
-}
+  // --- Mobile Nav Logic ---
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  if (menuBtn && mobileNav) {
+    menuBtn.addEventListener('click', () => {
+      const isOpen = mobileNav.classList.toggle('is-open');
+      menuBtn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+      menuBtn.innerHTML = isOpen
+        ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
+        : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
+    });
+  }
+})();
+
 function closeMobileNav() {
+  const mobileNav = document.getElementById('mobileNav');
+  const menuBtn = document.getElementById('menuBtn');
   if (mobileNav) {
     mobileNav.classList.remove('is-open');
     if (menuBtn) {
@@ -252,3 +293,48 @@ document.head.appendChild(style);
 })();
 
 
+
+/* --- FAQ Sidebar Navigation --- */
+const faqNavItems = document.querySelectorAll('.faq-nav-item');
+const faqCategories = document.querySelectorAll('.faq-category');
+
+if (faqNavItems.length > 0 && faqCategories.length > 0) {
+  window.addEventListener('scroll', () => {
+    let current = '';
+    
+    faqCategories.forEach(category => {
+      const sectionTop = category.offsetTop;
+      const sectionHeight = category.clientHeight;
+      // Adjust offset based on header height (approx 80px) + some buffer
+      if (pageYOffset >= (sectionTop - 120)) {
+        current = category.getAttribute('id');
+      }
+    });
+
+    faqNavItems.forEach(item => {
+      item.classList.remove('active');
+      if (item.getAttribute('href').includes('#' + current)) {
+        item.classList.add('active');
+      }
+    });
+  });
+
+  // Smooth scroll for FAQ sidebar items
+  faqNavItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = item.getAttribute('href');
+      const targetElement = document.querySelector(targetId);
+      
+      if (targetElement) {
+        window.scrollTo({
+          top: targetElement.offsetTop - 90,
+          behavior: 'smooth'
+        });
+        
+        // Update URL hash without jumping
+        history.pushState(null, null, targetId);
+      }
+    });
+  });
+}

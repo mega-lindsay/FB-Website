@@ -67,6 +67,38 @@
       },
       {
         "@type": "Question",
+        "name": "What is a federal “special provision” employee?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Some federal employees are covered by special retirement provisions because their jobs are physically demanding, high-risk, or subject to earlier retirement rules. This includes LEOs, firefighters, air traffic controllers, and certain military technicians."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "When can a covered LEO or firefighter retire under FERS?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Covered LEOs and firefighters can retire at age 50 with 20 years of covered service, or at any age with 25 years of covered service."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a military service deposit (buyback)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Military buyback allows veterans to pay a deposit for active-duty military time so it counts toward federal retirement eligibility and pension calculation. Usually 3% of military basic pay plus interest."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does Title 38 affect VA Medical retirement?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Title 38 employees at the VA have different pay scales. Their High-3 pension calculation may include market pay and other special pay categories that standard FERS employees do not receive."
+        }
+      },
+      {
+        "@type": "Question",
         "name": "What is the FERS annuity supplement?",
         "acceptedAnswer": {
           "@type": "Answer",
@@ -612,284 +644,229 @@
     ]
   }
   </script>
+  <style>
+    html, body {
+      overflow-x: hidden;
+      width: 100%;
+      position: relative;
+    }
+
+    /* FAQ Sidebar Layout Fixes */
+    .faq-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .faq-sidebar {
+      position: sticky;
+      top: 100px;
+    }
+
+    .sidebar-sticky h3 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-orange);
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .faq-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .faq-nav-item {
+      display: block;
+      padding: 10px 14px;
+      border-radius: 8px;
+      color: var(--color-text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .faq-nav-item:hover {
+      background: rgba(242, 101, 34, 0.08);
+      color: var(--color-orange);
+      transform: translateX(4px);
+    }
+
+    .faq-nav-item.active {
+      background: var(--color-orange);
+      color: white;
+    }
+
+    /* Text contrast fix for About section */
+    #about-fbe .faq-answer p,
+    #about-fbe .faq-answer li,
+    #about-fbe .faq-answer span,
+    #about-fbe .faq-answer div {
+      color: var(--color-text) !important;
+      opacity: 1 !important;
+    }
+
+    @media (max-width: 992px) {
+      .faq-layout {
+        grid-template-columns: 1fr;
+      }
+      .faq-sidebar {
+        display: none;
+      }
+    }
+  </style>
 </head>
 <body>
 
   <!-- STICKY HEADER -->
-  <header class="header" id="header">
-    <div class="header-inner">
-      <a href="index.html" class="logo" aria-label="Federal Benefits Exchange">
-        <img src="logo.png" alt="Federal Benefits Exchange Logo" class="logo-img" />
-      </a>
-      <nav class="header-nav">
-        <a href="index.html#benefits">What You'll Learn</a>
-        <a href="index.html#topics">Topics</a>
-        <a href="blog.html">Blog</a>
-        <a href="faq.html">FAQ</a>
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-          <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-          <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-        </button>
-        <a href="index.html#save-your-seat" class="btn btn-outline btn-sm">Register Free</a>
-      </nav>
-      <button class="menu-btn" id="menuBtn" aria-label="Open menu">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
-    </div>
-    <!-- Mobile nav -->
-    <div class="mobile-nav" id="mobileNav">
-      <a href="index.html#benefits" onclick="closeMobileNav()">What You'll Learn</a>
-      <a href="index.html#topics" onclick="closeMobileNav()">Topics</a>
-      <a href="blog.html" onclick="closeMobileNav()">Blog</a>
-      <a href="faq.html" onclick="closeMobileNav()">FAQ</a>
-      <div class="mobile-nav-theme-row">
-        <button class="theme-toggle" id="mobileThemeToggle" aria-label="Toggle theme">
-          <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-          <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-        </button>
-        <a href="index.html#save-your-seat" class="btn btn-outline" onclick="closeMobileNav()">Register Free</a>
-      </div>
-    </div>
-  </header>
+  <header class="header" id="header"></header>
 
   
   <main>
-    <section class="blog-hero">
-      <div class="container">
-        <h1>Federal Benefits FAQ</h1>
-        <p>Answers to common questions about FERS, TSP, FEGLI, FEHB, survivor benefits, Social Security, taxes, and more.</p>
-      </div>
-    </section>
-
     <section class="faq-section">
       <div class="container">
-        <nav class="faq-toc">
-          <h2>Topics</h2>
-          <ul>
-            <li><a href="#retirement-fers">Retirement &amp; FERS</a></li>
-            <li><a href="#tsp">TSP</a></li>
-            <li><a href="#fegli">FEGLI Life Insurance</a></li>
-            <li><a href="#fehb-medicare">FEHB &amp; Medicare</a></li>
-            <li><a href="#usps-pshb">USPS &amp; PSHB</a></li>
-            <li><a href="#survivor-benefits">Survivor Benefits</a></li>
-            <li><a href="#social-security-csrs">Social Security &amp; CSRS</a></li>
-            <li><a href="#taxes">Taxes</a></li>
-            <li><a href="#beneficiary-forms">Beneficiary Forms &amp; Estate</a></li>
-            <li><a href="#pay-stub-review">Pay Stub Review &amp; GAP Analysis</a></li>
-            <li><a href="#about-fbe">About Federal Benefits Exchange</a></li>
-          </ul>
-        </nav>
+        <div class="faq-layout">
+          <aside class="faq-sidebar">
+            <div class="sidebar-sticky">
+              <h3>Categories</h3>
+              <nav class="faq-nav">
+                <a href="#retirement-fers" class="faq-nav-item active">Retirement & FERS</a>
+                <a href="#special-provisions" class="faq-nav-item">Special Provisions</a>
+                <a href="#veterans" class="faq-nav-item">Veterans & Military</a>
+                <a href="#va-medical" class="faq-nav-item">VA Professionals</a>
+                <a href="#tsp" class="faq-nav-item">TSP</a>
+                <a href="#fegli" class="faq-nav-item">FEGLI</a>
+                <a href="#fehb-medicare" class="faq-nav-item">FEHB & Medicare</a>
+                <a href="#usps-pshb" class="faq-nav-item">USPS & PSHB</a>
+                <a href="#survivor-benefits" class="faq-nav-item">Survivor Benefits</a>
+                <a href="#social-security-csrs" class="faq-nav-item">Social Security</a>
+                <a href="#taxes" class="faq-nav-item">Taxes</a>
+                <a href="#beneficiary-forms" class="faq-nav-item">Estate & Beneficiary</a>
+                <a href="#pay-stub-review" class="faq-nav-item">Pay Stub Review</a>
+                <a href="#about-fbe" class="faq-nav-item">About FBE</a>
+              </nav>
+            </div>
+          </aside>
 
-        <!-- Retirement & FERS -->
-        <div class="faq-category" id="retirement-fers">
-          <h2>Retirement &amp; FERS</h2>
-          <details class="faq-item">
-            <summary>When can I retire under FERS?</summary>
-            <div class="faq-answer">
-              <p>Under FERS, your retirement eligibility depends mainly on your age and your years of creditable federal service. Common immediate retirement combinations include:</p>
-              <ul style="margin: 8px 0 12px 20px; color: var(--color-text-muted); font-size: var(--text-sm); line-height: 1.7;">
-                <li><strong>MRA + 30 years</strong> of service (unreduced)</li>
-                <li><strong>Age 60 + 20 years</strong> of service (unreduced)</li>
-                <li><strong>Age 62 + 5 years</strong> of service (unreduced)</li>
-              </ul>
-              <p>Some employees may also qualify for MRA+10, early retirement, deferred retirement, or disability retirement depending on their situation.</p>
-              <p class="faq-source">Source: <a href="https://www.opm.gov/retirement-center/fers-information/eligibility/" target="_blank" rel="noopener">OPM FERS Eligibility</a></p>
+          <div class="faq-content">
+            <!-- RETIREMENT & FERS -->
+            <div id="retirement-fers" class="faq-category">
+              <h2>Retirement & FERS</h2>
+              <div class="faq-list">
+                <details class="faq-item">
+                  <summary>When can I retire under FERS?</summary>
+                  <div class="faq-answer">
+                    <p>FERS eligibility depends on your age and years of service: Age 62 with 5 years, Age 60 with 20 years, or at your Minimum Retirement Age (MRA) with 30 years.</p>
+                    <p class="faq-source">Source: <a href="https://www.opm.gov/retirement-center/fers-information/eligibility/" target="_blank" rel="noopener">OPM FERS Eligibility</a></p>
+                  </div>
+                </details>
+                <details class="faq-item">
+                  <summary>What is my Minimum Retirement Age (MRA)?</summary>
+                  <div class="faq-answer">
+                    <p>Your MRA depends on your birth year. For those born before 1948, it is 55. It increases gradually to 57 for anyone born in 1970 or later.</p>
+                  </div>
+                </details>
+                <details class="faq-item">
+                  <summary>What is MRA+10 retirement?</summary>
+                  <div class="faq-answer">
+                    <p>MRA+10 means you have reached your MRA and have at least 10 years of creditable service. Note that your annuity may be permanently reduced if you start it before age 62.</p>
+                  </div>
+                </details>
+              </div>
             </div>
-          </details>
-          <details class="faq-item">
-            <summary>What is my Minimum Retirement Age?</summary>
-            <div class="faq-answer">
-              <p>Your Minimum Retirement Age, often called MRA, is the earliest age you may qualify for certain FERS retirement benefits. It depends on your year of birth. For many employees, the MRA falls between age 55 and 57.</p>
-              <p class="faq-source">Source: <a href="https://www.opm.gov/retirement-center/fers-information/eligibility/" target="_blank" rel="noopener">OPM FERS Eligibility</a></p>
-            </div>
-          </details>
-          <details class="faq-item">
-            <summary>What is MRA+10 retirement?</summary>
-            <div class="faq-answer">
-              <p>MRA+10 means you have reached your Minimum Retirement Age and have at least 10 years of creditable service, but fewer than the years needed for an unreduced immediate retirement. The important catch is that your annuity may be permanently reduced if you start it before age 62.</p>
-              <p class="faq-source">Source: <a href="https://www.opm.gov/frequently-asked-questions/retire-faq/pre-retirement/what-is-a-minimum-retirement-age-mra-plus-10-annuity-under-the-federal-employees-retirement-system-fers/" target="_blank" rel="noopener">OPM MRA+10 FAQ</a></p>
-            </div>
-          </details>
-          <details class="faq-item">
-            <summary>What is the FERS annuity supplement?</summary>
-            <div class="faq-answer">
-              <p>The FERS annuity supplement is a temporary payment available to some FERS employees who retire before age 62 with an immediate annuity. It is designed to approximate the Social Security benefit earned during FERS-covered service until Social Security eligibility begins. Not every early retiree qualifies.</p>
-              <p class="faq-source">Source: <a href="https://www.opm.gov/retirement-center/publications-forms/csrsfers-handbook/c051.pdf" target="_blank" rel="noopener">OPM CSRS/FERS Handbook Ch. 51</a></p>
-            </div>
-          </details>
-          <details class="faq-item">
-            <summary>How is my FERS pension calculated?</summary>
-            <div class="faq-answer">
-              <p>The basic FERS annuity formula is:</p>
-              <p style="background: var(--color-surface); border-left: 3px solid var(--color-orange); padding: 12px 16px; margin: 8px 0 12px; border-radius: 4px; font-weight: 600; color: var(--color-text);">High-3 Average Salary &times; Years of Creditable Service &times; 1%</p>
-              <p>If you retire at age 62 or later with at least 20 years of service, the multiplier increases to <strong>1.1%</strong>. For example, an employee with a high-3 of $90,000 and 30 years of service would receive roughly $27,000 per year before any adjustments. Special category employees such as law enforcement officers and firefighters may have different formulas.</p>
-              <p class="faq-source">Source: <a href="https://www.opm.gov/retirement-center/fers-information/computation/" target="_blank" rel="noopener">OPM FERS Computation</a></p>
-            </div>
-          </details>
-          <details class="faq-item">
-            <summary>What is my high-3 average salary?</summary>
-            <div class="faq-answer">
-              <p>Your high-3 is the highest average basic pay you earned during any three consecutive years of creditable federal service. It usually comes from your final three years, but not always. It generally does not include overtime, bonuses, awards, or certain other types of extra pay. Because the high-3 is one of the biggest drivers of your pension, even small errors in service history or pay records can matter.</p>
-              <p class="faq-source">Source: <a href="https://www.opm.gov/retirement-center/fers-information/computation/" target="_blank" rel="noopener">OPM FERS Computation</a></p>
-            </div>
-          </details>
-          <details class="faq-item">
-            <summary>Does unused sick leave increase my FERS pension?</summary>
-            <div class="faq-answer">
-              <p>Yes, unused sick leave can increase the length of service used in your FERS annuity calculation, but it does not make you eligible to retire earlier.</p>
-              <p class="faq-source">Source: <a href="https://www.opm.gov/retirement-center/publications-forms/csrsfers-handbook/" target="_blank" rel="noopener">OPM CSRS/FERS Handbook</a></p>
-            </div>
-          </details>
-          <details class="faq-item">
-            <summary>What happens to my annual leave when I retire?</summary>
-            <div class="faq-answer">
-              <p>In most cases, unused annual leave is paid out to you as a lump-sum payment after separation or retirement. It is generally separate from your pension calculation.</p>
-              <p class="faq-source">Source: <a href="https://www.opm.gov/policy-data-oversight/pay-leave/" target="_blank" rel="noopener">OPM Pay &amp; Leave</a></p>
-            </div>
-          </details>
-          <details class="faq-item">
-            <summary>Should I retire at the end of the month or beginning of the month?</summary>
-            <div class="faq-answer">
-              <p>Retirement timing can affect when your annuity begins, how annual leave is paid, how final pay is handled, and how your income lines up for tax purposes. For many FERS employees, retiring near the end of the month is common because FERS annuities generally begin the first day of the month after separation.</p>
-              <p class="faq-source">Source: <a href="https://www.opm.gov/retirement-center/" target="_blank" rel="noopener">OPM Retirement Center</a></p>
-            </div>
-          </details>
-          <details class="faq-item">
-            <summary>Is my agency's retirement estimate guaranteed?</summary>
-            <div class="faq-answer">
-              <p>No. Retirement estimates are helpful planning tools, but they are not the same as a final OPM adjudication. OPM makes the final retirement determination after your retirement application is processed.</p>
-              <p class="faq-source">Source: <a href="https://www.opm.gov/retirement-center/" target="_blank" rel="noopener">OPM Retirement Center</a></p>
-            </div>
-          </details>
-        </div>
 
-        <!-- TSP -->
-        <div class="faq-category" id="tsp">
-          <h2>TSP</h2>
-          <details class="faq-item">
-            <summary>What happens to my TSP when I retire or leave federal service?</summary>
-            <div class="faq-answer">
-              <p>You generally do not have to move your TSP when you retire or separate. You can leave money in the TSP, take partial withdrawals, set up installment payments, purchase certain annuity options, or transfer funds to another eligible retirement account.</p>
-              <p class="faq-source">Source: <a href="https://www.tsp.gov/withdrawals-in-retirement/" target="_blank" rel="noopener">TSP Withdrawals in Retirement</a></p>
+            <!-- SPECIAL PROVISIONS -->
+            <div id="special-provisions" class="faq-category">
+              <h2>Special Provisions (LEO/FF/ATC)</h2>
+              <div class="faq-list">
+                <details class="faq-item">
+                  <summary>What is a federal “special provision” employee?</summary>
+                  <div class="faq-answer">
+                    <p>Some federal employees are covered by special retirement provisions because their jobs are physically demanding, high-risk, or subject to earlier retirement rules. This includes LEOs, firefighters, air traffic controllers, and certain military technicians.</p>
+                  </div>
+                </details>
+                <details class="faq-item">
+                  <summary>When can a covered LEO or firefighter retire under FERS?</summary>
+                  <div class="faq-answer">
+                    <p>Covered LEOs and firefighters can retire at age 50 with 20 years of covered service, or at any age with 25 years of covered service.</p>
+                    <p class="faq-source">Source: OPM CSRS/FERS Handbook, Chapter 46.</p>
+                  </div>
+                </details>
+              </div>
             </div>
-          </details>
-          <details class="faq-item">
-            <summary>Can I take money out of my TSP before retirement?</summary>
-            <div class="faq-answer">
-              <p>In some cases, yes. TSP allows certain in-service withdrawals, including age-based withdrawals and financial hardship withdrawals. However, withdrawals can trigger taxes, reduce retirement savings, and may create early withdrawal penalties.</p>
-              <p class="faq-source">Source: <a href="https://www.tsp.gov/in-service-withdrawal-basics/in-service-withdrawal-types-and-terms/" target="_blank" rel="noopener">TSP In-Service Withdrawals</a></p>
-            </div>
-          </details>
-          <details class="faq-item">
-            <summary>Will I pay a penalty if I withdraw from TSP early?</summary>
-            <div class="faq-answer">
-              <p>Possibly. TSP withdrawals may be subject to income tax and, in some cases, a 10% early withdrawal penalty. However, the IRS allows an exception for distributions made after separation from service in or after the year you reach age 55 (sometimes called the <strong>Rule of 55</strong>). This may allow penalty-free withdrawals if you separate in or after the year you reach the required age.</p>
-              <p>Qualified public safety employees may have separate age 50 or 25-year-service exceptions. The specific rules depend on your age, separation date, type of withdrawal, and applicable IRS exceptions.</p>
-              <p class="faq-source">Source: <a href="https://www.tsp.gov/publications/tspbk26.pdf" target="_blank" rel="noopener">TSP Tax Rules Booklet</a></p>
-            </div>
-          </details>
-          <details class="faq-item">
-            <summary>Should I use Traditional TSP or Roth TSP?</summary>
-            <div class="faq-answer">
-              <p>Traditional TSP contributions may reduce taxable income today, but withdrawals are generally taxable later. Roth TSP contributions are made after tax, but qualified withdrawals can be tax-free.</p>
-              <p class="faq-source">Source: <a href="https://www.tsp.gov/making-contributions/traditional-and-roth-contributions/" target="_blank" rel="noopener">TSP Traditional and Roth</a></p>
-            </div>
-          </details>
-          <details class="faq-item">
-            <summary>What is the TSP match for FERS employees?</summary>
-            <div class="faq-answer">
-              <p>FERS employees receive an <strong>automatic 1% agency contribution</strong> whether or not they contribute. On top of that, the agency matches your contributions:</p>
-              <ul style="margin: 8px 0 12px 20px; color: var(--color-text-muted); font-size: var(--text-sm); line-height: 1.7;">
-                <li>First <strong>3%</strong> of pay you contribute &rarr; matched <strong>dollar-for-dollar</strong></li>
-                <li>Next <strong>2%</strong> of pay you contribute &rarr; matched at <strong>50 cents on the dollar</strong></li>
-              </ul>
-              <p>If you contribute at least 5% of your pay, you receive the maximum <strong>5% total from the government</strong> (1% automatic + 4% match). Employees who contribute less than 5% leave matching money on the table.</p>
-              <p class="faq-source">Source: <a href="https://www.tsp.gov/making-contributions/contribution-types/" target="_blank" rel="noopener">TSP Contribution Types</a></p>
-            </div>
-          </details>
-          <details class="faq-item">
-            <summary>Can I roll my TSP into an IRA?</summary>
-            <div class="faq-answer">
-              <p>Yes, many separated or retired federal employees can transfer or roll eligible TSP funds to an IRA. But rolling money out of the TSP is not automatically better. Compare fees, investment options, withdrawal flexibility, creditor protection, tax consequences, and advisor compensation.</p>
-              <p class="faq-source">Source: <a href="https://www.tsp.gov/withdrawals-in-retirement/" target="_blank" rel="noopener">TSP Withdrawals</a></p>
-            </div>
-          </details>
-          <details class="faq-item">
-            <summary>What happens to my TSP when I die?</summary>
-            <div class="faq-answer">
-              <p>Your TSP account is paid based on your beneficiary designation on file with TSP. If no valid designation exists, TSP follows its statutory order of precedence. A will generally does not override a valid TSP beneficiary designation.</p>
-              <p class="faq-source">Source: <a href="https://www.tsp.gov/death-and-beneficiary-support/determining-beneficiaries/" target="_blank" rel="noopener">TSP Beneficiaries</a></p>
-            </div>
-          </details>
-          <details class="faq-item">
-            <summary>Can I update my TSP beneficiaries online?</summary>
-            <div class="faq-answer">
-              <p>Yes. TSP directs participants to update beneficiaries through My Account.</p>
-              <p class="faq-source">Source: <a href="https://www.tsp.gov/forms/" target="_blank" rel="noopener">TSP Forms</a></p>
-            </div>
-          </details>
-        </div>
 
-        <!-- FEGLI Life Insurance -->
-        <div class="faq-category" id="fegli">
-          <h2>FEGLI Life Insurance</h2>
-          <details class="faq-item">
-            <summary>What is FEGLI?</summary>
-            <div class="faq-answer">
-              <p>FEGLI stands for Federal Employees' Group Life Insurance. It is group term life insurance available to eligible federal employees. Most eligible employees are automatically enrolled in Basic coverage unless they waive it.</p>
-              <p class="faq-source">Source: <a href="https://www.fegli.opm.gov/" target="_blank" rel="noopener">OPM FEGLI</a></p>
+            <!-- VETERANS & MILITARY BUYBACK -->
+            <div id="veterans" class="faq-category">
+              <h2>Veterans & Military Buyback</h2>
+              <div class="faq-list">
+                <details class="faq-item">
+                  <summary>What is a military service deposit or military buyback?</summary>
+                  <div class="faq-answer">
+                    <p>This allows veterans to pay a deposit for active-duty military time so it counts toward federal retirement eligibility and pension calculation. Usually 3% of military basic pay plus interest.</p>
+                  </div>
+                </details>
+              </div>
             </div>
-          </details>
-          <details class="faq-item">
-            <summary>Is FEGLI permanent life insurance?</summary>
-            <div class="faq-answer">
-              <p>No. FEGLI is group term life insurance. It does not build cash value.</p>
-              <p class="faq-source">Source: <a href="https://www.opm.gov/healthcare-insurance/life-insurance/" target="_blank" rel="noopener">OPM Life Insurance</a></p>
+
+            <!-- VA MEDICAL PROFESSIONALS -->
+            <div id="va-medical" class="faq-category">
+              <h2>VA Medical Professionals (Title 38)</h2>
+              <div class="faq-list">
+                <details class="faq-item">
+                  <summary>What is Title 38 and how does it affect retirement?</summary>
+<div class="faq-answer">
+                    <p>Title 38 employees (VA Physicians, Nurses, etc.) have different pay scales. While under FERS, their "Basic Pay" for High-3 may include market pay and other special categories.</p>
+                  </div>
+                </details>
+              </div>
             </div>
-          </details>
-          <details class="faq-item">
-            <summary>What FEGLI coverage do I automatically have?</summary>
-            <div class="faq-answer">
-              <p>Most eligible federal employees are automatically enrolled in Basic FEGLI. Basic coverage is generally based on your annual basic pay rounded up to the next $1,000, plus $2,000. Optional coverage is not automatic and must be elected.</p>
-              <p class="faq-source">Source: <a href="https://www.fegli.opm.gov/" target="_blank" rel="noopener">OPM FEGLI</a></p>
+            <!-- FEGLI LIFE INSURANCE -->
+                        <!-- TSP -->
+            <div id="tsp" class="faq-category">
+              <h2>Thrift Savings Plan (TSP)</h2>
+              <div class="faq-list">
+                <details class="faq-item">
+                  <summary>What is the Thrift Savings Plan (TSP)?</summary>
+                  <div class="faq-answer">
+                    <p>The TSP is a retirement savings and investment plan for Federal employees and members of the uniformed services. It offers the same types of savings and tax benefits that many private corporations offer their employees under 401(k) plans.</p>
+                  </div>
+                </details>
+                <details class="faq-item">
+                  <summary>What is the TSP match for FERS?</summary>
+                  <div class="faq-answer">
+                    <p>FERS employees receive an automatic 1% agency contribution. On top of that, the agency matches the first 3% of your contributions dollar-for-dollar, and the next 2% at 50 cents on the dollar.</p>
+                  </div>
+                </details>
+              </div>
             </div>
-          </details>
-          <details class="faq-item">
-            <summary>What is FEGLI Option B?</summary>
-            <div class="faq-answer">
-              <p>FEGLI Option B is additional life insurance that can be elected in multiples of your annual basic pay, up to five multiples. Premiums increase with age.</p>
-              <p class="faq-source">Source: <a href="https://www.opm.gov/retirement-center/calculators/fegli-calculator/" target="_blank" rel="noopener">OPM FEGLI Calculator</a></p>
+<div id="fegli" class="faq-category">
+              <h2>FEGLI Life Insurance</h2>
+              <div class="faq-list">
+                <details class="faq-item">
+                  <summary>What is FEGLI?</summary>
+                  <div class="faq-answer">
+                    <p>FEGLI stands for Federal Employees' Group Life Insurance. It is group term life insurance available to eligible federal employees. Most eligible employees are automatically enrolled in Basic coverage unless they waive it.</p>
+                  </div>
+                </details>
+                <details class="faq-item">
+                  <summary>Is FEGLI permanent life insurance?</summary>
+                  <div class="faq-answer">
+                    <p>No. FEGLI is group term life insurance. It does not build cash value.</p>
+                  </div>
+                </details>
+                <details class="faq-item">
+                  <summary>What happens to FEGLI after age 65?</summary>
+                  <div class="faq-answer">
+                    <p>It depends on the reduction option you choose at retirement. Basic FEGLI may reduce by 75%, 50%, or not at all, depending on your election.</p>
+                    <p class="faq-source">Source: <a href="https://www.opm.gov/retirement-center/apply/fegli-calculator/basic-insurance-in-retirement/" target="_blank" rel="noopener">OPM Basic Insurance in Retirement</a></p>
+                  </div>
+                </details>
+              </div>
             </div>
-          </details>
-          <details class="faq-item">
-            <summary>Can I keep FEGLI when I retire?</summary>
-            <div class="faq-answer">
-              <p>Usually yes, if you meet the continuation rules. OPM's five-year or all-opportunity rule generally requires that you were enrolled for the five years immediately before retirement, or for all periods during which it was available to you.</p>
-              <p class="faq-source">Source: <a href="https://www.opm.gov/frequently-asked-questions/insure-faq/life/what-is-the-five-yearall-opportunity-rule-for-continuing-life-insurance-into-retirement/" target="_blank" rel="noopener">OPM Five-Year Rule</a></p>
-            </div>
-          </details>
-          <details class="faq-item">
-            <summary>What happens to FEGLI after age 65?</summary>
-            <div class="faq-answer">
-              <p>It depends on the reduction option you choose at retirement. Basic FEGLI may reduce by 75%, 50%, or not at all, depending on your election.</p>
-              <p class="faq-source">Source: <a href="https://www.opm.gov/retirement-center/apply/fegli-calculator/basic-insurance-in-retirement/" target="_blank" rel="noopener">OPM Basic Insurance in Retirement</a></p>
-            </div>
-          </details>
-          <details class="faq-item">
-            <summary>Should I replace FEGLI with private life insurance?</summary>
-            <div class="faq-answer">
-              <p>Not automatically. Private life insurance may be less expensive for some healthy employees, but it usually requires underwriting. FEGLI may be valuable for employees who cannot qualify for private coverage.</p>
-              <p class="faq-source">Source: <a href="https://www.opm.gov/retirement-center/calculators/fegli-calculator/" target="_blank" rel="noopener">OPM FEGLI Calculator</a></p>
-            </div>
-          </details>
-          <details class="faq-item">
-            <summary>Who receives my FEGLI benefit if I die?</summary>
-            <div class="faq-answer">
-              <p>FEGLI benefits are paid based on a valid beneficiary designation, assignment, court order, or the legal order of precedence.</p>
-              <p class="faq-source">Source: <a href="https://www.opm.gov/frequently-asked-questions/insure-faq/life/who-will-get-my-fegli-life-insurance-benefits-when-i-die/" target="_blank" rel="noopener">OPM FEGLI Beneficiary FAQ</a></p>
-            </div>
-          </details>
-        </div>
 
         <!-- FEHB & Medicare -->
         <div class="faq-category" id="fehb-medicare">
@@ -1260,7 +1237,10 @@
       <div class="footer-links">
         <a href="index.html#benefits">What You'll Learn</a>
         <a href="index.html#faq">FAQ</a>
+        <a href="about.html">About</a>
         <a href="blog.html">Blog</a>
+        <a href="faq.html">FAQ</a>
+        <a href="resources.html">Resources</a>
         <a href="index.html#save-your-seat">Register Free</a>
         <a href="privacy.html">Privacy Policy</a>
         <a href="terms.html">Terms of Service</a>

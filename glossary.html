@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Federal Benefits Glossary | Terms & Definitions</title>
+  <meta name="description" content="A comprehensive glossary of federal benefits terms and definitions. Understand TSP, FERS, FEHB, FEGLI, and other critical federal retirement terminology." />
+  <meta property="og:title" content="Federal Benefits Glossary | Terms & Definitions" />
+  <meta property="og:description" content="Master the language of federal benefits. Definitions for TSP, FERS, FEHB, Medicare coordination, and more." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://federalbenefitsexchange.com/fbe_ad_banner.png" />
+  <meta property="og:url" content="https://federalbenefitsexchange.com/glossary.html" />
+  <link rel="canonical" href="https://federalbenefitsexchange.com/glossary.html" />
+
+  <!-- Fonts -->
+  <link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=satoshi@400,500,700&display=swap" />
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=satoshi@400,500,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="style.min.css?v=1.5" />
+  <link rel="icon" type="image/svg+xml" href="FB_favicon.svg" />
+
+  <style>
+    :root {
+      --glossary-card-bg: var(--color-surface);
+      --glossary-card-border: var(--color-border);
+      --glossary-nav-bg: rgba(255, 107, 0, 0.05);
+    }
+
+    .glossary-hero {
+      padding: 120px 0 80px;
+      background: linear-gradient(135deg, var(--color-navy) 0%, #001a33 100%);
+      color: white;
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .glossary-hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      margin-bottom: 24px;
+      color: white;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .glossary-hero p {
+      font-size: 1.25rem;
+      max-width: 700px;
+      margin: 0 auto;
+      opacity: 0.95;
+      line-height: 1.6;
+    }
+
+    .glossary-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 60px;
+      padding-bottom: 100px;
+      align-items: start;
+    }
+
+    .glossary-sidebar {
+      position: sticky;
+      top: 120px;
+    }
+
+    .glossary-nav h3 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-orange);
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .glossary-nav ul {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .glossary-nav a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: var(--glossary-nav-bg);
+      color: var(--color-navy);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .glossary-nav a:hover {
+      background: var(--color-orange);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .glossary-letter-section {
+      margin-bottom: 80px;
+      scroll-margin-top: 120px;
+    }
+
+    .letter-heading {
+      font-size: 3rem;
+      color: var(--color-orange);
+      font-weight: 800;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      line-height: 1;
+    }
+
+    .letter-heading::after {
+      content: "";
+      height: 2px;
+      flex-grow: 1;
+      background: linear-gradient(to right, var(--color-orange), transparent);
+      opacity: 0.3;
+    }
+
+    .glossary-terms {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .glossary-item {
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .glossary-item:last-child {
+      border-bottom: none;
+    }
+
+    .term-title {
+      font-size: 1.5rem;
+      color: var(--color-navy);
+      margin-bottom: 12px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .term-definition {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--color-text);
+      opacity: 0.9;
+    }
+
+    @media (max-width: 992px) {
+      .glossary-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .glossary-sidebar {
+        position: static;
+        margin-bottom: 20px;
+      }
+      .glossary-nav ul {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+      }
+    }
+
+    html, body {
+      overflow-x: hidden;
+      width: 100%;
+      position: relative;
+    }
+  
+    /* Glossary Layout and Contrast */
+    .glossary-item h3 {
+      color: var(--color-navy);
+      font-weight: 700;
+    }
+    .glossary-item p {
+      color: var(--color-text);
+      opacity: 1;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- STICKY HEADER -->
+  <header class="header" id="header"></header>
+
+  <main>
+    <section class="glossary-hero">
+      <div class="container">
+        <h1>Terms & Definitions</h1>
+        <p>Master the language of federal benefits. A complete glossary of retirement, insurance, and investment terminology.</p>
+      </div>
+    </section>
+
+    <div class="container">
+      <div class="glossary-layout">
+        <aside class="glossary-sidebar">
+          <nav class="glossary-nav">
+            <h3>Quick Jump</h3>
+            <ul>
+              <li><a href="#letter-A">A</a></li>
+              <li><a href="#letter-B">B</a></li>
+              <li><a href="#letter-C">C</a></li>
+              <li><a href="#letter-D">D</a></li>
+              <li><a href="#letter-E">E</a></li>
+              <li><a href="#letter-F">F</a></li>
+              <li><a href="#letter-G">G</a></li>
+              <li><a href="#letter-H">H</a></li>
+              <li><a href="#letter-I">I</a></li>
+              <li><a href="#letter-J">J</a></li>
+              <li><a href="#letter-K">K</a></li>
+              <li><a href="#letter-L">L</a></li>
+              <li><a href="#letter-M">M</a></li>
+              <li><a href="#letter-N">N</a></li>
+              <li><a href="#letter-O">O</a></li>
+              <li><a href="#letter-P">P</a></li>
+              <li><a href="#letter-Q">Q</a></li>
+              <li><a href="#letter-R">R</a></li>
+              <li><a href="#letter-S">S</a></li>
+              <li><a href="#letter-T">T</a></li>
+              <li><a href="#letter-U">U</a></li>
+              <li><a href="#letter-V">V</a></li>
+              <li><a href="#letter-W">W</a></li>
+              <li><a href="#letter-X">X</a></li>
+              <li><a href="#letter-Y">Y</a></li>
+              <li><a href="#letter-Z">Z</a></li>
+            </ul>
+          </nav>
+        </aside>
+
+        <div class="glossary-content">
+          <section id="letter-A" class="glossary-letter-section">
+            <h2 class="letter-heading">A</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">Accepting Assignment</h3>
+                <p class="term-definition">When a doctor or supplier agrees to accept the Medicare-approved amount as full payment for covered Part B services.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-B" class="glossary-letter-section">
+            <h2 class="letter-heading">B</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">Basic Benefit Plan</h3>
+                <p class="term-definition">The defined-benefit pension portion of FERS. It provides monthly annuity payments after retirement based on age, years of service, high-3 average salary, and the applicable pension formula.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-C" class="glossary-letter-section">
+            <h2 class="letter-heading">C</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">C Fund</h3>
+                <p class="term-definition">The TSP Common Stock Index Investment Fund. It is designed to track the performance of a broad U.S. large-company stock index.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-D" class="glossary-letter-section">
+            <h2 class="letter-heading">D</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">12(d) Coverage</h3>
+                <p class="term-definition">A common shorthand for special retirement coverage under FERS statutory references.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-E" class="glossary-letter-section">
+            <h2 class="letter-heading">E</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">Early Retirement</h3>
+                <p class="term-definition">A retirement that begins before normal voluntary retirement eligibility. In federal benefits, this can refer to VERA, discontinued service retirement, special provision retirement, or certain TSP/IRS withdrawal situations.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-F" class="glossary-letter-section">
+            <h2 class="letter-heading">F</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">F Fund</h3>
+                <p class="term-definition">The TSP Fixed Income Index Investment Fund. It is designed to track a broad U.S. bond index.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-G" class="glossary-letter-section">
+            <h2 class="letter-heading">G</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">G Fund</h3>
+                <p class="term-definition">The TSP Government Securities Investment Fund. It invests in special U.S. Treasury securities issued only to the TSP and is designed to preserve principal while earning interest.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-H" class="glossary-letter-section">
+            <h2 class="letter-heading">H</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">High-3 Average Salary</h3>
+                <p class="term-definition">The highest average basic pay earned during any three consecutive years of creditable federal service. High-3 is a key part of the FERS and CSRS pension calculation.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-I" class="glossary-letter-section">
+            <h2 class="letter-heading">I</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">I Fund</h3>
+                <p class="term-definition">The TSP International Stock Index Investment Fund. It is designed to track international stock market performance outside the United States.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-J" class="glossary-letter-section">
+            <h2 class="letter-heading">J</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item empty-state">
+                <p class="term-definition"><em>No terms currently listed for the letter J. This section is intentionally left blank.</em></p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-K" class="glossary-letter-section">
+            <h2 class="letter-heading">K</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item empty-state">
+                <p class="term-definition"><em>No terms currently listed for the letter K. This section is intentionally left blank.</em></p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-L" class="glossary-letter-section">
+            <h2 class="letter-heading">L</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">L Fund</h3>
+                <p class="term-definition">A TSP Lifecycle Fund. L Funds are diversified funds that automatically adjust their investment mix over time based on a target retirement date or withdrawal timeline.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-M" class="glossary-letter-section">
+            <h2 class="letter-heading">M</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">Mandatory Retirement</h3>
+                <p class="term-definition">A required separation age for certain federal employees, including some law enforcement officers, firefighters, air traffic controllers, nuclear materials couriers, and Customs and Border Protection officers.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-N" class="glossary-letter-section">
+            <h2 class="letter-heading">N</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">Net Annuity</h3>
+                <p class="term-definition">The annuity payment after deductions.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-O" class="glossary-letter-section">
+            <h2 class="letter-heading">O</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">OASDI</h3>
+                <p class="term-definition">Old-Age, Survivors, and Disability Insurance. The Social Security portion of payroll taxes and Social Security benefits.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-P" class="glossary-letter-section">
+            <h2 class="letter-heading">P</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">Part B Premium</h3>
+                <p class="term-definition">The monthly premium paid for Medicare Part B. It can be higher for people with higher income.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-Q" class="glossary-letter-section">
+            <h2 class="letter-heading">Q</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">Qualified Distribution</h3>
+                <p class="term-definition">A distribution that meets tax-law requirements for favorable tax treatment. For Roth accounts, qualified distributions generally require meeting age and holding-period rules.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-R" class="glossary-letter-section">
+            <h2 class="letter-heading">R</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">Reassignment</h3>
+                <p class="term-definition">Movement of an employee to another position without promotion or change to lower grade.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-S" class="glossary-letter-section">
+            <h2 class="letter-heading">S</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">S Fund</h3>
+                <p class="term-definition">The TSP Small Capitalization Stock Index Investment Fund. It is designed to track U.S. stocks not included in the large-company index tracked by the C Fund.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-T" class="glossary-letter-section">
+            <h2 class="letter-heading">T</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">Tax-Exempt Balance</h3>
+                <p class="term-definition">A TSP balance from tax-exempt contributions, usually related to uniformed service in a combat zone tax exclusion situation.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-U" class="glossary-letter-section">
+            <h2 class="letter-heading">U</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">Unpaid Compensation</h3>
+                <p class="term-definition">Salary or other pay owed to a federal employee at death. It can be paid according to a beneficiary designation or order of precedence.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-V" class="glossary-letter-section">
+            <h2 class="letter-heading">V</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">VA Disability Compensation</h3>
+                <p class="term-definition">A tax-free benefit paid by the Department of Veterans Affairs to eligible veterans with service-connected disabilities. It is separate from FERS, TSP, FEHB, military retired pay, and Social Security.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-W" class="glossary-letter-section">
+            <h2 class="letter-heading">W</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">Waiver of FEGLI</h3>
+                <p class="term-definition">An election to decline FEGLI coverage. This matters because getting coverage back later may require a qualifying event, open season, or medical underwriting.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-X" class="glossary-letter-section">
+            <h2 class="letter-heading">X</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item empty-state">
+                <p class="term-definition"><em>No terms currently listed for the letter X. This section is intentionally left blank.</em></p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-Y" class="glossary-letter-section">
+            <h2 class="letter-heading">Y</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item">
+                <h3 class="term-title">Year of Service</h3>
+                <p class="term-definition">A period of creditable employment used to determine federal retirement eligibility and annuity computation. Not every type of service counts the same way.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="letter-Z" class="glossary-letter-section">
+            <h2 class="letter-heading">Z</h2>
+            <div class="glossary-terms">
+              <div class="glossary-item empty-state">
+                <p class="term-definition"><em>No terms currently listed for the letter Z. This section is intentionally left blank.</em></p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- CTA -->
+  <section class="glossary-cta" style="background-color: var(--color-surface); border-top: 1px solid var(--color-border);">
+    <div class="container" style="text-align: center; padding: 60px 20px;">
+      <h2 style="color: var(--color-navy); margin-bottom: 16px;">Still Have Questions?</h2>
+      <p style="color: var(--color-text-muted); margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">Mastering the terms is just the first step. Join our free webinar to see how all these pieces fit together for your specific situation.</p>
+      <a href="index.html#save-your-seat" class="btn btn-primary btn-lg">Register for Free Webinar</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="logo.png" alt="Federal Benefits Exchange Logo" class="logo-img" width="2502" height="350" loading="lazy" />
+        <p class="footer-tagline">Augusta, Georgia — Serving federal employees nationwide</p>
+      </div>
+      <div class="footer-links">
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+        <a href="faq.html">FAQ</a>
+        <a href="resources.html">Resources</a>
+        <a href="glossary.html">Glossary</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+      <div class="footer-contact">
+        <div class="contact-item">
+          <span class="contact-label">Phone</span>
+          <a href="tel:7064072744" class="contact-value">(706) 407-2744</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">Support Email</span>
+          <a href="mailto:support@federalbenefitsexchange.com" class="contact-value">support@federalbenefitsexchange.com</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">Address</span>
+          <span class="contact-value">332 Edgefield Rd, North Augusta, SC 29841</span>
+        </div>
+      </div>
+      <p class="footer-legal">© 2026 Federal Benefits Exchange. Federal Benefits Exchange is an independent benefits education organization and is not affiliated with or endorsed by any government agency.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
