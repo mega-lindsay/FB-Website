@@ -1796,42 +1796,57 @@ button { cursor: pointer; background: none; border: none; }
    FAQ PAGE
    ========================================================= */
 .faq-section {
-  padding: var(--space-16) 0;
+  padding: var(--space-12) 0 var(--space-16);
 }
 
-/* --- Table of Contents --- */
+/* --- Table of Contents (Pill Chips) --- */
 .faq-toc {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: var(--space-8);
+  border-radius: 16px;
+  padding: var(--space-6) var(--space-8);
   margin-bottom: var(--space-12);
 }
 .faq-toc h2 {
   font-family: var(--font-heading);
-  font-size: var(--text-lg);
-  color: var(--color-navy);
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
   margin-bottom: var(--space-4);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
 }
 .faq-toc ul {
   list-style: none;
   padding: 0;
   margin: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: var(--space-2) var(--space-6);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.faq-toc li {
+  display: inline-flex;
 }
 .faq-toc a {
-  color: var(--color-text-muted);
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 18px;
+  border-radius: 100px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
   text-decoration: none;
   font-size: var(--text-sm);
-  padding: var(--space-1) 0;
-  display: block;
-  transition: color 0.2s;
-  border-bottom: 1px solid transparent;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 .faq-toc a:hover {
-  color: var(--color-orange);
+  background: var(--color-orange);
+  color: white;
+  border-color: var(--color-orange);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(242, 101, 34, 0.2);
 }
 
 /* --- FAQ Categories --- */
@@ -1839,6 +1854,9 @@ button { cursor: pointer; background: none; border: none; }
   display: flex;
   flex-direction: column;
   gap: var(--space-12);
+}
+.faq-category {
+  scroll-margin-top: 100px;
 }
 .faq-category h2 {
   font-family: var(--font-heading);
@@ -1912,7 +1930,6 @@ button { cursor: pointer; background: none; border: none; }
 /* --- FAQ Answer --- */
 .faq-answer {
   padding: 0 var(--space-6) var(--space-6);
-  animation: faq-fade-in 0.25s ease;
 }
 .faq-answer p {
   font-size: var(--text-sm);
@@ -1939,11 +1956,6 @@ button { cursor: pointer; background: none; border: none; }
   text-decoration: underline;
 }
 
-@keyframes faq-fade-in {
-  from { opacity: 0; transform: translateY(-4px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
 /* --- FAQ CTA --- */
 .faq-cta {
   background: var(--color-surface);
@@ -1952,8 +1964,15 @@ button { cursor: pointer; background: none; border: none; }
 
 /* --- Responsive --- */
 @media (max-width: 768px) {
+  .faq-toc {
+    padding: var(--space-5) var(--space-5);
+  }
   .faq-toc ul {
-    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .faq-toc a {
+    padding: 6px 14px;
+    font-size: var(--text-xs);
   }
   .faq-item summary {
     padding: var(--space-4) var(--space-5);
@@ -1964,5 +1983,8 @@ button { cursor: pointer; background: none; border: none; }
   }
   .faq-category h2 {
     font-size: var(--text-lg);
+  }
+  .faq-category {
+    scroll-margin-top: 80px;
   }
 }
