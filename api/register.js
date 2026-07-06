@@ -261,7 +261,23 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const { firstName, lastName, email, phone, yearsService, topic, webinarDate, agency } = req.body;
+    const { firstName, lastName, email, phone, yearsService, topic, webinarDate, agency, websiteUrl, formTimestamp } = req.body;
+
+    // --- Anti-Spam Check ---
+    // 1. Honeypot check (bots fill this out, humans don't)
+    if (websiteUrl) {
+      console.warn('Spam detected: Honeypot field filled.');
+      return res.status(400).json({ success: false, error: 'Registration failed (Anti-spam).' });
+    }
+    
+    // 2. Timing check (bots submit instantly, humans take > 3 seconds)
+    if (formTimestamp) {
+      const duration = Date.now() - parseInt(formTimestamp);
+      if (duration < 3000) {
+        console.warn(`Spam detected: Submitted too fast (${duration}ms).`);
+        return res.status(400).json({ success: false, error: 'Registration failed (Anti-spam).' });
+      }
+    }
 
     if (!firstName || !lastName || !email || !webinarDate) {
       return res.status(400).json({ success: false, error: 'First Name, Last Name, Email, and Webinar Date are required.' });

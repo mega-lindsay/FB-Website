@@ -1,4 +1,5 @@
 /* Federal Benefits Exchange — Landing Page JS */
+const pageLoadTimestamp = Date.now();
 
 // --- Scroll-aware header fallback ---
 if (!CSS.supports('animation-timeline', 'scroll()')) {
@@ -157,7 +158,10 @@ if (form) {
       clientUserAgent: navigator.userAgent,
       eventSourceUrl: window.location.href,
       fbp: getCookie('_fbp'),
-      fbc: getCookie('_fbc')
+      fbc: getCookie('_fbc'),
+      // Anti-spam
+      websiteUrl: form.querySelector('[name="website_url"]').value,
+      formTimestamp: pageLoadTimestamp
     };
 
     // Trigger Browser Pixel event manually with the same eventId for deduplication
