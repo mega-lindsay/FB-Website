@@ -1246,6 +1246,7 @@ button { cursor: pointer; background: none; border: none; }
   padding: var(--space-16) 0 var(--space-12);
   color: white;
   text-align: center;
+  margin-bottom: 0;
 }
 .blog-hero h1 {
   font-size: var(--text-2xl);
@@ -1860,12 +1861,22 @@ button { cursor: pointer; background: none; border: none; }
 }
 .faq-category h2 {
   font-family: var(--font-heading);
-  font-size: var(--text-xl);
+  font-size: var(--text-lg);
   color: var(--color-navy);
-  margin-bottom: var(--space-6);
-  padding-bottom: var(--space-3);
-  border-bottom: 3px solid var(--color-orange);
-  display: inline-block;
+  margin-bottom: var(--space-5);
+  padding: var(--space-3) 0;
+  border-bottom: 2px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.faq-category h2::before {
+  content: '';
+  width: 4px;
+  height: 22px;
+  background: var(--color-orange);
+  border-radius: 2px;
+  flex-shrink: 0;
 }
 
 /* --- FAQ Items (Accordion) --- */
