@@ -362,39 +362,47 @@ module.exports = async function handler(req, res) {
         };
         sendMetaCapiEvent(req, metaUserData).catch(err => console.error('Meta Background Error:', err));
 
-        // Backup to Postgres (fire and forget — don't block the response)
+        // Backup to Postgres (must await — Vercel kills the function after response)
         const humanDate = dateMap[webinarDate] || webinarDate;
-        backupToPostgres({
-          firstName: firstName.trim(),
-          lastName: lastName.trim(),
-          email: email.trim(),
-          phone: cleanPhone,
-          agency: registrationAgency,
-          yearsService: yearsService || null,
-          topic: topic || null,
-          webinarDate: webinarDate,
-          webinarDateHuman: humanDate,
-          zohoRecordId: recordStatus.details.id,
-          sourcePage: req.body.eventSourceUrl || null
-        }).catch(err => console.error('Postgres Background Error:', err));
+        try {
+          await backupToPostgres({
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
+            email: email.trim(),
+            phone: cleanPhone,
+            agency: registrationAgency,
+            yearsService: yearsService || null,
+            topic: topic || null,
+            webinarDate: webinarDate,
+            webinarDateHuman: humanDate,
+            zohoRecordId: recordStatus.details.id,
+            sourcePage: req.body.eventSourceUrl || null
+          });
+        } catch (pgErr) {
+          console.error('Postgres backup error:', pgErr.message);
+        }
 
         return res.status(200).json({ success: true, id: recordStatus.details.id });
       } else {
         // CRM failed — still try to backup to Postgres so we don't lose the lead
         const humanDate = dateMap[webinarDate] || webinarDate;
-        backupToPostgres({
-          firstName: firstName.trim(),
-          lastName: lastName.trim(),
-          email: email.trim(),
-          phone: cleanPhone,
-          agency: registrationAgency,
-          yearsService: yearsService || null,
-          topic: topic || null,
-          webinarDate: webinarDate,
-          webinarDateHuman: humanDate,
-          zohoRecordId: null,
-          sourcePage: req.body.eventSourceUrl || null
-        }).catch(err => console.error('Postgres Background Error:', err));
+        try {
+          await backupToPostgres({
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
+            email: email.trim(),
+            phone: cleanPhone,
+            agency: registrationAgency,
+            yearsService: yearsService || null,
+            topic: topic || null,
+            webinarDate: webinarDate,
+            webinarDateHuman: humanDate,
+            zohoRecordId: null,
+            sourcePage: req.body.eventSourceUrl || null
+          });
+        } catch (pgErr) {
+          console.error('Postgres backup error:', pgErr.message);
+        }
 
         return res.status(400).json({ success: false, error: recordStatus.message, details: recordStatus.details });
       }
