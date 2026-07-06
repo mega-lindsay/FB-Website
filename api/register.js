@@ -1,12 +1,63 @@
 const fs = require('fs');
 const https = require('https');
 const bizSdk = require('facebook-nodejs-business-sdk');
+const { neon } = require('@neondatabase/serverless');
 
 const META_ACCESS_TOKEN = process.env.META_ACCESS_TOKEN;
 const META_PIXEL_ID = process.env.META_PIXEL_ID;
 
 if (META_ACCESS_TOKEN) {
   bizSdk.FacebookAdsApi.init(META_ACCESS_TOKEN);
+}
+
+// --- Neon Postgres Backup ---
+let dbInitialized = false;
+
+async function getDb() {
+  const connectionString = process.env.POSTGRES_URL || process.env.DATABASE_URL;
+  if (!connectionString) {
+    console.warn('Postgres backup skipped: POSTGRES_URL or DATABASE_URL not configured.');
+    return null;
+  }
+  return neon(connectionString);
+}
+
+async function ensureTable(sql) {
+  if (dbInitialized) return;
+  await sql`
+    CREATE TABLE IF NOT EXISTS registrations (
+      id SERIAL PRIMARY KEY,
+      first_name TEXT,
+      last_name TEXT,
+      email TEXT,
+      phone TEXT,
+      agency TEXT,
+      years_service TEXT,
+      topic TEXT,
+      webinar_date TEXT,
+      webinar_date_human TEXT,
+      zoho_record_id TEXT,
+      source_page TEXT,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `;
+  dbInitialized = true;
+  console.log('Postgres registrations table ready.');
+}
+
+async function backupToPostgres(data) {
+  try {
+    const sql = await getDb();
+    if (!sql) return;
+    await ensureTable(sql);
+    await sql`
+      INSERT INTO registrations (first_name, last_name, email, phone, agency, years_service, topic, webinar_date, webinar_date_human, zoho_record_id, source_page)
+      VALUES (${data.firstName}, ${data.lastName}, ${data.email}, ${data.phone}, ${data.agency}, ${data.yearsService}, ${data.topic}, ${data.webinarDate}, ${data.webinarDateHuman}, ${data.zohoRecordId}, ${data.sourcePage})
+    `;
+    console.log('Postgres backup: registration saved successfully.');
+  } catch (err) {
+    console.error('Postgres backup error (non-blocking):', err.message);
+  }
 }
 
 // Path to Zoho MCP OAuth config files
@@ -311,8 +362,40 @@ module.exports = async function handler(req, res) {
         };
         sendMetaCapiEvent(req, metaUserData).catch(err => console.error('Meta Background Error:', err));
 
+        // Backup to Postgres (fire and forget — don't block the response)
+        const humanDate = dateMap[webinarDate] || webinarDate;
+        backupToPostgres({
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          email: email.trim(),
+          phone: cleanPhone,
+          agency: registrationAgency,
+          yearsService: yearsService || null,
+          topic: topic || null,
+          webinarDate: webinarDate,
+          webinarDateHuman: humanDate,
+          zohoRecordId: recordStatus.details.id,
+          sourcePage: req.body.eventSourceUrl || null
+        }).catch(err => console.error('Postgres Background Error:', err));
+
         return res.status(200).json({ success: true, id: recordStatus.details.id });
       } else {
+        // CRM failed — still try to backup to Postgres so we don't lose the lead
+        const humanDate = dateMap[webinarDate] || webinarDate;
+        backupToPostgres({
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          email: email.trim(),
+          phone: cleanPhone,
+          agency: registrationAgency,
+          yearsService: yearsService || null,
+          topic: topic || null,
+          webinarDate: webinarDate,
+          webinarDateHuman: humanDate,
+          zohoRecordId: null,
+          sourcePage: req.body.eventSourceUrl || null
+        }).catch(err => console.error('Postgres Background Error:', err));
+
         return res.status(400).json({ success: false, error: recordStatus.message, details: recordStatus.details });
       }
     }
