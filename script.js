@@ -198,11 +198,11 @@ if (form) {
     const payload = {
       firstName: document.getElementById('firstName').value.trim(),
       lastName: document.getElementById('lastName').value.trim(),
-      email: document.getElementById('email').value.trim(),
-      phone: document.getElementById('phone').value.trim(),
-      webinarDate: document.getElementById('webinarDate').value,
-      yearsService: document.getElementById('yearsService').value,
-      topic: document.getElementById('topic').value,
+      email: document.getElementById('email') ? document.getElementById('email').value.trim() : '',
+      phone: document.getElementById('phone') ? document.getElementById('phone').value.trim() : '',
+      webinarDate: document.getElementById('webinarDate') ? document.getElementById('webinarDate').value : '',
+      yearsService: document.getElementById('yearsService') ? document.getElementById('yearsService').value : '',
+      topic: document.getElementById('topic') ? document.getElementById('topic').value : '',
       agency: document.getElementById('agency') ? document.getElementById('agency').value : 'Federal',
       // Meta CAPI data
       eventId: eventId,
