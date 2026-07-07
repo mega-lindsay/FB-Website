@@ -27,6 +27,47 @@
     }
   </style>
 
+  <!--
+    Siri Event Suggestions Markup (Apple) — this is what generates the Apple Mail banner.
+    REQUIREMENTS FOR THIS TO PARSE CORRECTLY:
+      - startDate MUST be ISO 8601 with a UTC offset, e.g. "2026-08-15T14:00:00-04:00"
+        NOT a human-readable string like "August 15, 2026 2:00 PM EDT" — if Zoho's merge field
+        outputs the latter, this markup will silently fail to parse even though the email still
+        looks fine visually. Check the actual rendered HTML of a SENT email, not just the template.
+      - endDate omitted (no field for it) — endDate is optional per schema.org Event, so this is
+        fine. If a duration ever matters (e.g. keeping Calendar entries from defaulting to a
+        1-hour block that's wrong), add a formula field later and reintroduce it.
+      - This markup is independent of Gmail's action-markup program (separate Google whitelisting
+        process, separate schema shape — typically EventReservation, not a bare Event). Getting
+        the Apple banner working confirms nothing about Gmail; test Gmail separately.
+      - The Google Calendar link below reuses this same ${FB Clients Leads.Webinar Date} field.
+        That link's `dates=` parameter requires compact format START/END, e.g.
+        20260815T140000Z/20260815T150000Z — NOT whatever human-readable format the field
+        normally renders as. Test the actual "Add to Google Calendar" link in a sent email;
+        if it errors out or shows the wrong date, the field needs a dedicated formula field
+        formatted for this URL rather than reusing the display field.
+  -->
+
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Event",
+    "name": "Federal Benefits Webinar",
+    "startDate": "${FB Clients Leads.Webinar Date}",
+    "location": {
+      "@type": "VirtualLocation",
+      "url": "https://fbe.webinargeek.com/the-federal-employee-hour-of-power-benefits-briefing/join/ouyu0khg"
+    },
+    "description": "Educational walkthrough of federal benefits (FEGLI, TSP, FEHB).",
+    "organizer": {
+      "@type": "Organization",
+      "name": "Federal Benefits Exchange",
+      "url": "https://federalbenefitsexchange.com"
+    }
+  }
+  </script>
+
+
 </head>
 
 
@@ -73,7 +114,7 @@
           <tr>
             <td style="background-color: #FFFFFF; padding: 28px 40px 4px;" class="mobile-padding">
               <p style="margin: 0; font-size: 16px; line-height: 1.5; color: #1A1F2E; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-                Hi <strong>[FIRST_NAME]</strong>,
+                Hi <strong>${FB Clients Leads.Client First Name}</strong>,
               </p>
               <p style="margin: 8px 0 0; font-size: 15px; line-height: 1.6; color: #5A6178; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
                 Thank you for registering. Here are your webinar details:
@@ -94,7 +135,7 @@
                       Date &amp; Time
                     </p>
                     <p style="margin: 6px 0 0; font-size: 17px; line-height: 1.4; color: #1A1F2E; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-weight: 700;">
-                      [WEBINAR_DATE]
+                      ${FB Clients Leads.Webinar Date}
                     </p>
                   </td>
                 </tr>
@@ -192,9 +233,9 @@
             <td style="background-color: #FFFFFF; padding: 0 40px 32px; text-align: center;" class="mobile-padding">
               <p style="margin: 0; font-size: 14px; color: #5A6178; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
                 Can't join now? 
-                <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Federal+Benefits+Webinar&dates=[WEBINAR_DATE_GOOGLE]&details=Join+the+webinar+here:+https://fbe.webinargeek.com/the-federal-employee-hour-of-power-benefits-briefing/join/ouyu0khg" target="_blank" style="color: #F26522; text-decoration: underline; font-weight: 600;">Add to Google Calendar</a>
+                <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Federal+Benefits+Webinar&dates=${FB Clients Leads.Webinar Date}&details=Join+the+webinar+here:+https://fbe.webinargeek.com/the-federal-employee-hour-of-power-benefits-briefing/join/ouyu0khg" target="_blank" style="color: #F26522; text-decoration: underline; font-weight: 600;">Add to Google Calendar</a>
                 &nbsp;&nbsp;&middot;&nbsp;&nbsp;
-                <a href="https://federalbenefitsexchange.com/api/calendar?dates=[WEBINAR_DATE_GOOGLE]" target="_blank" style="color: #F26522; text-decoration: underline; font-weight: 600;">Add to Apple / Outlook Calendar</a>
+                <a href="https://federalbenefitsexchange.com/api/calendar?dates=${FB Clients Leads.Webinar Date}" target="_blank" style="color: #F26522; text-decoration: underline; font-weight: 600;">Add to Apple / Outlook Calendar</a>
               </p>
             </td>
           </tr>
