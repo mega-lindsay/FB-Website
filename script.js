@@ -1,5 +1,4 @@
 /* Federal Benefits Exchange — Landing Page JS */
-const pageLoadTimestamp = Date.now();
 
 // --- Global Header Injection & Navigation ---
 (function() {
@@ -211,9 +210,6 @@ if (form) {
       eventSourceUrl: window.location.href,
       fbp: getCookie('_fbp'),
       fbc: getCookie('_fbc'),
-      // Anti-spam
-      websiteUrl: form.querySelector('[name="website_url"]').value,
-      formTimestamp: pageLoadTimestamp,
       turnstileToken: turnstileResponse ? turnstileResponse.value : null
     };
 
