@@ -34,33 +34,10 @@ app.use(express.static(path.join(__dirname), { extensions: ['html'] }));
 // REST Endpoint to handle registrations (delegated to standard API handler)
 app.post('/api/register', registerHandler);
 
-// ICS Calendar Generator Endpoint
-app.get('/api/calendar', (req, res) => {
-  const dates = req.query.dates; // Expected format: YYYYMMDDTHHMMSSZ/YYYYMMDDTHHMMSSZ
-  if (!dates || !dates.includes('/')) {
-    return res.status(400).send('Invalid dates format.');
-  }
-  
-  const [start, end] = dates.split('/');
-  const webinarUrl = 'https://fbe.webinargeek.com/the-federal-employee-hour-of-power-benefits-briefing/join/ouyu0khg';
-  
-  const icsContent = `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Federal Benefits Exchange//Webinar//EN
-BEGIN:VEVENT
-DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z
-DTSTART:${start}
-DTEND:${end}
-SUMMARY:Federal Benefits Webinar
-DESCRIPTION:Join the webinar here: ${webinarUrl}
-URL:${webinarUrl}
-END:VEVENT
-END:VCALENDAR`;
+const calendarHandler = require('./api/calendar');
 
-  res.setHeader('Content-Type', 'text/calendar; charset=utf-8');
-  res.setHeader('Content-Disposition', 'attachment; filename="webinar.ics"');
-  res.send(icsContent);
-});
+// ICS Calendar Generator Endpoint
+app.get('/api/calendar', calendarHandler);
 
 
 
