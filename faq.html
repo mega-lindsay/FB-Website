@@ -651,56 +651,6 @@
       position: relative;
     }
 
-    /* FAQ Sidebar Layout Fixes */
-    .faq-layout {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 48px;
-      align-items: start;
-    }
-
-    .faq-sidebar {
-      position: sticky;
-      top: 100px;
-    }
-
-    .sidebar-sticky h3 {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--color-orange);
-      margin-bottom: 20px;
-      font-weight: 700;
-    }
-
-    .faq-nav {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .faq-nav-item {
-      display: block;
-      padding: 10px 14px;
-      border-radius: 8px;
-      color: var(--color-text-muted);
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 500;
-      transition: all 0.2s ease;
-    }
-
-    .faq-nav-item:hover {
-      background: rgba(242, 101, 34, 0.08);
-      color: var(--color-orange);
-      transform: translateX(4px);
-    }
-
-    .faq-nav-item.active {
-      background: var(--color-orange);
-      color: white;
-    }
-
     /* Text contrast fix for About section */
     #about-fbe .faq-answer p,
     #about-fbe .faq-answer li,
@@ -708,15 +658,6 @@
     #about-fbe .faq-answer div {
       color: var(--color-text) !important;
       opacity: 1 !important;
-    }
-
-    @media (max-width: 992px) {
-      .faq-layout {
-        grid-template-columns: 1fr;
-      }
-      .faq-sidebar {
-        display: none;
-      }
     }
   </style>
 
@@ -768,29 +709,34 @@
 
   
   <main>
-    <section class="faq-section">
+    <section class="sub-hero">
       <div class="container">
-        <div class="faq-layout">
-          <aside class="faq-sidebar">
-            <div class="sidebar-sticky">
-              <h3>Categories</h3>
-              <nav class="faq-nav">
-                <a href="#retirement-fers" class="faq-nav-item active">Retirement & FERS</a>
-                <a href="#special-provisions" class="faq-nav-item">Special Provisions</a>
-                <a href="#veterans" class="faq-nav-item">Veterans & Military</a>
-                <a href="#va-medical" class="faq-nav-item">VA Professionals</a>
-                <a href="#tsp" class="faq-nav-item">TSP</a>
-                <a href="#fegli" class="faq-nav-item">FEGLI</a>
-                <a href="#fehb-medicare" class="faq-nav-item">FEHB & Medicare</a>
-                <a href="#usps-pshb" class="faq-nav-item">USPS & PSHB</a>
-                <a href="#survivor-benefits" class="faq-nav-item">Survivor Benefits</a>
-                <a href="#social-security-csrs" class="faq-nav-item">Social Security</a>
-                <a href="#taxes" class="faq-nav-item">Taxes</a>
-                <a href="#beneficiary-forms" class="faq-nav-item">Estate & Beneficiary</a>
-                <a href="#pay-stub-review" class="faq-nav-item">Pay Stub Review</a>
-                <a href="#about-fbe" class="faq-nav-item">About FBE</a>
-              </nav>
-            </div>
+        <h1>Federal Benefits FAQ</h1>
+        <p>Your comprehensive guide to understanding FERS, TSP, FEGLI, FEHB, and more.</p>
+      </div>
+    </section>
+
+    <section class="faq-content-section" style="padding: var(--space-16) 0; background: var(--color-bg);">
+      <div class="container">
+        <div class="content-layout">
+          <aside class="sidebar-nav">
+            <h3>Categories</h3>
+            <nav class="sidebar-nav-list">
+              <a href="#retirement-fers" class="sidebar-nav-item active">Retirement & FERS</a>
+              <a href="#special-provisions" class="sidebar-nav-item">Special Provisions</a>
+              <a href="#veterans" class="sidebar-nav-item">Veterans & Military</a>
+              <a href="#va-medical" class="sidebar-nav-item">VA Professionals</a>
+              <a href="#tsp" class="sidebar-nav-item">TSP</a>
+              <a href="#fegli" class="sidebar-nav-item">FEGLI</a>
+              <a href="#fehb-medicare" class="sidebar-nav-item">FEHB & Medicare</a>
+              <a href="#usps-pshb" class="sidebar-nav-item">USPS & PSHB</a>
+              <a href="#survivor-benefits" class="sidebar-nav-item">Survivor Benefits</a>
+              <a href="#social-security-csrs" class="sidebar-nav-item">Social Security</a>
+              <a href="#taxes" class="sidebar-nav-item">Taxes</a>
+              <a href="#beneficiary-forms" class="sidebar-nav-item">Estate & Beneficiary</a>
+              <a href="#pay-stub-review" class="sidebar-nav-item">Pay Stub Review</a>
+              <a href="#about-fbe" class="sidebar-nav-item">About FBE</a>
+            </nav>
           </aside>
 
           <div class="faq-content">

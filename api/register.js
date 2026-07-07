@@ -279,6 +279,41 @@ module.exports = async function handler(req, res) {
       }
     }
 
+    // 3. Cloudflare Turnstile CAPTCHA check
+    const { turnstileToken } = req.body;
+    if (!turnstileToken) {
+      return res.status(400).json({ success: false, error: 'Security check failed. Please complete the CAPTCHA.' });
+    }
+
+    const TURNSTILE_SECRET_KEY = process.env.TURNSTILE_SECRET_KEY || '0x4AAAAAADxY-NSPlrjPJ7EnuigMIX_owzM';
+    
+    // Using fetch (available in Node 18+) or fallback to https logic if needed
+    // Assuming Node 18+ for Vercel/modern environments
+    const turnstileVerifyParams = new URLSearchParams();
+    turnstileVerifyParams.append('secret', TURNSTILE_SECRET_KEY);
+    turnstileVerifyParams.append('response', turnstileToken);
+    
+    if (req.headers['x-forwarded-for']) {
+      turnstileVerifyParams.append('remoteip', req.headers['x-forwarded-for'].split(',')[0]);
+    }
+
+    try {
+      const turnstileResponse = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        method: 'POST',
+        body: turnstileVerifyParams
+      });
+      const turnstileResult = await turnstileResponse.json();
+      
+      if (!turnstileResult.success) {
+        console.warn('Spam detected: Turnstile validation failed.', turnstileResult);
+        return res.status(400).json({ success: false, error: 'Security check failed. Please refresh the page and try again.' });
+      }
+    } catch (err) {
+      console.error('Turnstile verification error:', err);
+      // Fail closed or open? Let's fail open if Cloudflare is down, but realistically we fail closed.
+      return res.status(500).json({ success: false, error: 'Could not verify security check due to network error.' });
+    }
+
     if (!firstName || !lastName || !email || !webinarDate) {
       return res.status(400).json({ success: false, error: 'First Name, Last Name, Email, and Webinar Date are required.' });
     }

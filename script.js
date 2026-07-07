@@ -7,20 +7,24 @@ const pageLoadTimestamp = Date.now();
   if (!header) return;
 
   const isIndex = window.location.pathname === '/' || window.location.pathname.endsWith('index.html');
-  const baseUrl = isIndex ? '' : 'index.html';
+  // Detect if we're in a subdirectory (e.g. /blog/) and prefix paths accordingly
+  const pathSegments = window.location.pathname.split('/').filter(Boolean);
+  const isSubDir = pathSegments.length > 1; // e.g. /blog/some-post.html
+  const prefix = isSubDir ? '../' : '';
+  const baseUrl = isIndex ? '' : `${prefix}index.html`;
 
   header.innerHTML = `
     <div class="container">
       <div class="header-inner">
-        <a href="${isIndex ? '#' : 'index.html'}" class="logo" aria-label="Federal Benefits Exchange">
-          <img src="logo.png" alt="Federal Benefits Exchange Logo" class="logo-img" width="2502" height="350" fetchpriority="high" />
+        <a href="${isIndex ? '#' : `${prefix}index.html`}" class="logo" aria-label="Federal Benefits Exchange">
+          <img src="${prefix}logo.png" alt="Federal Benefits Exchange Logo" class="logo-img" width="2502" height="350" fetchpriority="high" />
         </a>
         <nav class="header-nav">
-          <a href="about.html">About</a>
-          <a href="blog.html">Blog</a>
-          <a href="faq.html">FAQ</a>
-          <a href="resources.html">Resources</a>
-          <a href="glossary.html">Glossary</a>
+          <a href="${prefix}about.html">About</a>
+          <a href="${prefix}blog.html">Blog</a>
+          <a href="${prefix}faq.html">FAQ</a>
+          <a href="${prefix}resources.html">Resources</a>
+          <a href="${prefix}glossary.html">Glossary</a>
           <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
             <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
             <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
@@ -32,11 +36,11 @@ const pageLoadTimestamp = Date.now();
         </button>
       </div>
       <div class="mobile-nav" id="mobileNav">
-        <a href="about.html" onclick="closeMobileNav()">About</a>
-        <a href="blog.html" onclick="closeMobileNav()">Blog</a>
-        <a href="faq.html" onclick="closeMobileNav()">FAQ</a>
-        <a href="resources.html" onclick="closeMobileNav()">Resources</a>
-        <a href="glossary.html" onclick="closeMobileNav()">Glossary</a>
+        <a href="${prefix}about.html" onclick="closeMobileNav()">About</a>
+        <a href="${prefix}blog.html" onclick="closeMobileNav()">Blog</a>
+        <a href="${prefix}faq.html" onclick="closeMobileNav()">FAQ</a>
+        <a href="${prefix}resources.html" onclick="closeMobileNav()">Resources</a>
+        <a href="${prefix}glossary.html" onclick="closeMobileNav()">Glossary</a>
       </div>
     </div>
   `;
@@ -170,6 +174,13 @@ if (form) {
       return;
     }
 
+    // Turnstile Check
+    const turnstileResponse = form.querySelector('[name="cf-turnstile-response"]');
+    if (turnstileResponse && !turnstileResponse.value) {
+      alert("Please complete the security check.");
+      return;
+    }
+
     // Loading state
     submitBtn.disabled = true;
     const originalBtnHTML = submitBtn.innerHTML;
@@ -202,7 +213,8 @@ if (form) {
       fbc: getCookie('_fbc'),
       // Anti-spam
       websiteUrl: form.querySelector('[name="website_url"]').value,
-      formTimestamp: pageLoadTimestamp
+      formTimestamp: pageLoadTimestamp,
+      turnstileToken: turnstileResponse ? turnstileResponse.value : null
     };
 
     // Trigger Browser Pixel event manually with the same eventId for deduplication
@@ -292,8 +304,39 @@ document.head.appendChild(style);
   });
 })();
 
+// --- Blog Category Filtering ---
+(function() {
+  const filterContainer = document.getElementById('blogCategoryFilter');
+  if (!filterContainer) return;
 
+  const filterLinks = filterContainer.querySelectorAll('.sidebar-nav-item');
+  const blogCards = document.querySelectorAll('.blog-card');
 
+  filterLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      // Update active state
+      filterLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+
+      const filterValue = link.getAttribute('data-filter');
+
+      // Filter cards
+      blogCards.forEach(card => {
+        if (filterValue === 'all') {
+          card.style.display = 'flex'; // blog-card uses flex
+        } else {
+          if (card.getAttribute('data-category') === filterValue) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        }
+      });
+    });
+  });
+})();
 /* --- FAQ Sidebar Navigation --- */
 const faqNavItems = document.querySelectorAll('.faq-nav-item');
 const faqCategories = document.querySelectorAll('.faq-category');

@@ -42,7 +42,7 @@
 
   
   <main>
-    <section class="blog-hero">
+    <section class="sub-hero blog-hero">
       <div class="container">
         <h1>Federal Benefits Exchange Blog</h1>
         <p>Insights, guides, and strategic resources to help federal employees optimize FERS, TSP, FEGLI, and FEHB benefits.</p>
@@ -51,9 +51,23 @@
     
     <section class="blog-section">
       <div class="container">
-        <div class="blog-grid">
+        <div class="content-layout">
+          <aside class="sidebar-nav">
+            <h3>Categories</h3>
+            <nav class="sidebar-nav-list" id="blogCategoryFilter">
+              <a href="#" class="sidebar-nav-item active" data-filter="all">All Posts</a>
+              <a href="#" class="sidebar-nav-item" data-filter="fers">FERS & Retirement</a>
+              <a href="#" class="sidebar-nav-item" data-filter="tsp">TSP & Investing</a>
+              <a href="#" class="sidebar-nav-item" data-filter="fehb">FEHB & Medicare</a>
+              <a href="#" class="sidebar-nav-item" data-filter="pshb">PSHB (Postal)</a>
+              <a href="#" class="sidebar-nav-item" data-filter="fegli">Life Insurance</a>
+              <a href="#" class="sidebar-nav-item" data-filter="tax">Tax Planning</a>
+            </nav>
+          </aside>
+
+          <div class="blog-grid">
           <!-- July 2026 -->
-          <a href="blog/what-is-a-psr-report-federal-employees.html" class="blog-card">
+          <a href="blog/what-is-a-psr-report-federal-employees.html" class="blog-card" data-category="fers">
             <div class="blog-card-meta">2026-07-01</div>
             <h2 class="blog-card-title">What is a PSR Report? Why Federal Employees Need a Personal Summary of Retirement</h2>
             <p class="blog-card-desc">Learn how a Personal Summary of Retirement (PSR) report helps federal employees understand their FERS pension, TSP growth, and FEHB health benefits with precision — and how to request yours for free.</p>
@@ -64,7 +78,7 @@
           </a>
 
           <!-- June 2026 -->
-          <a href="blog/tsp-3-form-beneficiary-designations-will.html" class="blog-card">
+          <a href="blog/tsp-3-form-beneficiary-designations-will.html" class="blog-card" data-category="tsp">
             <div class="blog-card-meta">2026-06-27</div>
             <h2 class="blog-card-title">The TSP-3 Form: Why Your Beneficiary Designations Trump Your Will</h2>
             <p class="blog-card-desc">Your TSP-3 beneficiary form is legally binding — and it overrides your will entirely. Learn how outdated designations send money to ex-spouses, how the default order of precedence works, and when to update your federal beneficiary forms.</p>
@@ -74,7 +88,7 @@
             </div>
           </a>
 
-          <a href="blog/traditional-tsp-tax-bomb-safe-withdrawal-rates.html" class="blog-card">
+          <a href="blog/traditional-tsp-tax-bomb-safe-withdrawal-rates.html" class="blog-card" data-category="tsp">
             <div class="blog-card-meta">2026-06-24</div>
             <h2 class="blog-card-title">The Traditional TSP Tax Bomb & Safe Withdrawal Rates</h2>
             <p class="blog-card-desc">Federal Benefits Exchange Educational Blog Post</p>
@@ -84,7 +98,7 @@
             </div>
           </a>
 
-          <a href="blog/tax-trap-tapping-tsp-too-early.html" class="blog-card">
+          <a href="blog/tax-trap-tapping-tsp-too-early.html" class="blog-card" data-category="tax">
             <div class="blog-card-meta">2026-06-20</div>
             <h2 class="blog-card-title">The Tax Trap of Tapping Your TSP Too Early</h2>
             <p class="blog-card-desc">Federal employees: a large TSP withdrawal can trigger higher tax brackets, Medicare IRMAA surcharges, and Social Security taxation all at once. Learn the cascading tax consequences — and how to plan smarter — with Federal Benefits Exchange.</p>
@@ -94,7 +108,7 @@
             </div>
           </a>
 
-          <a href="blog/state-taxes-federal-annuity-where-to-retire.html" class="blog-card">
+          <a href="blog/state-taxes-federal-annuity-where-to-retire.html" class="blog-card" data-category="tax">
             <div class="blog-card-meta">2026-06-17</div>
             <h2 class="blog-card-title">State Taxes and Your Federal Annuity: Where NOT to Retire</h2>
             <p class="blog-card-desc">Learn how state taxes can affect your FERS or CSRS annuity, TSP withdrawals, Social Security, and retirement budget before you relocate as a federal retiree — state-by-state breakdown with real numbers.</p>
@@ -104,7 +118,7 @@
             </div>
           </a>
 
-          <a href="blog/social-security-bridge-trap-federal-employees.html" class="blog-card">
+          <a href="blog/social-security-bridge-trap-federal-employees.html" class="blog-card" data-category="fers">
             <div class="blog-card-meta">2026-06-13</div>
             <h2 class="blog-card-title">The Social Security Bridge Trap: Why Draining Your TSP Early Is a Mistake</h2>
             <p class="blog-card-desc">Learn why using your TSP to bridge income until Social Security can shrink retirement security for federal employees — and what to do instead. Covers FERS supplement rules, MRA+10 traps, and the four bridge strategies compared side by side.</p>
@@ -114,7 +128,7 @@
             </div>
           </a>
 
-          <a href="blog/retirement-tax-planning-federal-employees.html" class="blog-card">
+          <a href="blog/retirement-tax-planning-federal-employees.html" class="blog-card" data-category="tax">
             <div class="blog-card-meta">2026-06-10</div>
             <h2 class="blog-card-title">Retirement Tax Planning for Federal Employees: Keep More of Your Money</h2>
             <p class="blog-card-desc">Most federal employees are shocked by their tax bill in retirement. Learn how your FERS annuity, TSP withdrawals, and Social Security are taxed — and the strategies that can dramatically reduce what you owe.</p>
@@ -124,7 +138,7 @@
             </div>
           </a>
 
-          <a href="blog/medicare-part-b-fehb-federal-retirees.html" class="blog-card">
+          <a href="blog/medicare-part-b-fehb-federal-retirees.html" class="blog-card" data-category="fehb">
             <div class="blog-card-meta">2026-06-06</div>
             <h2 class="blog-card-title">Medicare Part B and FEHB: Avoid Overlapping Coverage Costs</h2>
             <p class="blog-card-desc">Learn how Medicare Part B works with FEHB and PSHB, when Medicare pays first, why USPS retirees need special attention, and how to avoid overlapping retirement health costs.</p>
@@ -134,7 +148,7 @@
             </div>
           </a>
 
-          <a href="blog/inflation-vs-federal-pension-fers-retirement.html" class="blog-card">
+          <a href="blog/inflation-vs-federal-pension-fers-retirement.html" class="blog-card" data-category="fers">
             <div class="blog-card-meta">2026-06-03</div>
             <h2 class="blog-card-title">Inflation vs. Your Federal Pension: Protecting Your Purchasing Power in Retirement</h2>
             <p class="blog-card-desc">Learn why FERS COLAs may not fully protect your retirement income from inflation and how federal employees can use TSP planning, Social Security timing, and annual PSR reviews to prepare.</p>
@@ -145,7 +159,7 @@
           </a>
 
           <!-- May 2026 -->
-          <a href="blog/foundational-fers-math-scd-trap.html" class="blog-card">
+          <a href="blog/foundational-fers-math-scd-trap.html" class="blog-card" data-category="fers">
             <div class="blog-card-meta">2026-05-30</div>
             <h2 class="blog-card-title">Foundational FERS Math & The SCD-Leave vs. SCD-Pension Trap</h2>
             <p class="blog-card-desc">Federal Benefits Exchange Educational Blog Post</p>
@@ -155,7 +169,7 @@
             </div>
           </a>
 
-          <a href="blog/fers-survivor-annuities-spousal-fehb-trap.html" class="blog-card">
+          <a href="blog/fers-survivor-annuities-spousal-fehb-trap.html" class="blog-card" data-category="fers">
             <div class="blog-card-meta">2026-05-27</div>
             <h2 class="blog-card-title">FERS Survivor Annuities & The Spousal FEHB Trap</h2>
             <p class="blog-card-desc">Federal Benefits Exchange Educational Blog Post</p>
@@ -165,7 +179,7 @@
             </div>
           </a>
 
-          <a href="blog/fers-sick-leave-credit-retirement-eligibility.html" class="blog-card">
+          <a href="blog/fers-sick-leave-credit-retirement-eligibility.html" class="blog-card" data-category="fers">
             <div class="blog-card-meta">2026-05-23</div>
             <h2 class="blog-card-title">FERS Sick Leave Credit Explained: Pension Bump vs. Retirement Eligibility</h2>
             <p class="blog-card-desc">Learn how unused sick leave affects your FERS pension, why it cannot make you eligible to retire sooner, and how to plan your retirement date correctly — with real-dollar examples.</p>
@@ -175,17 +189,17 @@
             </div>
           </a>
 
-          <a href="blog/fers-deferred-vs-postponed-retirement.html" class="blog-card">
+          <a href="blog/fers-deferred-vs-postponed-retirement.html" class="blog-card" data-category="fers">
             <div class="blog-card-meta">2026-05-20</div>
             <h2 class="blog-card-title">FERS Deferred vs. Postponed Retirement: How to Keep Your FEHB Health Insurance and Avoid the 5% Annual Pension Penalty</h2>
             <p class="blog-card-desc">Leaving federal service early? Understand the critical differences between a FERS deferred vs. postponed retirement to save your FEHB health coverage and avoid the permanent 5% annual pension penalty.</p>
             <div class="blog-card-link">
               Read Article
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14)M12 5l7 7-7 7"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </div>
           </a>
 
-          <a href="blog/fehb-retirement-medicare-irmaa-collision.html" class="blog-card">
+          <a href="blog/fehb-retirement-medicare-irmaa-collision.html" class="blog-card" data-category="fehb">
             <div class="blog-card-meta">2026-05-16</div>
             <h2 class="blog-card-title">FEHB in Retirement & The Medicare IRMAA Collision</h2>
             <p class="blog-card-desc">Federal Benefits Exchange Educational Blog Post</p>
@@ -195,7 +209,7 @@
             </div>
           </a>
 
-          <a href="blog/fegli-premium-squeeze-age-65-cliff.html" class="blog-card">
+          <a href="blog/fegli-premium-squeeze-age-65-cliff.html" class="blog-card" data-category="fegli">
             <div class="blog-card-meta">2026-05-13</div>
             <h2 class="blog-card-title">The FEGLI Premium Squeeze & The Age 65 Cliff</h2>
             <p class="blog-card-desc">Federal Benefits Exchange Educational Blog Post</p>
@@ -205,7 +219,7 @@
             </div>
           </a>
 
-          <a href="blog/fegli-costs-federal-employees.html" class="blog-card">
+          <a href="blog/fegli-costs-federal-employees.html" class="blog-card" data-category="fegli">
             <div class="blog-card-meta">2026-05-09</div>
             <h2 class="blog-card-title">The Hidden Costs of FEGLI: Why Your Life Insurance Gets More Expensive Every Five Years</h2>
             <p class="blog-card-desc">FEGLI premiums can rise sharply with age, especially under Option B. Learn how FEGLI works, what happens at retirement, and when private term or permanent life insurance deserves a look.</p>
@@ -215,7 +229,7 @@
             </div>
           </a>
 
-          <a href="blog/federal-survivor-benefits-spouse-protection.html" class="blog-card">
+          <a href="blog/federal-survivor-benefits-spouse-protection.html" class="blog-card" data-category="fegli">
             <div class="blog-card-meta">2026-05-06</div>
             <h2 class="blog-card-title">Federal Survivor Benefits: Don't Leave Your Spouse Unprotected</h2>
             <p class="blog-card-desc">Learn how FERS survivor benefits work, why your spouse's retirement income and FEHB/PSHB health coverage may depend on your election, and how a PSR can help.</p>
@@ -224,6 +238,7 @@
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </div>
           </a>
+          </div>
         </div>
       </div>
     </section>

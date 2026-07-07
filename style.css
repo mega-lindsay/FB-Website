@@ -129,6 +129,67 @@ button { cursor: pointer; background: none; border: none; }
 .container { max-width: var(--content-max); margin: 0 auto; padding: 0 var(--space-6); }
 @media (max-width: 640px) { .container { padding: 0 var(--space-4); } }
 
+/* --- Content Layout with Sidebar --- */
+.content-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.sidebar-nav {
+  position: sticky;
+  top: 100px;
+}
+
+.sidebar-nav h3 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-orange);
+  margin-bottom: var(--space-5);
+  font-weight: 700;
+}
+
+.sidebar-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-nav-item {
+  display: block;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all var(--transition);
+}
+
+.sidebar-nav-item:hover {
+  background: rgba(242, 101, 34, 0.08);
+  color: var(--color-orange);
+  transform: translateX(4px);
+}
+
+.sidebar-nav-item.active {
+  background: var(--color-orange);
+  color: white;
+}
+
+@media (max-width: 992px) {
+  .content-layout {
+    grid-template-columns: 1fr;
+  }
+  .sidebar-nav {
+    display: none; /* Hide sidebar on mobile as per FAQ/Resources current behavior */
+  }
+}
+
 /* --- Buttons --- */
 .btn {
   display: inline-flex;
@@ -1171,14 +1232,36 @@ button { cursor: pointer; background: none; border: none; }
 }
 
 /* =========================================================
-   BLOG STYLES
+   SUB-PAGE HERO (Unified Banner)
    ========================================================= */
-.blog-hero {
+.sub-hero {
   background: linear-gradient(135deg, var(--color-navy-dark) 0%, var(--color-navy) 100%);
-  padding: var(--space-16) 0 var(--space-12);
+  padding: clamp(var(--space-12), 8vw, var(--space-16)) 0;
   color: white;
   text-align: center;
   margin-bottom: 0;
+  position: relative;
+  overflow: hidden;
+}
+.sub-hero h1 {
+  font-size: var(--text-2xl);
+  color: white;
+  margin-bottom: var(--space-4);
+  font-weight: 700;
+}
+.sub-hero p {
+  font-size: var(--text-lg);
+  color: rgba(255, 255, 255, 0.8);
+  max-width: var(--content-narrow);
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   BLOG STYLES
+   ========================================================= */
+.blog-hero {
+  /* Inherits from .sub-hero */
 }
 .blog-hero h1 {
   font-size: var(--text-2xl);

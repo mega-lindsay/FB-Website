@@ -26,80 +26,10 @@
     }
 
     .resources-hero {
-      padding: 120px 0 100px;
-      background: linear-gradient(135deg, var(--color-navy) 0%, #001a33 100%);
-      color: white;
-      text-align: center;
+      /* Inherits from .sub-hero */
       margin-bottom: 60px;
     }
 
-    .resources-hero h1 {
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      margin-bottom: 24px;
-      color: white;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-
-    .resources-hero p {
-      font-size: 1.25rem;
-      max-width: 700px;
-      margin: 0 auto;
-      opacity: 0.95;
-      line-height: 1.6;
-    }
-
-    .resources-grid {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 48px;
-      padding-bottom: 100px;
-      align-items: start;
-    }
-
-    .resources-sidebar {
-      position: sticky;
-      top: 100px;
-      background: var(--resource-card-bg);
-      border: 1px solid var(--resource-card-border);
-      border-radius: 16px;
-      padding: 32px;
-      box-shadow: var(--shadow-lg);
-    }
-
-    .resources-nav h3 {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--color-orange);
-      margin-bottom: 20px;
-      font-weight: 700;
-    }
-
-    .resources-nav ul {
-      list-style: none;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .resources-nav a {
-      display: block;
-      padding: 10px 14px;
-      border-radius: 8px;
-      color: var(--color-text);
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 500;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .resources-nav a:hover {
-      background: var(--resource-icon-bg);
-      color: var(--color-orange);
-      transform: translateX(4px);
-    }
 
     .resource-section {
       margin-bottom: 80px;
@@ -273,7 +203,7 @@
   <header class="header" id="header"></header>
 
   <main>
-    <section class="resources-hero">
+    <section class="sub-hero resources-hero">
       <div class="container">
         <h1>Federal Benefits Resource Guide</h1>
         <p>A curated directory of official government resources for retirement, health, life insurance, TSP, and more.</p>
@@ -281,28 +211,26 @@
     </section>
 
     <div class="container">
-      <div class="resources-grid">
-        <aside class="resources-sidebar">
-          <nav class="resources-nav">
-            <h3>Categories</h3>
-            <ul>
-              <li><a href="#core-portals">Core Portals</a></li>
-              <li><a href="#eligibility-planning">Eligibility & Planning</a></li>
-              <li><a href="#legal-framework">Legal Framework</a></li>
-              <li><a href="#tsp">Thrift Savings Plan (TSP)</a></li>
-              <li><a href="#health-benefits">Health & Medicare</a></li>
-              <li><a href="#insurance-fsas">Insurance & FSAs</a></li>
-              <li><a href="#social-security">Social Security</a></li>
-              <li><a href="#taxes">Taxes & Income</a></li>
-              <li><a href="#pay-leave">Pay & Leave</a></li>
-              <li><a href="#military-service">Military Service Credit</a></li>
-              <li><a href="#special-category">Special Provisions</a></li>
-              <li><a href="#va-medical">VA Medical Professionals</a></li>
-              <li><a href="#overseas">Overseas Employees</a></li>
-              <li><a href="#survivor-planning">Survivor Planning</a></li>
-              <li><a href="#enrollment-changes">Enrollment Changes</a></li>
-              <li><a href="#agency-help">Agency Contacts</a></li>
-            </ul>
+      <div class="content-layout">
+        <aside class="sidebar-nav">
+          <h3>Categories</h3>
+          <nav class="sidebar-nav-list">
+            <a href="#core-portals" class="sidebar-nav-item">Core Portals</a>
+            <a href="#eligibility-planning" class="sidebar-nav-item">Eligibility & Planning</a>
+            <a href="#legal-framework" class="sidebar-nav-item">Legal Framework</a>
+            <a href="#tsp" class="sidebar-nav-item">Thrift Savings Plan (TSP)</a>
+            <a href="#health-benefits" class="sidebar-nav-item">Health & Medicare</a>
+            <a href="#insurance-fsas" class="sidebar-nav-item">Insurance & FSAs</a>
+            <a href="#social-security" class="sidebar-nav-item">Social Security</a>
+            <a href="#taxes" class="sidebar-nav-item">Taxes & Income</a>
+            <a href="#pay-leave" class="sidebar-nav-item">Pay & Leave</a>
+            <a href="#military-service" class="sidebar-nav-item">Military Service Credit</a>
+            <a href="#special-category" class="sidebar-nav-item">Special Provisions</a>
+            <a href="#va-medical" class="sidebar-nav-item">VA Medical Professionals</a>
+            <a href="#overseas" class="sidebar-nav-item">Overseas Employees</a>
+            <a href="#survivor-planning" class="sidebar-nav-item">Survivor Planning</a>
+            <a href="#enrollment-changes" class="sidebar-nav-item">Enrollment Changes</a>
+            <a href="#agency-help" class="sidebar-nav-item">Agency Contacts</a>
           </nav>
         </aside>
 

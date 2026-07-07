@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Federal Benefits Exchange - Letterhead</title>
+  
+  <!-- Fonts -->
+  <link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" />
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Reset and Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 11pt; /* Standard readable size for print */
+      line-height: 1.6;
+      color: #1a1f2e;
+      background: #f7fafc;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Print Configuration */
+    @page {
+      size: letter;
+      margin: 1in; /* Standard 1-inch margins for physical documents */
+    }
+
+    /* Wrapper for web viewing to simulate a physical page */
+    .document-wrapper {
+      max-width: 8.5in;
+      min-height: 11in;
+      margin: 2rem auto;
+      background: white;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      padding: 1in;
+    }
+
+    /* Letterhead Header */
+    .letterhead {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid #0052cc;
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .letterhead-brand img {
+      height: 65px; /* Adjust based on logo proportions */
+      width: auto;
+      display: block;
+    }
+
+    .letterhead-contact {
+      text-align: right;
+      font-size: 9pt;
+      color: #4a5568;
+      line-height: 1.5;
+    }
+
+    .letterhead-contact strong {
+      color: #1a1f2e;
+      font-size: 10pt;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    /* Letter Body Formatting */
+    .letter-meta {
+      margin-bottom: 2rem;
+    }
+
+    .letter-date {
+      margin-bottom: 2rem;
+    }
+
+    .letter-recipient {
+      margin-bottom: 2rem;
+    }
+
+    .letter-subject {
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .letter-body {
+      text-align: justify;
+      margin-bottom: 2rem;
+    }
+
+    .letter-body p {
+      margin-bottom: 1rem;
+    }
+
+    .letter-signature {
+      margin-top: 3rem;
+      page-break-inside: avoid;
+    }
+
+    .signature-space {
+      height: 60px; /* Space for physical signature */
+    }
+
+    /* Print-specific overrides */
+    @media print {
+      body {
+        background: none;
+      }
+      .document-wrapper {
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+        max-width: none;
+        min-height: auto;
+      }
+      .letterhead {
+        border-bottom-color: #000; /* Often better for black & white printers */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="document-wrapper">
+    
+    <!-- HEADER START -->
+    <header class="letterhead">
+      <div class="letterhead-brand">
+        <!-- Assuming this runs in the root directory where logo.png lives -->
+        <!-- You can swap this to FB_Logo_Dark.svg if you prefer -->
+        <img src="logo.png" alt="Federal Benefits Exchange">
+      </div>
+      <div class="letterhead-contact">
+        <strong>Federal Benefits Exchange</strong>
+        332 Edgefield Rd<br>
+        North Augusta, SC 29841<br>
+        (706) 407-2744<br>
+        federalbenefitsexchange.com
+      </div>
+    </header>
+    <!-- HEADER END -->
+
+    <!-- Example Letter Content -->
+    <main class="letter-content">
+      <div class="letter-meta">
+        <div class="letter-date">
+          July 7, 2026
+        </div>
+        
+        <div class="letter-recipient">
+          <strong>John Doe</strong><br>
+          123 Federal Way<br>
+          Augusta, GA 30901
+        </div>
+        
+        <div class="letter-subject">
+          RE: Personal Summary of Retirement (PSR) Review
+        </div>
+      </div>
+
+      <div class="letter-body">
+        <p>Dear John,</p>
+        
+        <p>Thank you for requesting your customized Personal Summary of Retirement (PSR) report. We have compiled your data to provide a comprehensive outlook on your FERS pension, Thrift Savings Plan (TSP) projections, and FEHB health benefits.</p>
+        
+        <p>A careful review of your records indicates that there are several strategic decisions to be made ahead of your target retirement date. Specifically, we will need to address the impact of the Social Security bridge strategy and how it affects your TSP withdrawal rate.</p>
+        
+        <p>Please review the enclosed documents prior to our scheduled phone consultation next Tuesday. If you have any immediate questions, feel free to contact our office directly.</p>
+        
+        <p>Sincerely,</p>
+      </div>
+
+      <div class="letter-signature">
+        <div class="signature-space"></div>
+        <strong>Shawn McCoy</strong><br>
+        Benefits Educator<br>
+        Federal Benefits Exchange
+      </div>
+    </main>
+
+  </div>
+
+</body>
+</html>

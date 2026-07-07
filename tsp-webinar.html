@@ -18,6 +18,9 @@
 
   <link rel="stylesheet" href="style.min.css?v=1.5" />
   <link rel="icon" type="image/svg+xml" href="FB_favicon.svg" />
+  
+  <!-- Cloudflare Turnstile -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
   <!-- Structured Data -->
   <script type="application/ld+json">
@@ -348,6 +351,10 @@
                     <span>I agree to receive webinar reminders and benefits education messages from Federal Benefits Exchange by email and text. Message frequency varies. Message and data rates may apply. Reply STOP to unsubscribe or HELP for help. Consent is not required to attend the webinar. View our <a href="privacy.html" target="_blank">Privacy Policy</a> and <a href="terms.html" target="_blank">Terms of Service</a>.</span>
                   </label>
                 </div>
+                
+                <!-- Cloudflare Turnstile Widget -->
+                <div class="cf-turnstile" data-sitekey="0x4AAAAAADxY-Fz3r5FfvA1Z" data-theme="light" style="margin-bottom: 1rem;"></div>
+
                 <button type="submit" class="btn btn-primary btn-lg btn-full" id="submitBtn">
                   Register for Free Webinar
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
