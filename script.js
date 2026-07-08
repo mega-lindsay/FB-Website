@@ -10,20 +10,20 @@
   const pathSegments = window.location.pathname.split('/').filter(Boolean);
   const isSubDir = pathSegments.length > 1; // e.g. /blog/some-post.html
   const prefix = isSubDir ? '../' : '';
-  const baseUrl = isIndex ? '' : `${prefix}index.html`;
+  const baseUrl = isIndex ? '' : "/";
 
   header.innerHTML = `
     <div class="container">
       <div class="header-inner">
-        <a href="${isIndex ? '#' : `${prefix}index.html`}" class="logo" aria-label="Federal Benefits Exchange">
+        <a href="${isIndex ? '#' : "/"}" class="logo" aria-label="Federal Benefits Exchange">
           <img src="/logo.png" alt="Federal Benefits Exchange Logo" class="logo-img" width="2502" height="350" fetchpriority="high" />
         </a>
         <nav class="header-nav">
-          <a href=\"${prefix}about/\">About</a>
-          <a href=\"${prefix}blog/\">Blog</a>
-          <a href=\"${prefix}faq/\">FAQ</a>
-          <a href=\"${prefix}resources/\">Resources</a>
-          <a href=\"${prefix}glossary/\">Glossary</a>
+          <a href=\"/about/\">About</a>
+          <a href=\"/blog/\">Blog</a>
+          <a href=\"/faq/\">FAQ</a>
+          <a href=\"/resources/\">Resources</a>
+          <a href=\"/glossary/\">Glossary</a>
           <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
             <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
             <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
@@ -35,11 +35,11 @@
         </button>
       </div>
       <div class="mobile-nav" id="mobileNav">
-        <a href=\"${prefix}about/\" onclick="closeMobileNav()">About</a>
-        <a href=\"${prefix}blog/\" onclick="closeMobileNav()">Blog</a>
-        <a href=\"${prefix}faq/\" onclick="closeMobileNav()">FAQ</a>
-        <a href=\"${prefix}resources/\" onclick="closeMobileNav()">Resources</a>
-        <a href=\"${prefix}glossary/\" onclick="closeMobileNav()">Glossary</a>
+        <a href=\"/about/\" onclick="closeMobileNav()">About</a>
+        <a href=\"/blog/\" onclick="closeMobileNav()">Blog</a>
+        <a href=\"/faq/\" onclick="closeMobileNav()">FAQ</a>
+        <a href=\"/resources/\" onclick="closeMobileNav()">Resources</a>
+        <a href=\"/glossary/\" onclick="closeMobileNav()">Glossary</a>
       </div>
     </div>
   `;
