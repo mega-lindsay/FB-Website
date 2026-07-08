@@ -6,9 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="color-scheme" content="light" />
   <meta name="supported-color-schemes" content="light" />
-  <title>Federal Benefits Exchange</title>
-
-  
+  <title>Federal Benefits Exchange - Reminder</title>
 
   <style>
     /* ===== RESET ===== */
@@ -26,27 +24,6 @@
       .mobile-center { text-align: center !important; }
     }
   </style>
-
-  <!--
-    Siri Event Suggestions Markup (Apple) — this is what generates the Apple Mail banner.
-    REQUIREMENTS FOR THIS TO PARSE CORRECTLY:
-      - startDate MUST be ISO 8601 with a UTC offset, e.g. "2026-08-15T14:00:00-04:00"
-        NOT a human-readable string like "August 15, 2026 2:00 PM EDT" — if Zoho's merge field
-        outputs the latter, this markup will silently fail to parse even though the email still
-        looks fine visually. Check the actual rendered HTML of a SENT email, not just the template.
-      - endDate omitted (no field for it) — endDate is optional per schema.org Event, so this is
-        fine. If a duration ever matters (e.g. keeping Calendar entries from defaulting to a
-        1-hour block that's wrong), add a formula field later and reintroduce it.
-      - This markup is independent of Gmail's action-markup program (separate Google whitelisting
-        process, separate schema shape — typically EventReservation, not a bare Event). Getting
-        the Apple banner working confirms nothing about Gmail; test Gmail separately.
-      - The Google Calendar link below reuses this same ${FB Clients Leads.Webinar Date} field.
-        That link's `dates=` parameter requires compact format START/END, e.g.
-        20260815T140000Z/20260815T150000Z — NOT whatever human-readable format the field
-        normally renders as. Test the actual "Add to Google Calendar" link in a sent email;
-        if it errors out or shows the wrong date, the field needs a dedicated formula field
-        formatted for this URL rather than reusing the display field.
-  -->
 
   <script type="application/ld+json">
   {
@@ -66,29 +43,20 @@
     }
   }
   </script>
-
-
 </head>
 
-
-
 <body style="margin: 0; padding: 0; background-color: #E8EAF0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-
   
   <div style="display: none; max-height: 0; overflow: hidden;">
-    You're confirmed for the free federal benefits webinar. Here are your session details.
+    The webinar you registered for is tomorrow! We're excited to have you join us.
     &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847;
   </div>
 
-  
   <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #E8EAF0;">
     <tr>
       <td align="center" style="padding: 24px 10px;">
-
-
         
         <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" class="email-container" style="max-width: 600px; width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(27,43,94,0.12);">
-
 
           <tr>
             <td style="background-color: #1B2B5E; padding: 28px 40px 20px; text-align: center;">
@@ -97,35 +65,31 @@
               </a>
             </td>
           </tr>
-
           
           <tr>
             <td style="background-color: #1B2B5E; padding: 8px 40px 36px; text-align: center;" class="mobile-padding">
               <h1 style="margin: 0 0 8px; font-size: 30px; line-height: 1.2; color: #FFFFFF; font-family: Georgia, 'Times New Roman', serif; font-weight: 700;">
-                You're Registered!
+                See You Tomorrow!
               </h1>
               <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #A8B4D9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-                Your seat for the free federal benefits webinar has been saved.
+                We're excited to have you join us for the federal benefits webinar.
               </p>
             </td>
           </tr>
 
-          
           <tr>
             <td style="background-color: #FFFFFF; padding: 28px 40px 4px;" class="mobile-padding">
               <p style="margin: 0; font-size: 16px; line-height: 1.5; color: #1A1F2E; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
                 Hi <strong>${FB Clients Leads.Client First Name}</strong>,
               </p>
               <p style="margin: 8px 0 0; font-size: 15px; line-height: 1.6; color: #5A6178; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-                Thank you for registering. Here are your webinar details:
+                Just a quick heads-up that the webinar you registered for is happening tomorrow. We don't want you to miss it! Here is everything you need to join:
               </p>
             </td>
           </tr>
 
-          
           <tr>
             <td style="background-color: #FFFFFF; padding: 20px 40px 24px;" class="mobile-padding">
-
               
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 20px;">
                 <tr>
@@ -141,7 +105,6 @@
                 </tr>
               </table>
 
-              
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 20px;">
                 <tr>
                   <td width="6" style="background-color: #F26522; border-radius: 3px; font-size: 0; line-height: 0;">&nbsp;</td>
@@ -156,7 +119,6 @@
                 </tr>
               </table>
 
-              
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                 <tr>
                   <td width="6" style="background-color: #F26522; border-radius: 3px; font-size: 0; line-height: 0;">&nbsp;</td>
@@ -174,21 +136,26 @@
             </td>
           </tr>
 
-          
           <tr>
-            <td style="background-color: #FFFFFF; padding: 0 40px;" class="mobile-padding">
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                <tr><td style="border-top: 1px solid #E2E5EF; font-size: 0; line-height: 0;">&nbsp;</td></tr>
+            <td style="background-color: #FFFFFF; padding: 28px 40px 32px;" class="mobile-padding">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
+                <tr>
+                  <td style="background-color: #F26522; border-radius: 8px; text-align: center;">
+                    <a href="https://fbe.webinargeek.com/the-federal-employee-hour-of-power-benefits-briefing/join/ouyu0khg" target="_blank" style="display: inline-block; padding: 14px 44px; font-size: 16px; font-weight: 700; color: #FFFFFF; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; text-decoration: none; letter-spacing: 0.3px;">
+                      Join the Webinar &rarr;
+                    </a>
+                  </td>
+                </tr>
               </table>
             </td>
           </tr>
-
           
           <tr>
-            <td style="background-color: #FFFFFF; padding: 24px 40px 0;" class="mobile-padding">
-              <h2 style="margin: 0 0 16px; font-size: 20px; line-height: 1.3; color: #1B2B5E; font-family: Georgia, 'Times New Roman', serif; font-weight: 700;">
+            <td style="background-color: #F5F6FA; padding: 28px 40px; border-top: 1px solid #E2E5EF;" class="mobile-padding">
+              <h2 style="margin: 0 0 18px; font-size: 20px; line-height: 1.3; color: #1B2B5E; font-family: Georgia, 'Times New Roman', serif; font-weight: 700;">
                 What You'll Learn
               </h2>
+
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                 <tr>
                   <td style="padding: 7px 0; font-size: 15px; line-height: 1.5; color: #1A1F2E; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
@@ -214,68 +181,6 @@
             </td>
           </tr>
 
-          
-          <tr>
-            <td style="background-color: #FFFFFF; padding: 28px 40px 32px;" class="mobile-padding">
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
-                <tr>
-                  <td style="background-color: #F26522; border-radius: 8px; text-align: center;">
-                    <a href="https://fbe.webinargeek.com/the-federal-employee-hour-of-power-benefits-briefing/join/ouyu0khg" target="_blank" style="display: inline-block; padding: 14px 44px; font-size: 16px; font-weight: 700; color: #FFFFFF; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; text-decoration: none; letter-spacing: 0.3px;">
-                      Join the Webinar &rarr;
-                    </a>
-</td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-          <!-- ======= CALENDAR LINKS ======= -->
-          <tr>
-            <td style="background-color: #FFFFFF; padding: 0 40px 32px; text-align: center;" class="mobile-padding">
-              <p style="margin: 0; font-size: 14px; color: #5A6178; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-                Can't join now? 
-                <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Federal+Benefits+Webinar&dates=${FB Clients Leads.Webinar Date}&details=Join+the+webinar+here:+https://fbe.webinargeek.com/the-federal-employee-hour-of-power-benefits-briefing/join/ouyu0khg" target="_blank" style="color: #F26522; text-decoration: underline; font-weight: 600;">Add to Google Calendar</a>
-                &nbsp;&nbsp;&middot;&nbsp;&nbsp;
-                <a href="https://federalbenefitsexchange.com/api/calendar?dates=${FB Clients Leads.Webinar Date}" target="_blank" style="color: #F26522; text-decoration: underline; font-weight: 600;">Add to Apple / Outlook Calendar</a>
-              </p>
-            </td>
-          </tr>
-
-
-          
-          <tr>
-            <td style="background-color: #F5F6FA; padding: 28px 40px; border-top: 1px solid #E2E5EF;" class="mobile-padding">
-              <h2 style="margin: 0 0 18px; font-size: 20px; line-height: 1.3; color: #1B2B5E; font-family: Georgia, 'Times New Roman', serif; font-weight: 700;">
-                What to Expect
-              </h2>
-
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 12px;">
-                <tr>
-                  <td width="26" valign="top" style="font-size: 15px; color: #F26522; font-weight: 700; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.5;">1.</td>
-                  <td style="font-size: 15px; line-height: 1.5; color: #3D4459; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-                    <strong style="color: #1A1F2E;">We'll send a reminder</strong> the day before your webinar.
-                  </td>
-                </tr>
-              </table>
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 12px;">
-                <tr>
-                  <td width="26" valign="top" style="font-size: 15px; color: #F26522; font-weight: 700; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.5;">2.</td>
-                  <td style="font-size: 15px; line-height: 1.5; color: #3D4459; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-                    <strong style="color: #1A1F2E;">Join the live session</strong> &mdash; 60 minutes, plain English, interactive Q&amp;A.
-                  </td>
-                </tr>
-              </table>
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                <tr>
-                  <td width="26" valign="top" style="font-size: 15px; color: #F26522; font-weight: 700; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.5;">3.</td>
-                  <td style="font-size: 15px; line-height: 1.5; color: #3D4459; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-                    <strong style="color: #1A1F2E;">Optional follow-up.</strong> After the webinar, you may request a free one-on-one benefits review. No obligation.
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-          
           <tr>
             <td style="background-color: #FEF0E8; padding: 14px 40px; border-top: 1px solid #F0DDD0;" class="mobile-padding">
               <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #6B5A4E; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; text-align: center;">
@@ -284,11 +189,8 @@
             </td>
           </tr>
 
-          
           <tr>
             <td style="background-color: #111E44; padding: 32px 40px;" class="mobile-padding">
-
-              
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 16px;">
                 <tr>
                   <td align="center">
@@ -299,7 +201,6 @@
                 </tr>
               </table>
 
-              
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 4px;">
                 <tr>
                   <td align="center" style="font-size: 13px; line-height: 1.8; color: #8891AE; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
@@ -314,14 +215,12 @@
                 </tr>
               </table>
 
-              
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 20px 0;">
                 <tr>
                   <td style="border-top: 1px solid #243572; font-size: 0; line-height: 0;">&nbsp;</td>
                 </tr>
               </table>
 
-              
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                 <tr>
                   <td align="center" style="font-size: 11px; line-height: 1.6; color: #555D7A; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">

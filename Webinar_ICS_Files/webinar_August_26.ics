@@ -1,0 +1,12 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Federal Benefits Exchange//Webinar//EN
+BEGIN:VEVENT
+DTSTAMP:20260707T195941Z
+DTSTART:20260826T180000Z
+DTEND:20260826T190000Z
+SUMMARY:Federal Benefits Webinar
+DESCRIPTION:Join the webinar here: https://fbe.webinargeek.com/the-federal-employee-hour-of-power-benefits-briefing/join/ouyu0khg
+URL:https://fbe.webinargeek.com/the-federal-employee-hour-of-power-benefits-briefing/join/ouyu0khg
+END:VEVENT
+END:VCALENDAR

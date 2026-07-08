@@ -1,0 +1,707 @@
+Received: from MBX030-E1-VA-1.exch030.domain.local (10.216.109.136) by
+ MBX030-E1-VA-1.exch030.domain.local (10.216.109.136) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Mailbox Transport; Tue, 7 Jul 2026 16:48:04 -0400
+Received: from MBX030-E1-VA-6.exch030.domain.local (10.216.109.146) by
+ MBX030-E1-VA-1.exch030.domain.local (10.216.109.136) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Tue, 7 Jul 2026 16:48:04 -0400
+Received: from aesmt030-va-1-1.serverpod.net (10.216.74.12) by
+ MBX030-E1-VA-6.exch030.domain.local (10.216.109.147) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Tue, 7 Jul 2026 16:48:04 -0400
+Received: from aesc030-va-1-1.serverpod.net (aesc030-va-1-1.serverpod.net [10.216.76.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by aesmt030-va-1.serverpod.net (Postfix) with ESMTPS id 7FC68100003
+	for <karl@ichramasters.com>; Tue,  7 Jul 2026 13:48:04 -0700 (PDT)
+Received: from exmx030-va-1-2.serverpod.net (exmx030-va-1-2.serverpod.net
+ [10.216.72.13])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest
+ SHA256)
+	(No client certificate requested)
+	by aesmt030-va-1.serverpod.net (Postfix) with ESMTPS id 43263140005
+	for <karl@ichramasters.com>; Tue,  7 Jul 2026 13:48:04 -0700 (PDT)
+Received: from app-97.transmail.net (app-97.transmail.net [135.84.80.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest
+ SHA256)
+	(No client certificate requested)
+	by east.smtp.mx.exch030.serverdata.net (Postfix) with ESMTPS id B65A980003
+	for <karl@ichramasters.com>; Tue,  7 Jul 2026 13:48:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783457282; cv=none;
+	d=us.zohomail360.com; s=zohoarc;
+	b=Xso/o0o+pKPJzki3wsVdePVB9DBlthEokFfPYkZ7eZAcYG5YSVB0ztr/278yBJabjCv3Vwdk/dvp3A37hNuMaVCulreACJ/peL7VdTGVjeiyFZXXJ6w4g4koV338UaPXAlYRl5EJ/f/Jr5LW6QmrO1fW9VfyKQPM9+Dp1vMBs2s=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=us.zohomail360.com; s=zohoarc;
+	t=1783457282;
+ h=Content-Type:Date:Date:From:From:MIME-Version:Message-ID:Reply-To:Reply-To:Subject:Subject:To:To:Message-Id:Cc;
+	bh=5LNNhjGyX3gE0gEuulfn+74slSdSJcBprtPO/A4FyS8=;
+	b=gcGcjQBUnzQUB7YhIyuDe4vbvf8YLS0HYYm7VH7PYiNwsIxJ9UU8VxNhkiwV954EUYOINpBYdtLBU9PHhHE6VB3UW36xo+vKhMF8kpQBqZui2Nk2ZMrm6zYMhw/daKapj2QOJwx5qQ1a610fpup/v4weuZoKRw9sVlK9OEDEhR4=
+ARC-Authentication-Results: i=1; mx.us.zohomail360.com;
+	dkim=pass  header.i=insurancemasters.biz;
+	spf=pass
+  smtp.mailfrom=bounces1+241257b0-7a45-11f1-91ff-5254009dfd0a_vt1@sender.zohocrm.com;
+	dmarc=pass header.from=<clientservices@insurancemasters.biz>
+Received: by mx.zohomail.com with SMTPS id 1783457281577240.2431482465222;
+	Tue, 7 Jul 2026 13:48:01 -0700 (PDT)
+DKIM-Signature: a=rsa-sha256;
+ b=gKT1+xysP8q2QS+CTjoRcWwOBJCP99OLozvfjjJBs4+3I0nOxmmkjqpzIN+NHZsyMx0iijwlA3po5F1so9JK3n6bTQaWvseheaWrTC0voBAc0WfNxSEuGyEx33vM3nzXoqnzV9NZi+90OQ510aZLw4KzFXpEzESU+iYnR72yNt4=;
+ c=relaxed/relaxed; s=1522905413783; d=insurancemasters.biz; v=1;
+ bh=5LNNhjGyX3gE0gEuulfn+74slSdSJcBprtPO/A4FyS8=;
+ h=date:from:reply-to:to:message-id:subject:mime-version:content-type:date:from:reply-to:to:message-id:subject;
+DKIM-Signature: a=rsa-sha256;
+ b=VA+Mhvo0FvKMQY/DRYeYwmXFlHIrvhjdZoU7HmvHUkQxBvQkRoP8/3IqCfKKSTDmi/2mtoCB7/YWyvRcFnS/9FIvc8YTDpPfcozZ/3F9iDX7QoKr38afJrsvCHnO8WXcwHXc/atQScfuSbG8OaKIB8m3ufGtiXTriV8yGXJDMP0=;
+ c=relaxed/relaxed; s=282322; d=sender.zohocrm.com; v=1;
+ bh=5LNNhjGyX3gE0gEuulfn+74slSdSJcBprtPO/A4FyS8=;
+ h=date:from:reply-to:to:message-id:subject:mime-version:content-type:date:from:reply-to:to:message-id:subject;
+Date: Tue, 7 Jul 2026 13:48:01 -0700 (PDT)
+From: Insurance Masters Client Services
+ <clientservices@insurancemasters.biz>
+Reply-To: clientservices@insuranemasters.biz
+To: Daffy Duck 2 <karl@ichramasters.com>
+Message-ID: <2d6f.327230a.m1.241257b0-7a45-11f1-91ff-5254009dfd0a.19f3e5670ab@sender.zohocrm.com>
+Subject: You're in Daffy,  webinar details inside</strong>
+Content-Type: multipart/mixed;
+	boundary="----=_Part_68090303_13269149.1783457281514"
+X-ZCORGID: d752ad83494d67dd012f8ec547a90af06a2a2f98a477c3efd6574fc872c5369a
+X-ZCRM: 8da8bec3dd134f5a294ce041cf86e1ab3a426009bfb47e73c24fa2e54afd168983784355cbc5592ba2ddcacd4f1c2982
+Original-Envelope-Id: 2d6f.327230a.m1.241257b0-7a45-11f1-91ff-5254009dfd0a.19f3e5670ab
+X-JID: 2d6f.327230a.m1.241257b0-7a45-11f1-91ff-5254009dfd0a.19f3e5670ab
+TM-MAIL-JID: 2d6f.327230a.m1.241257b0-7a45-11f1-91ff-5254009dfd0a.19f3e5670ab
+X-App-Message-ID: 2d6f.327230a.m1.241257b0-7a45-11f1-91ff-5254009dfd0a.19f3e5670ab
+X-Report-Abuse: <abuse+2d6f.327230a.m1.241257b0-7a45-11f1-91ff-5254009dfd0a.19f3e5670ab@zeptomail.com>
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-0.2.11.1.5.2/283.436.20
+Feedback-ID: zu0809122674cd6bc702b5cfed77467504000061f2e40ee945b35093dbb82e986dd2ccfd87eff96f8aaacb:ZohoMail
+X-Zoho-CM-AccountID: e75b3ed0867ce232e307fd0fc7542d68b3c0bb48a5447f5783cfc44618af2ff6
+X-ZohoMailClient: External
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.4 cv=W5M4VQWk c=1 sm=1 tr=0 ts=6a4d6603 b=1
+	a=F10MmU/EXeJ1DJLzztOCfQ==:117 a=F10MmU/EXeJ1DJLzztOCfQ==:17
+	a=RAioF0-LDSMA:10 a=gLhmyX6Q_LkA:10 a=8yP6aN8V21UA:10 a=J25zgNhsKLYA:10
+	a=eP8__SuoAAAA:8 a=2rHaHyeGNoaF2cxaFo8A:9 a=QEXdDO2ut3YA:10
+	a=IOV5cLCmAAAA:8 a=n0HPsWIHQIQZAtSGzgkA:9 a=muMYIIfLBpGegX8TdtU/4aIKVBI=:19
+	a=35DOzCSK2GDtbk4Y:21 a=_W_S_7VecoQA:10 a=lqcHg5cX4UMA:10
+	a=s_KHD6aHcoUgXWm27CaZ:22 a=V6tPxr5XO1QYNsq6dZIA:9
+	a=pt9G7I5XmLUTiVRDx3fboKQV4P0=:19 a=Ww3EAYOm5v4A:10
+	a=uDXMMbqNXFhfq9i5nQI5:22 a=agZjUnRwnbwkoDicvQ7m:22
+	a=67XMNxvEd3j770rV4uvm:22 a=s9Q3HQH20jBZCrL1Ea1H:22
+	a=a44HlCywZdaqx7ehEkiJ:22 a=Gl1n3MabDNnsq2mDAmfC:22
+	a=8x2_TS0g4ycfp7EcF-24:22 a=eZRESqF7bTK4ShUxxmd-:22
+X-SOURCE-IP: 135.84.80.97
+X-SPF-STATUS: pass
+X-SPF-FROM-STATUS: not_checked
+X-RDNS-STATUS: pass
+X-HELO-STRING: app-97.transmail.net
+X-DMARC-STATUS: pass
+Authentication-Results: east.smtp.mx.exch030.serverdata.net;
+	iprev=pass ip=135.84.80.97;
+	spf=pass client-ip=135.84.80.97
+ smtp.mailfrom=bounces1+241257b0-7a45-11f1-91ff-5254009dfd0a_vt1@sender.zohocrm.com;
+	dkim=pass (1024-bit key) header.i=@insurancemasters.biz;
+	dmarc=pass header.from=insurancemasters.biz
+Spam-Stopper-Id: c6dec593-9b01-4764-867a-4162932c0f9a
+Spam-Stopper-v2: Yes
+X-Envelope-Mail-From: bounces1+241257b0-7a45-11f1-91ff-5254009dfd0a_vt1@sender.zohocrm.com
+X-AES-Processing-Results:
+	eNqtVm1v6jYU/isony8s7wE+jWXcFt2+iTJ1WjVFTmLAtybObKctQ/z3HduBJBS2XmlShZrH5+U5Pi8+O0uSDRYSbUpr3LNc2w37dgR/C9ce+8Ox7Q98z/vD+tKzRIk2iZCsLDFPSK7EszDHWTDy+qPUdvp+FPr9YRihvu+E7shzM3s5Qo1qxjgGrcBWyAspkyWhEnMBmDfyAMyQxCvGtwDsLLRacSwEecX6s3Vm3UyvZgttV3Iw80p4pYwUFaV7QDcsxxzEf1SPY4recf6jauWaiDUpVgAtERVYMUD8BcsuhjlnvKVmgk84LhmXQjuljJVJtsbZC1aSVomEAD4gLNeE5yXicmvOu6cbRGiypOxNwdPfF9P53eRGHeB3cFEgmkCKBVph5eYInhVIXt1TGUlF43R6F8+Tu/skniTx9TT+ZrK77LL60lMQomRV4Hzc+2puALJZUTnuaXyDC5ksgbeJAFVyDQiBayes6Eb3tiYSJylFxsHTuOd4wWDoD4b2wP7J9b90v12lQ4o6LoELKIaGXsFkD5UlBU8pxUb0RWc5J0JB2mUrpbpSSwOvKEvBJtlABwhWHLm2RBAEcSiQVgyqAU5z1pRIC0ZSomytbueDheUBqJNySvok5hO7fMN4Stl7F64KUaUi4yTFJwecJiVnEmdngswYuCpkh4BuPFNECw6pMpHtLDMoRksUZdj1+nbop30fh14/heHQz4LADzByIn/oGz5kSXAen+s+lOdEkUG0Pia6np+th+vZ4/Xs7sr6E6RyGGbkmJpnBa1RkVPD59m6n1/1nq5ni+nN7HGhNXRjxjAz6uY8lNwNEVKHsEEyW8es0hF7OncA4Hz6XuoJxQrDo1uWivK5whQVR0WGN0io2TdIyd+axUebc/xXRTieQGto8xdV063JW6yK3FB5fJjcKnfHq4H/f5vfJA/z+8U0Xszu7xRyO5l/my70ze2P5f10OXb7YuyfiuA8V+1ad3fXadtSk5kL7
+ hv6v/wPlj5Mo92h/c7NLjiamFHXnvbFkvEM54/l8vbijbWEJoc+q9nV/T0tMr4tpXF0EF9Q8d82QejUZiushuvJC7ZrRv+4J3mlYskZPDDF7GTq1YfwftHtgjVAgRFPt79qncZ3G729nJQzYo/12lBLHLjGxxl0uPJKYH5Kslb6cHSJwt6Mvof25IN3Gd4IKOY3TiT4VI2w/zA7L0lJtDKPOwh/B5sNqTVGZkwfHBvgK2f6qcgoUa8A5q8kw+Lns92vqg/KsJAxK+utKc9VRLgu5n0zU5POdvXJ/eaT682Fprm4lxyq+/wy8S+Ndlgq2o5xsSIFNpecUVblip7+UqutysPAjrwgikZRMAx8N4pCp7ts1jegjAlWrploazvuIAydyIts3w6dMIjci8qvkD9Y6CRnbQOhP4jcwHPc0TD0HccJzutr7/BSpfqN3lnqR2FvOIX3jCffK7pNXHdAMk1vv9//A1XD1kw=
+X-Spam-Score: 50
+X-Spam-Category: LEGIT
+X-Spam-Reasons: {'verdict': 'clean',
+ 'spamcause': 'dmFkZTEL61Xby9umbHsUCPTnSYy5glKdXaztOb1+hwhWoN86JkxyjkV7HXXHCiGN7dS0sLIl1JU1u8itx1dFYyVOWSb4z8AuKzjFJnpWz6gMJfri8dzhFOyGcG7obEldI3zF3oSzWwwKkPh3VBEKzmJCvHHGkkf4mgfYVMBZTL0MEZzfj4T1v+FVp0tKgiTXSrUk20PC9rZwzVSk8kTuT+qQhSALWlSQILzqFMgFG5lkFEdNSvMwpP4asvpyTtCZrJXZ57QoQlFVuA11fAaWIAZPXQ3ez0ib2yvo9qA7B+W2JViYr08uexrKDKcS6MS+W64jPkY0GgmzcSQaVt8I6P5Uh17cVOGolOOjkrlp3ASigBlJG3NLNqrG6+rVc9YA/Qrmy+7k/RLBrOxFSCyLCPIUbYYyvPKm8xxqdJTUSfT9E6PAyhKZIlI6lHJEh8yqPkcxWZi5iHrfHZHevhbRi2euT5bsYUZ5y7wmjn1dhq+r6jALSsJZ0SbVoNy5S2JB6VrbXpIX5g1PIg0Ao6pynlVUQrFQze8WE5Wyjnkg040qK+q4IF0V/eTvsUhoqBUuLv1DAnLKla9OaK5q7Z1IWGb42TxmAKcsSFaKYctbGhL11Fc0oKXUEA8NruSybyW31BkwXgFEJi4vqRMLkosUBbxF6oLsqPBxCZlkG8oAmyMOoSENEg',
+ 'internal': ['To=Daffy Duck 2 <karl@ichramasters.com>',
+ 'ReplyTo=clientservices@insuranemasters.biz',
+ 'From=Insurance Masters Client Services
+ <clientservices@insurancemasters.biz>'], 'elapsed': '58ms'}
+X-AES-Category: PHISHING
+Return-Path: bounces1+241257b0-7a45-11f1-91ff-5254009dfd0a_vt1@sender.zohocrm.com
+X-MS-Exchange-Organization-Network-Message-Id: b111a773-adec-4e8c-f96e-08dedc690ae2
+X-Auto-Response-Suppress: DR, OOF, AutoReply
+X-MS-Exchange-Organization-AuthSource: MBX030-E1-VA-6.exch030.domain.local
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:00.3425259
+X-MS-Exchange-Processed-By-BccFoldering: 15.02.2562.042
+MIME-Version: 1.0
+
+------=_Part_68090303_13269149.1783457281514
+Content-Type: multipart/alternative;
+	boundary="----=_Part_68090304_497241256.1783457281514"
+
+------=_Part_68090304_497241256.1783457281514
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+You're confirmed for the free federal benefits webinar. Here are your sessi=
+on details. =CD=8F =CD=8F =CD=8F =CD=8F =CD=8F =CD=8F =CD=8F =CD=8F =CD=8F =
+=CD=8F =CD=8F =CD=8F =CD=8F =CD=8F =CD=8F                You're Registered!=
+   Your seat for the free federal benefits webinar has been saved.       Hi=
+ Daffy,   Thank you for registering. Here are your webinar details:        =
+    Date &amp; Time   07/22/2026 02:00 PM           Your Host   "Dr. FedEd"=
+ Shawn McCoy           Format   Live online webinar =E2=80=94 60 minutes   =
+               What You'll Learn     =E2=96=B6  TSP fund choices and retire=
+ment planning considerations     =E2=96=B6  FEGLI life insurance =E2=80=94 =
+how Options A, B &amp; C work     =E2=96=B6  FEHB health plan comparisons b=
+eyond premium cost     =E2=96=B6  FERS pension &amp; Social Security coordi=
+nation            Join the Webinar =E2=86=92          Can't join now? Add t=
+o Google Calendar   =C2=B7   Add to Apple / Outlook Calendar       What to =
+Expect    1.  We'll send a reminder the day before your webinar.      2.  J=
+oin the live session =E2=80=94 60 minutes, plain English, interactive Q&amp=
+;A.      3.  Optional follow-up. After the webinar, you may request a free =
+one-on-one benefits review. No obligation.         This webinar is educatio=
+nal only. It does not provide individualized investment, tax, legal, or ret=
+irement advice. Examples are for general illustration only.                =
+  (706) 407-2744  =C2=B7   support@federalbenefitsexchange.com     Augusta,=
+ Georgia =E2=80=94 Serving federal employees nationwide             =C2=A9 =
+2026 Federal Benefits Exchange. We are an independent benefits education or=
+ganization and are not affiliated with or endorsed by any government agency=
+.     Privacy Policy  =C2=B7   Terms of Service  =C2=B7   Unsubscribe
+
+------=_Part_68090304_497241256.1783457281514
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<html><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"></=
+head><body><div style=3D"word-wrap: break-word; word-break: break-word;font=
+-family:Verdana,arial,Helvetica,sans-serif;font-size:13px"><div dir=3D"auto=
+"><div><div style=3D"word-wrap: break-word; word-break: break-word">
+
+<meta content=3D"width=3Ddevice-width" name=3D"viewport">
+<style>@media only screen and (max-width: 480px) {}</style>
+<div style=3D"font-family: Verdana, arial, Helvetica, sans-serif"><div styl=
+e=3D"word-wrap: break-word; word-break: break-word">
+ =20
+  <meta content=3D"width=3Ddevice-width" name=3D"viewport">
+  <meta>
+  <meta name=3D"color-scheme">
+  <meta name=3D"supported-color-schemes">
+ =20
+
+ =20
+
+  <style>body, table, td, a { }table, td { }img { border: 0; height: auto; =
+line-height: 100%; outline: none; text-decoration: none }body { margin: 0; =
+padding: 0; width: 100% !important; height: 100% !important }a[x-apple-data=
+-detectors] { color: inherit !important; text-decoration: none !important }=
+@media only screen and (max-width: 620px) {.email-container { width: 100% !=
+important; max-width: 100% !important } .mobile-padding { padding-left: 20p=
+x !important; padding-right: 20px !important } .mobile-full { width: 100% !=
+important } .mobile-center { text-align: center !important } }</style>
+
+ =20
+ =20
+
+
+
+
+
+
+<div style=3D"font-family: Verdana, arial, Helvetica, sans-serif">
+
+
+ =20
+  <div style=3D"display: none; max-height: 0; overflow: hidden">
+    You're confirmed for the free federal benefits webinar. Here are your s=
+ession details.
+    =CD=8F =CD=8F =CD=8F =CD=8F =CD=8F =CD=8F =CD=8F =CD=8F =CD=8F =CD=8F =
+=CD=8F =CD=8F =CD=8F =CD=8F =CD=8F
+  </div>
+
+ =20
+  <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=3D"100%" st=
+yle=3D"background-color: rgb(232, 234, 240)">
+    <tbody><tr>
+      <td align=3D"center" style=3D"padding: 24px 10px">
+
+
+       =20
+        <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=3D"60=
+0" class=3D"email-container" style=3D"max-width: 600px; width: 100%; border=
+-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(27, 43, 94, 0.=
+12)">
+
+
+          <tbody><tr>
+            <td style=3D"background-color: rgb(27, 43, 94); padding: 28px 4=
+0px 20px; text-align: center">
+              <a href=3D"https://sender.zohoinsights-crm.com/ck1/2d6f.32723=
+0a/241257b0-7a45-11f1-91ff-5254009dfd0a/3c115a731b2182248684f74590ddd7e0623=
+67ec7/2?e=3DMFYfR8%2BGdIn1K%2Fu1rqhVBAFYSQGtIl0%2BWVtfF8q5Umo%3D" target=3D=
+"_blank" style=3D"text-decoration: none">
+                <img src=3D"https://federalbenefitsexchange.com/logo.png" a=
+lt=3D"Federal Benefits Exchange" width=3D"260" style=3D"display: block; mar=
+gin: 0 auto; max-width: 260px; width: 100%; height: auto">
+              </a>
+            </td>
+          </tr>
+
+         =20
+          <tr>
+            <td style=3D"background-color: rgb(27, 43, 94); padding: 8px 40=
+px 36px; text-align: center" class=3D"mobile-padding">
+              <h1 style=3D"margin: 0 0 8px; font-size: 30px; line-height: 1=
+.2; color: rgb(255, 255, 255); font-family: Georgia, &quot;Times New Roman&=
+quot;, serif; font-weight: 700">
+                You're Registered!
+              </h1>
+              <p style=3D"margin: 0; font-size: 15px; line-height: 1.5; col=
+or: rgb(168, 180, 217); font-family: -apple-system, BlinkMacSystemFont, &qu=
+ot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif">
+                Your seat for the free federal benefits webinar has been sa=
+ved.
+              </p>
+
+
+            </td>
+          </tr>
+
+         =20
+          <tr>
+            <td style=3D"background-color: rgb(255, 255, 255); padding: 28p=
+x 40px 4px" class=3D"mobile-padding">
+              <p style=3D"margin: 0; font-size: 16px; line-height: 1.5; col=
+or: rgb(26, 31, 46); font-family: -apple-system, BlinkMacSystemFont, &quot;=
+Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif">
+                Hi <b>Daffy</b>,
+              </p>
+
+
+              <p style=3D"margin: 8px 0 0; font-size: 15px; line-height: 1.=
+6; color: rgb(90, 97, 120); font-family: -apple-system, BlinkMacSystemFont,=
+ &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif">
+                Thank you for registering. Here are your webinar details:
+              </p>
+
+
+            </td>
+          </tr>
+
+         =20
+          <tr>
+            <td style=3D"background-color: rgb(255, 255, 255); padding: 20p=
+x 40px 24px" class=3D"mobile-padding">
+
+             =20
+              <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=
+=3D"100%" style=3D"margin-bottom: 20px">
+                <tbody><tr>
+                  <td width=3D"6" style=3D"background-color: rgb(242, 101, =
+34); border-radius: 3px; font-size: 0; line-height: 0">&nbsp;</td>
+                  <td style=3D"padding-left: 16px" valign=3D"top">
+                    <p style=3D"margin: 0; font-size: 11px; line-height: 1;=
+ color: rgb(122, 131, 153); font-family: -apple-system, BlinkMacSystemFont,=
+ &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif; text-transform=
+: uppercase; letter-spacing: 1px; font-weight: 600">
+                      Date &amp; Time
+                    </p>
+
+
+                    <p style=3D"margin: 6px 0 0; font-size: 17px; line-heig=
+ht: 1.4; color: rgb(26, 31, 46); font-family: -apple-system, BlinkMacSystem=
+Font, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif; font-weig=
+ht: 700">
+                      07/22/2026 02:00 PM
+                    </p>
+
+
+                  </td>
+                </tr>
+              </tbody></table>
+
+             =20
+              <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=
+=3D"100%" style=3D"margin-bottom: 20px">
+                <tbody><tr>
+                  <td width=3D"6" style=3D"background-color: rgb(242, 101, =
+34); border-radius: 3px; font-size: 0; line-height: 0">&nbsp;</td>
+                  <td style=3D"padding-left: 16px" valign=3D"top">
+                    <p style=3D"margin: 0; font-size: 11px; line-height: 1;=
+ color: rgb(122, 131, 153); font-family: -apple-system, BlinkMacSystemFont,=
+ &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif; text-transform=
+: uppercase; letter-spacing: 1px; font-weight: 600">
+                      Your Host
+                    </p>
+
+
+                    <p style=3D"margin: 6px 0 0; font-size: 17px; line-heig=
+ht: 1.4; color: rgb(26, 31, 46); font-family: -apple-system, BlinkMacSystem=
+Font, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif; font-weig=
+ht: 700">
+                      &quot;Dr. FedEd&quot; Shawn McCoy
+                    </p>
+
+
+                  </td>
+                </tr>
+              </tbody></table>
+
+             =20
+              <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=
+=3D"100%">
+                <tbody><tr>
+                  <td width=3D"6" style=3D"background-color: rgb(242, 101, =
+34); border-radius: 3px; font-size: 0; line-height: 0">&nbsp;</td>
+                  <td style=3D"padding-left: 16px" valign=3D"top">
+                    <p style=3D"margin: 0; font-size: 11px; line-height: 1;=
+ color: rgb(122, 131, 153); font-family: -apple-system, BlinkMacSystemFont,=
+ &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif; text-transform=
+: uppercase; letter-spacing: 1px; font-weight: 600">
+                      Format
+                    </p>
+
+
+                    <p style=3D"margin: 6px 0 0; font-size: 17px; line-heig=
+ht: 1.4; color: rgb(26, 31, 46); font-family: -apple-system, BlinkMacSystem=
+Font, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif; font-weig=
+ht: 700">
+                      Live online webinar =E2=80=94 60 minutes
+                    </p>
+
+
+                  </td>
+                </tr>
+              </tbody></table>
+
+            </td>
+          </tr>
+
+         =20
+          <tr>
+            <td style=3D"background-color: rgb(255, 255, 255); padding: 0 4=
+0px" class=3D"mobile-padding">
+              <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=
+=3D"100%">
+                <tbody><tr><td style=3D"border-top: 1px solid rgb(226, 229,=
+ 239); font-size: 0; line-height: 0">&nbsp;</td></tr>
+              </tbody></table>
+            </td>
+          </tr>
+
+         =20
+          <tr>
+            <td style=3D"background-color: rgb(255, 255, 255); padding: 24p=
+x 40px 0" class=3D"mobile-padding">
+              <h2 style=3D"margin: 0 0 16px; font-size: 20px; line-height: =
+1.3; color: rgb(27, 43, 94); font-family: Georgia, &quot;Times New Roman&qu=
+ot;, serif; font-weight: 700">
+                What You'll Learn
+              </h2>
+              <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=
+=3D"100%">
+                <tbody><tr>
+                  <td style=3D"padding: 7px 0; font-size: 15px; line-height=
+: 1.5; color: rgb(26, 31, 46); font-family: -apple-system, BlinkMacSystemFo=
+nt, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif">
+                    <span style=3D"color: rgb(242, 101, 34); font-weight: 7=
+00; font-size: 13px">=E2=96=B6</span>&nbsp;&nbsp;TSP fund choices and retir=
+ement planning considerations
+                  </td>
+                </tr>
+                <tr>
+                  <td style=3D"padding: 7px 0; font-size: 15px; line-height=
+: 1.5; color: rgb(26, 31, 46); font-family: -apple-system, BlinkMacSystemFo=
+nt, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif">
+                    <span style=3D"color: rgb(242, 101, 34); font-weight: 7=
+00; font-size: 13px">=E2=96=B6</span>&nbsp;&nbsp;FEGLI life insurance =E2=
+=80=94 how Options A, B &amp; C work
+                  </td>
+                </tr>
+                <tr>
+                  <td style=3D"padding: 7px 0; font-size: 15px; line-height=
+: 1.5; color: rgb(26, 31, 46); font-family: -apple-system, BlinkMacSystemFo=
+nt, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif">
+                    <span style=3D"color: rgb(242, 101, 34); font-weight: 7=
+00; font-size: 13px">=E2=96=B6</span>&nbsp;&nbsp;FEHB health plan compariso=
+ns beyond premium cost
+                  </td>
+                </tr>
+                <tr>
+                  <td style=3D"padding: 7px 0; font-size: 15px; line-height=
+: 1.5; color: rgb(26, 31, 46); font-family: -apple-system, BlinkMacSystemFo=
+nt, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif">
+                    <span style=3D"color: rgb(242, 101, 34); font-weight: 7=
+00; font-size: 13px">=E2=96=B6</span>&nbsp;&nbsp;FERS pension &amp; Social =
+Security coordination
+                  </td>
+                </tr>
+              </tbody></table>
+            </td>
+          </tr>
+
+         =20
+          <tr>
+            <td style=3D"background-color: rgb(255, 255, 255); padding: 28p=
+x 40px 32px" class=3D"mobile-padding">
+              <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" align=
+=3D"center">
+                <tbody><tr>
+                  <td style=3D"background-color: rgb(242, 101, 34); border-=
+radius: 8px; text-align: center">
+                    <a href=3D"https://sender.zohoinsights-crm.com/ck1/2d6f=
+.327230a/241257b0-7a45-11f1-91ff-5254009dfd0a/220e5caa9aaf0048fe2a8a65a7a1a=
+b504a20ec0c/2?e=3DQs1QloSLnr0JvZPdSDZNdi7lmuhdZ8jMSPvCPNsw7WKpwi6%2FT1jntV8=
+BkyrYdNl6d96ujLz9tYH5a8PY%2FoY5pBK8cCJgHUlh55rC8TchkFeqblG3%2BIsigPWffXfi3K=
+rM" target=3D"_blank" style=3D"display: inline-block; padding: 14px 44px; f=
+ont-size: 16px; font-weight: 700; color: rgb(255, 255, 255); font-family: -=
+apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Helvetica, =
+Arial, sans-serif; text-decoration: none; letter-spacing: 0.3px">
+                      Join the Webinar =E2=86=92
+                    </a>
+</td>
+                </tr>
+              </tbody></table>
+            </td>
+          </tr>
+         =20
+          <tr>
+            <td style=3D"background-color: rgb(255, 255, 255); padding: 0 4=
+0px 32px; text-align: center" class=3D"mobile-padding">
+              <p style=3D"margin: 0; font-size: 14px; color: rgb(90, 97, 12=
+0); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, R=
+oboto, Helvetica, Arial, sans-serif">
+                Can't join now?=20
+                <a href=3D"https://sender.zohoinsights-crm.com/ck1/2d6f.327=
+230a/241257b0-7a45-11f1-91ff-5254009dfd0a/16297273f05298a7dcad6f01b7f25e6f2=
+620d14b/2?e=3DRVum7DwPgPEUhCxsCYtUgo9QynEnzrOuF4m0DYn3RxiN5aEUTE6S8WGQcofY%=
+2B4g4uGqb0gnTOGTs7qHe1MTAKCLw7oZPWF9a7iwhd4FQJFDZNUYtbdZBpi0b2doGDSbry1c6ik=
+PRDz8xWXLS9tf2WgaLacfrc3UtQHu%2BPXbFwrBmATgMjSW99JCXKn1hbToj8fNAKDn87Q55doh=
+9DClYQtHS1YPsVuvFgI1AM3il9pPWiX4iXMVjDBeHaPYWEoxhXjfOsgBsGBwQyae6RtupbhExri=
+nIqKAwbDwUhns3zC85WyvRCtsUbYryEtXbuDcx" target=3D"_blank" style=3D"color: r=
+gb(242, 101, 34); text-decoration: underline; font-weight: 600">Add to Goog=
+le Calendar</a>
+                &nbsp;&nbsp;=C2=B7&nbsp;&nbsp;
+                <a href=3D"https://sender.zohoinsights-crm.com/ck1/2d6f.327=
+230a/241257b0-7a45-11f1-91ff-5254009dfd0a/c0529daa7610742d16ff86335b9d36418=
+426220f/2?e=3DMFYfR8%2BGdIn1K%2Fu1rqhVBKjo9nGcqnLl8ymxORj67vjOSAZCUP6Vo1894=
+3%2FD%2BfBfccm3g75L6ZrLVOemzssmaveU1mK23XIMfpuT5VjarTs%3D" target=3D"_blank=
+" style=3D"color: rgb(242, 101, 34); text-decoration: underline; font-weigh=
+t: 600">Add to Apple / Outlook Calendar</a>
+              </p>
+
+
+            </td>
+          </tr>
+
+
+         =20
+          <tr>
+            <td style=3D"background-color: rgb(245, 246, 250); padding: 28p=
+x 40px; border-top: 1px solid rgb(226, 229, 239)" class=3D"mobile-padding">
+              <h2 style=3D"margin: 0 0 18px; font-size: 20px; line-height: =
+1.3; color: rgb(27, 43, 94); font-family: Georgia, &quot;Times New Roman&qu=
+ot;, serif; font-weight: 700">
+                What to Expect
+              </h2>
+
+              <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=
+=3D"100%" style=3D"margin-bottom: 12px">
+                <tbody><tr>
+                  <td width=3D"26" valign=3D"top" style=3D"font-size: 15px;=
+ color: rgb(242, 101, 34); font-weight: 700; font-family: -apple-system, Bl=
+inkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-seri=
+f; line-height: 1.5">1.</td>
+                  <td style=3D"font-size: 15px; line-height: 1.5; color: rg=
+b(61, 68, 89); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe =
+UI&quot;, Roboto, Helvetica, Arial, sans-serif">
+                    <strong style=3D"color: rgb(26, 31, 46)">We'll send a r=
+eminder</strong> the day before your webinar.
+                  </td>
+                </tr>
+              </tbody></table>
+              <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=
+=3D"100%" style=3D"margin-bottom: 12px">
+                <tbody><tr>
+                  <td width=3D"26" valign=3D"top" style=3D"font-size: 15px;=
+ color: rgb(242, 101, 34); font-weight: 700; font-family: -apple-system, Bl=
+inkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-seri=
+f; line-height: 1.5">2.</td>
+                  <td style=3D"font-size: 15px; line-height: 1.5; color: rg=
+b(61, 68, 89); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe =
+UI&quot;, Roboto, Helvetica, Arial, sans-serif">
+                    <strong style=3D"color: rgb(26, 31, 46)">Join the live =
+session</strong> =E2=80=94 60 minutes, plain English, interactive Q&amp;A.
+                  </td>
+                </tr>
+              </tbody></table>
+              <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=
+=3D"100%">
+                <tbody><tr>
+                  <td width=3D"26" valign=3D"top" style=3D"font-size: 15px;=
+ color: rgb(242, 101, 34); font-weight: 700; font-family: -apple-system, Bl=
+inkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-seri=
+f; line-height: 1.5">3.</td>
+                  <td style=3D"font-size: 15px; line-height: 1.5; color: rg=
+b(61, 68, 89); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe =
+UI&quot;, Roboto, Helvetica, Arial, sans-serif">
+                    <strong style=3D"color: rgb(26, 31, 46)">Optional follo=
+w-up.</strong> After the webinar, you may request a free one-on-one benefit=
+s review. No obligation.
+                  </td>
+                </tr>
+              </tbody></table>
+            </td>
+          </tr>
+
+         =20
+          <tr>
+            <td style=3D"background-color: rgb(254, 240, 232); padding: 14p=
+x 40px; border-top: 1px solid rgb(240, 221, 208)" class=3D"mobile-padding">
+              <p style=3D"margin: 0; font-size: 12px; line-height: 1.5; col=
+or: rgb(107, 90, 78); font-family: -apple-system, BlinkMacSystemFont, &quot=
+;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif; text-align: center">
+                This webinar is educational only. It does not provide indiv=
+idualized investment, tax, legal, or retirement advice. Examples are for ge=
+neral illustration only.
+              </p>
+
+
+            </td>
+          </tr>
+
+         =20
+          <tr>
+            <td style=3D"background-color: rgb(17, 30, 68); padding: 32px 4=
+0px" class=3D"mobile-padding">
+
+             =20
+              <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=
+=3D"100%" style=3D"margin-bottom: 16px">
+                <tbody><tr>
+                  <td align=3D"center">
+                    <a href=3D"https://sender.zohoinsights-crm.com/ck1/2d6f=
+.327230a/241257b0-7a45-11f1-91ff-5254009dfd0a/3c115a731b2182248684f74590ddd=
+7e062367ec7/2?e=3DMFYfR8%2BGdIn1K%2Fu1rqhVBAFYSQGtIl0%2BWVtfF8q5Umo%3D" tar=
+get=3D"_blank">
+                      <img src=3D"https://federalbenefitsexchange.com/logo.=
+png" alt=3D"Federal Benefits Exchange" width=3D"180" style=3D"display: bloc=
+k; margin: 0 auto; max-width: 180px; width: 100%; height: auto; opacity: 0.=
+8">
+                    </a>
+                  </td>
+                </tr>
+              </tbody></table>
+
+             =20
+              <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=
+=3D"100%" style=3D"margin-bottom: 4px">
+                <tbody><tr>
+                  <td align=3D"center" style=3D"font-size: 13px; line-heigh=
+t: 1.8; color: rgb(136, 145, 174); font-family: -apple-system, BlinkMacSyst=
+emFont, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif">
+                    <a href=3D"tel:7064072744" style=3D"color: rgb(181, 189=
+, 214); text-decoration: none">(706) 407-2744</a>&nbsp;&nbsp;=C2=B7&nbsp;&n=
+bsp;
+                    <a href=3D"mailto:support@federalbenefitsexchange.com" =
+style=3D"color: rgb(181, 189, 214); text-decoration: none">support@federalb=
+enefitsexchange.com</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td align=3D"center" style=3D"font-size: 12px; line-heigh=
+t: 1.6; color: rgb(107, 115, 148); font-family: -apple-system, BlinkMacSyst=
+emFont, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif">
+                    Augusta, Georgia =E2=80=94 Serving federal employees na=
+tionwide
+                  </td>
+                </tr>
+              </tbody></table>
+
+             =20
+              <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=
+=3D"100%" style=3D"margin: 20px 0">
+                <tbody><tr>
+                  <td style=3D"border-top: 1px solid rgb(36, 53, 114); font=
+-size: 0; line-height: 0">&nbsp;</td>
+                </tr>
+              </tbody></table>
+
+             =20
+              <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=
+=3D"100%">
+                <tbody><tr>
+                  <td align=3D"center" style=3D"font-size: 11px; line-heigh=
+t: 1.6; color: rgb(85, 93, 122); font-family: -apple-system, BlinkMacSystem=
+Font, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif">
+                    =C2=A9 2026 Federal Benefits Exchange. We are an indepe=
+ndent benefits education organization and are not affiliated with or endors=
+ed by any government agency.
+                  </td>
+                </tr>
+                <tr>
+                  <td align=3D"center" style=3D"padding-top: 12px; font-siz=
+e: 12px; line-height: 1.5; color: rgb(107, 115, 148); font-family: -apple-s=
+ystem, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, =
+sans-serif">
+                    <a href=3D"https://sender.zohoinsights-crm.com/ck1/2d6f=
+.327230a/241257b0-7a45-11f1-91ff-5254009dfd0a/549236d642035ecebd0874413e50c=
+ce29cad96d0/2?e=3DMFYfR8%2BGdIn1K%2Fu1rqhVBEBv%2FytrbP19VhUBmwWZQnf%2BkL2qI=
+9Hhcbuxh0hkmZjc" style=3D"color: rgb(136, 145, 174); text-decoration: under=
+line">Privacy Policy</a>&nbsp;&nbsp;=C2=B7&nbsp;&nbsp;
+                    <a href=3D"https://sender.zohoinsights-crm.com/ck1/2d6f=
+.327230a/241257b0-7a45-11f1-91ff-5254009dfd0a/c2d95eb7dc14d70e708b98e1ec92d=
+fc395fb3578/2?e=3DMFYfR8%2BGdIn1K%2Fu1rqhVBK2S6utI8KgkeRssggPC4uxr%2FWkciYV=
+kGJHbrTQDgVrq" style=3D"color: rgb(136, 145, 174); text-decoration: underli=
+ne">Terms of Service</a>&nbsp;&nbsp;=C2=B7&nbsp;&nbsp;
+                    <a href=3D"#" style=3D"color: rgb(136, 145, 174); text-=
+decoration: underline">Unsubscribe</a>
+                  </td>
+                </tr>
+              </tbody></table>
+
+            </td>
+          </tr>
+
+        </tbody></table>
+
+      </td>
+    </tr>
+  </tbody></table>
+
+
+
+</div></div></div></div></div></div></div>
+
+<img src=3D"https://sender.zohoinsights-crm.com/ocimage/2d6f.327230a/mk2412=
+57b0-7a45-11f1-91ff-5254009dfd0a_hkb81976b5ac3b68293cdf55829123d718518e2529=
+34248ea1551335ff5b34eba7.gif" height=3D"1" width=3D"1" alt=3D""></body></ht=
+ml>=
+
+------=_Part_68090304_497241256.1783457281514
+Content-Type: text/calendar;charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Content-Class: urn:content-classes:calendarmessage
+Charset: UTF-8
+
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Federal Benefits Exchange//Webinar//EN
+BEGIN:VEVENT
+DTSTAMP:20260707T195941Z
+DTSTART:20260722T180000Z
+DTEND:20260722T190000Z
+SUMMARY:Federal Benefits Webinar
+DESCRIPTION:Join the webinar here: https://fbe.webinargeek.com/the-federal-employee-hour-of-power-benefits-briefing/join/ouyu0khg
+URL:https://fbe.webinargeek.com/the-federal-employee-hour-of-power-benefits-briefing/join/ouyu0khg
+END:VEVENT
+END:VCALENDAR
+------=_Part_68090304_497241256.1783457281514--
+
+------=_Part_68090303_13269149.1783457281514
+Content-Type: text/calendar; charset=UTF-8; name=webinar_July_22.ics
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="webinar_July_22.ics"
+
+QkVHSU46VkNBTEVOREFSClZFUlNJT046Mi4wClBST0RJRDotLy9GZWRlcmFsIEJlbmVmaXRzIEV4
+Y2hhbmdlLy9XZWJpbmFyLy9FTgpCRUdJTjpWRVZFTlQKRFRTVEFNUDoyMDI2MDcwN1QxOTU5NDFa
+CkRUU1RBUlQ6MjAyNjA3MjJUMTgwMDAwWgpEVEVORDoyMDI2MDcyMlQxOTAwMDBaClNVTU1BUlk6
+RmVkZXJhbCBCZW5lZml0cyBXZWJpbmFyCkRFU0NSSVBUSU9OOkpvaW4gdGhlIHdlYmluYXIgaGVy
+ZTogaHR0cHM6Ly9mYmUud2ViaW5hcmdlZWsuY29tL3RoZS1mZWRlcmFsLWVtcGxveWVlLWhvdXIt
+b2YtcG93ZXItYmVuZWZpdHMtYnJpZWZpbmcvam9pbi9vdXl1MGtoZwpVUkw6aHR0cHM6Ly9mYmUu
+d2ViaW5hcmdlZWsuY29tL3RoZS1mZWRlcmFsLWVtcGxveWVlLWhvdXItb2YtcG93ZXItYmVuZWZp
+dHMtYnJpZWZpbmcvam9pbi9vdXl1MGtoZwpFTkQ6VkVWRU5UCkVORDpWQ0FMRU5EQVI=
+
+------=_Part_68090303_13269149.1783457281514--

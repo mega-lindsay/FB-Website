@@ -1,10 +1,10 @@
 import datetime
 
 new_pages = [
-    {"loc": "https://federalbenefitsexchange.com/about.html", "priority": "0.8", "changefreq": "monthly"},
-    {"loc": "https://federalbenefitsexchange.com/resources.html", "priority": "0.8", "changefreq": "weekly"},
-    {"loc": "https://federalbenefitsexchange.com/glossary.html", "priority": "0.8", "changefreq": "weekly"},
-    {"loc": "https://federalbenefitsexchange.com/faq.html", "priority": "0.9", "changefreq": "weekly"},
+    {"loc": "https://federalbenefitsexchange.com/about/\", "priority": "0.8", "changefreq": "monthly"},
+    {"loc": "https://federalbenefitsexchange.com/resources/\", "priority": "0.8", "changefreq": "weekly"},
+    {"loc": "https://federalbenefitsexchange.com/glossary/\", "priority": "0.8", "changefreq": "weekly"},
+    {"loc": "https://federalbenefitsexchange.com/faq/\", "priority": "0.9", "changefreq": "weekly"},
 ]
 
 with open('sitemap.xml', 'r') as f:
@@ -18,7 +18,7 @@ skip_until_url_end = False
 for line in lines:
     if '<loc>' in line:
         url = line.split('<loc>')[1].split('</loc>')[0]
-        if any(p['loc'] == url for p in new_pages) or url == "https://federalbenefitsexchange.com/faq.html":
+        if any(p['loc'] == url for p in new_pages) or url == "https://federalbenefitsexchange.com/faq/\":
             skip_until_url_end = True
             continue
     if skip_until_url_end:
