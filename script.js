@@ -16,7 +16,7 @@
     <div class="container">
       <div class="header-inner">
         <a href="${isIndex ? '#' : `${prefix}index.html`}" class="logo" aria-label="Federal Benefits Exchange">
-          <img src="${prefix}logo.png" alt="Federal Benefits Exchange Logo" class="logo-img" width="2502" height="350" fetchpriority="high" />
+          <img src="/logo.png" alt="Federal Benefits Exchange Logo" class="logo-img" width="2502" height="350" fetchpriority="high" />
         </a>
         <nav class="header-nav">
           <a href=\"${prefix}about/\">About</a>
