@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const registerHandler = require('./api/register');
+const contactHandler = require('./api/contact');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -20,7 +21,7 @@ app.use((req, res, next) => {
 
 // Explicitly handle top-level routes to avoid conflicts with directories (e.g. /blog vs /blog/)
 // MUST be before express.static so express doesn't auto-redirect /blog to /blog/
-const pages = ['/', '/index', '/about', '/blog', '/faq', '/resources', '/glossary'];
+const pages = ['/', '/index', '/about', '/blog', '/faq', '/resources', '/glossary', '/contact'];
 pages.forEach(page => {
   app.get(page, (req, res) => {
     const filename = page === '/' || page === '/index' ? 'index.html' : `${page.substring(1)}.html`;
@@ -33,6 +34,9 @@ app.use(express.static(path.join(__dirname), { extensions: ['html'] }));
 
 // REST Endpoint to handle registrations (delegated to standard API handler)
 app.post('/api/register', registerHandler);
+
+// REST Endpoint to handle contact form submissions
+app.post('/api/contact', contactHandler);
 
 const calendarHandler = require('./api/calendar');
 

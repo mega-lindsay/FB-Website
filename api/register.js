@@ -1,7 +1,7 @@
-const fs = require('fs');
-const https = require('https');
 const bizSdk = require('facebook-nodejs-business-sdk');
 const { neon } = require('@neondatabase/serverless');
+const { submitLeadToCRM } = require('./_zoho');
+const { verifyTurnstile } = require('./_turnstile');
 
 const META_ACCESS_TOKEN = process.env.META_ACCESS_TOKEN;
 const META_PIXEL_ID = process.env.META_PIXEL_ID;
@@ -60,10 +60,6 @@ async function backupToPostgres(data) {
   }
 }
 
-// Path to Zoho MCP OAuth config files
-const tokensPath = '/Users/Work/.mcp-auth/mcp-remote-0.1.37/ffbea0455b66e4e46198c79cef6a5283_tokens.json';
-const clientInfoPath = '/Users/Work/.mcp-auth/mcp-remote-0.1.37/ffbea0455b66e4e46198c79cef6a5283_client_info.json';
-
 // Helper to map values to human-readable names for notes
 const serviceMap = {
   '0-5': '0 – 5 years',
@@ -86,122 +82,6 @@ const dateMap = {
   '2026-08-12T14:00:00-04:00': 'Wednesday, August 12 at 2:00 PM EDT',
   '2026-08-19T14:00:00-04:00': 'Wednesday, August 19 at 2:00 PM EDT'
 };
-
-// Global in-memory cache for token
-let cachedAccessToken = null;
-
-// Function to refresh the access token directly via HTTP POST
-async function refreshAccessToken() {
-  console.log('Refreshing Zoho CRM access token via HTTP POST...');
-
-  let refreshToken = process.env.ZOHO_REFRESH_TOKEN;
-  let clientId = process.env.ZOHO_CLIENT_ID;
-  let tokenEndpoint = process.env.ZOHO_TOKEN_ENDPOINT || 'https://mcp.zoho.com/baas/mcp/v1/oauth/6f2a4a91336a7705d9708e245487b1a0/41167000000013038/token';
-
-  // Fallback to local files if environment variables are not set
-  if (!refreshToken || !clientId) {
-    console.log('Environment variables ZOHO_REFRESH_TOKEN or ZOHO_CLIENT_ID not found, falling back to local OAuth config files...');
-    if (fs.existsSync(tokensPath) && fs.existsSync(clientInfoPath)) {
-      try {
-        const tokens = JSON.parse(fs.readFileSync(tokensPath, 'utf8'));
-        const clientInfo = JSON.parse(fs.readFileSync(clientInfoPath, 'utf8'));
-        refreshToken = tokens.refresh_token;
-        clientId = clientInfo.client_id;
-      } catch (err) {
-        throw new Error('Failed to read local OAuth configuration files: ' + err.message);
-      }
-    } else {
-      throw new Error('No Zoho OAuth credentials found (neither environment variables nor local files).');
-    }
-  }
-
-  const params = new URLSearchParams({
-    grant_type: 'refresh_token',
-    refresh_token: refreshToken,
-    client_id: clientId
-  });
-
-  const parsedUrl = new URL(tokenEndpoint);
-
-  return new Promise((resolve, reject) => {
-    const req = https.request({
-      hostname: parsedUrl.hostname,
-      path: parsedUrl.pathname + parsedUrl.search,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    }, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        try {
-          const result = JSON.parse(data);
-          if (result.access_token) {
-            cachedAccessToken = result.access_token;
-            console.log('Access token refreshed and loaded successfully via HTTP request.');
-            
-            // Try saving to local file for local dev, but catch errors if file system is read-only
-            if (fs.existsSync(tokensPath)) {
-              try {
-                const tokens = JSON.parse(fs.readFileSync(tokensPath, 'utf8'));
-                tokens.access_token = result.access_token;
-                fs.writeFileSync(tokensPath, JSON.stringify(tokens, null, 2), 'utf8');
-                console.log('Updated local token store file.');
-              } catch (writeErr) {
-                console.warn('Could not write back to local tokens path (might be read-only filesystem):', writeErr.message);
-              }
-            }
-            resolve(result.access_token);
-          } else {
-            reject(new Error('Token refresh response did not contain access_token: ' + data));
-          }
-        } catch (e) {
-          reject(new Error('Failed to parse token refresh response: ' + data));
-        }
-      });
-    });
-
-    req.on('error', reject);
-    req.write(params.toString());
-    req.end();
-  });
-}
-
-// Function to perform lead insertion in Zoho CRM module FB_Clients_Leads
-async function insertLeadIntoCRM(accessToken, leadData) {
-  const payload = JSON.stringify({
-    data: [leadData]
-  });
-
-  return new Promise((resolve, reject) => {
-    const req = https.request({
-      hostname: 'www.zohoapis.com',
-      path: '/crm/v6/FB_Clients_Leads',
-      method: 'POST',
-      headers: {
-        'Authorization': `Zoho-oauthtoken ${accessToken}`,
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(payload)
-      }
-    }, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        try {
-          const result = JSON.parse(data);
-          resolve(result);
-        } catch (e) {
-          reject(new Error('Parse error in lead insertion response: ' + data));
-        }
-      });
-    });
-
-    req.on('error', reject);
-    req.write(payload);
-    req.end();
-  });
-}
 
 // Function to send event to Meta Conversions API
 async function sendMetaCapiEvent(req, userData, eventData) {
@@ -269,33 +149,16 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ success: false, error: 'Security check failed. Please complete the CAPTCHA.' });
     }
 
-    const TURNSTILE_SECRET_KEY = process.env.TURNSTILE_SECRET_KEY || '0x4AAAAAADxY-NSPlrjPJ7EnuigMIX_owzM';
-    
-    // Using fetch (available in Node 18+) or fallback to https logic if needed
-    // Assuming Node 18+ for Vercel/modern environments
-    const turnstileVerifyParams = new URLSearchParams();
-    turnstileVerifyParams.append('secret', TURNSTILE_SECRET_KEY);
-    turnstileVerifyParams.append('response', turnstileToken);
-    
-    if (req.headers['x-forwarded-for']) {
-      turnstileVerifyParams.append('remoteip', req.headers['x-forwarded-for'].split(',')[0]);
-    }
-
+    let turnstileOk;
     try {
-      const turnstileResponse = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-        method: 'POST',
-        body: turnstileVerifyParams
-      });
-      const turnstileResult = await turnstileResponse.json();
-      
-      if (!turnstileResult.success) {
-        console.warn('Spam detected: Turnstile validation failed.', turnstileResult);
-        return res.status(400).json({ success: false, error: 'Security check failed. Please refresh the page and try again.' });
-      }
+      turnstileOk = await verifyTurnstile(req, turnstileToken);
     } catch (err) {
       console.error('Turnstile verification error:', err);
-      // Fail closed or open? Let's fail open if Cloudflare is down, but realistically we fail closed.
       return res.status(500).json({ success: false, error: 'Could not verify security check due to network error.' });
+    }
+    if (!turnstileOk) {
+      console.warn('Spam detected: Turnstile validation failed.');
+      return res.status(400).json({ success: false, error: 'Security check failed. Please refresh the page and try again.' });
     }
 
     if (!firstName || !lastName || !email || !webinarDate) {
@@ -339,42 +202,12 @@ module.exports = async function handler(req, res) {
 
     console.log('Sending lead payload to Zoho CRM:', JSON.stringify(leadPayload, null, 2));
 
-    // Read current access token from memory cache or file fallback
-    let accessToken = cachedAccessToken;
-    if (!accessToken) {
-      if (fs.existsSync(tokensPath)) {
-        try {
-          const tokens = JSON.parse(fs.readFileSync(tokensPath, 'utf8'));
-          accessToken = tokens.access_token;
-          cachedAccessToken = accessToken;
-        } catch (err) {
-          console.warn('Failed to read local tokens file:', err.message);
-        }
-      }
-    }
-
     let crmResponse;
-    if (accessToken) {
-      crmResponse = await insertLeadIntoCRM(accessToken, leadPayload);
-    } else {
-      // Force refresh if no cached token exists
-      crmResponse = { code: 'INVALID_TOKEN' };
-    }
-
-    // If token expired/invalid, try to refresh and retry once
-    const isTokenError = crmResponse.code === 'INVALID_TOKEN' || 
-                         (crmResponse.status === 'error' && (crmResponse.message || '').includes('token'));
-                         
-    if (isTokenError) {
-      console.log('Access token expired or invalid. Attempting refresh...');
-      try {
-        accessToken = await refreshAccessToken();
-        console.log('Re-submitting lead with new token...');
-        crmResponse = await insertLeadIntoCRM(accessToken, leadPayload);
-      } catch (refreshErr) {
-        console.error('Failed to refresh access token:', refreshErr.message);
-        return res.status(401).json({ success: false, error: 'Authentication failed with Zoho CRM.' });
-      }
+    try {
+      crmResponse = await submitLeadToCRM(leadPayload);
+    } catch (refreshErr) {
+      console.error('Failed to refresh access token:', refreshErr.message);
+      return res.status(401).json({ success: false, error: 'Authentication failed with Zoho CRM.' });
     }
 
     console.log('CRM API response:', JSON.stringify(crmResponse, null, 2));

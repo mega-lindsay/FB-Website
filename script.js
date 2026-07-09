@@ -24,6 +24,7 @@
           <a href="/faq/">FAQ</a>
           <a href="/resources/">Resources</a>
           <a href="/glossary/">Glossary</a>
+          <a href="/contact/">Contact</a>
           <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
             <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
             <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
@@ -40,6 +41,7 @@
         <a href="/faq/" onclick="closeMobileNav()">FAQ</a>
         <a href="/resources/" onclick="closeMobileNav()">Resources</a>
         <a href="/glossary/" onclick="closeMobileNav()">Glossary</a>
+        <a href="/contact/" onclick="closeMobileNav()">Contact</a>
       </div>
     </div>
   `;
@@ -256,6 +258,96 @@ if (form) {
       alert('Network error. Please try again later.');
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalBtnHTML;
+    });
+  });
+}
+
+// --- Contact Form Submission & Validation ---
+const contactForm = document.getElementById('contactForm');
+const contactFormSuccess = document.getElementById('contactFormSuccess');
+const contactSubmitBtn = document.getElementById('contactSubmitBtn');
+
+if (contactForm) {
+  const syncContactAria = (el) => {
+    if (el.checkValidity) {
+      const isValid = el.checkValidity();
+      el.setAttribute('aria-invalid', isValid ? 'false' : 'true');
+      el.classList.toggle('error', !isValid);
+    }
+  };
+
+  contactForm.addEventListener('blur', (e) => {
+    if (e.target.matches('input, textarea')) {
+      syncContactAria(e.target);
+    }
+  }, true);
+
+  contactForm.addEventListener('input', (e) => {
+    if (e.target.hasAttribute('aria-invalid')) {
+      syncContactAria(e.target);
+    }
+  });
+
+  contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const inputs = contactForm.querySelectorAll('input, textarea');
+    let firstInvalid = null;
+
+    inputs.forEach(input => {
+      syncContactAria(input);
+      if (!input.checkValidity() && !firstInvalid) {
+        firstInvalid = input;
+      }
+    });
+
+    if (!contactForm.checkValidity()) {
+      if (firstInvalid) firstInvalid.focus();
+      return;
+    }
+
+    const turnstileResponse = contactForm.querySelector('[name="cf-turnstile-response"]');
+    if (turnstileResponse && !turnstileResponse.value) {
+      alert('Please complete the security check.');
+      return;
+    }
+
+    contactSubmitBtn.disabled = true;
+    const originalBtnHTML = contactSubmitBtn.innerHTML;
+    contactSubmitBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" opacity="0.2"/><path d="M21 12a9 9 0 00-9-9"/></svg> Sending...';
+
+    const payload = {
+      name: document.getElementById('name').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      message: document.getElementById('message').value.trim(),
+      turnstileToken: turnstileResponse ? turnstileResponse.value : null
+    };
+
+    fetch('/api/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        contactForm.style.display = 'none';
+        contactFormSuccess.style.display = 'flex';
+        contactFormSuccess.style.flexDirection = 'column';
+      } else {
+        alert(data.error || 'An error occurred while sending your message. Please try again.');
+        contactSubmitBtn.disabled = false;
+        contactSubmitBtn.innerHTML = originalBtnHTML;
+      }
+    })
+    .catch(err => {
+      console.error('Contact form error:', err);
+      alert('Network error. Please try again later.');
+      contactSubmitBtn.disabled = false;
+      contactSubmitBtn.innerHTML = originalBtnHTML;
     });
   });
 }
