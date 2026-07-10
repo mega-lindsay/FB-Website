@@ -38,7 +38,6 @@
             <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
             <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
           </button>
-          <a href="${baseUrl}#save-your-seat" class="btn btn-outline btn-sm">Register Free</a>
         </nav>
         <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -112,7 +111,7 @@ function closeMobileNav() {
 // reliably (IntersectionObserver, motion allowed). This avoids content getting
 // stuck invisible in environments where CSS scroll-driven animations misfire.
 (function() {
-  const SELECTOR = '.benefit-card, .testimonial-card, .faq-item, .section-header, .who-content, .register-content';
+  const SELECTOR = '.benefit-card, .testimonial-card, .faq-item, .home-faq-item, .section-header, .who-content, .register-content';
   const els = document.querySelectorAll(SELECTOR);
   if (!els.length) return;
 
@@ -166,6 +165,16 @@ if (phoneInput) {
         select.appendChild(opt);
       });
 
+      const nextSessionText = webinars[0].human;
+      const heroDate = document.getElementById('nextSessionHero');
+      const stickyDate = document.getElementById('stickySessionDate');
+      const formDate = document.getElementById('formNextSession');
+      const faqDate = document.getElementById('nextSessionFaq');
+      if (heroDate) heroDate.textContent = `Next: ${nextSessionText}`;
+      if (stickyDate) stickyDate.textContent = nextSessionText;
+      if (formDate) formDate.textContent = `Next available: ${nextSessionText}. Registration takes less than 60 seconds.`;
+      if (faqDate) faqDate.textContent = `The next available live session is ${nextSessionText}. Select that date or another upcoming session during registration. Sessions typically last 60 minutes.`;
+
       // Keep the Event structured data's startDate fresh (next session).
       const schemaEl = document.getElementById('eventSchema');
       if (schemaEl) {
@@ -180,6 +189,19 @@ if (phoneInput) {
     .catch(() => {
       select.innerHTML = '<option value="" disabled selected>Unable to load dates — please refresh</option>';
     });
+})();
+
+// --- Compact registration reminder after the hero ---
+(function() {
+  const hero = document.getElementById('hero');
+  const sticky = document.getElementById('stickyRegister');
+  if (!hero || !sticky || !('IntersectionObserver' in window)) return;
+
+  const observer = new IntersectionObserver(([entry]) => {
+    if (sticky.dataset.complete === 'true') return;
+    sticky.classList.toggle('is-visible', !entry.isIntersecting);
+  }, { threshold: 0.05 });
+  observer.observe(hero);
 })();
 
 // --- Form Submission & Validation ---
@@ -295,8 +317,6 @@ if (form) {
       email: document.getElementById('email') ? document.getElementById('email').value.trim() : '',
       phone: document.getElementById('phone') ? document.getElementById('phone').value.trim() : '',
       webinarDate: document.getElementById('webinarDate') ? document.getElementById('webinarDate').value : '',
-      yearsService: document.getElementById('yearsService') ? document.getElementById('yearsService').value : '',
-      topic: document.getElementById('topic') ? document.getElementById('topic').value : '',
       agency: document.getElementById('agency') ? document.getElementById('agency').value : 'Federal',
       marketingConsent: document.getElementById('consent') ? document.getElementById('consent').checked : false,
       // Meta CAPI data
@@ -318,10 +338,43 @@ if (form) {
     .then(res => res.json())
     .then(data => {
       if (data.success) {
+        const selectedDate = document.getElementById('webinarDate');
+        const selectedLabel = selectedDate && selectedDate.selectedIndex >= 0
+          ? selectedDate.options[selectedDate.selectedIndex].textContent
+          : 'your selected session';
+        const selectedIso = payload.webinarDate;
+        const webinarUrl = 'https://fbe.webinargeek.com/the-federal-employee-hour-of-power-benefits-briefing/join/ouyu0khg';
+        const formatUtc = (date) => date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
+        const start = new Date(selectedIso);
+        const end = new Date(start.getTime() + 60 * 60 * 1000);
+        const calendarDates = `${formatUtc(start)}/${formatUtc(end)}`;
+        const calendarTitle = 'Federal Employee Hour of Power Benefits Briefing';
+        const calendarDetails = `Live federal benefits webinar with Shawn McCoy. Join here: ${webinarUrl}`;
+
+        const successDate = document.getElementById('successDate');
+        const phoneStatus = document.getElementById('successPhoneStatus');
+        const googleLink = document.getElementById('googleCalendarLink');
+        const icsLink = document.getElementById('icsCalendarLink');
+        if (successDate) successDate.textContent = `Confirmed: ${selectedLabel}`;
+        if (phoneStatus) {
+          phoneStatus.innerHTML = payload.phone
+            ? '<strong>Text reminders:</strong> Enabled for the cell number you provided.'
+            : '<strong>Text reminders:</strong> Not enabled. <a href="mailto:support@federalbenefitsexchange.com?subject=Add%20webinar%20text%20reminders">Email us to add a cell number</a>.';
+        }
+        if (googleLink) {
+          googleLink.href = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(calendarTitle)}&dates=${calendarDates}&details=${encodeURIComponent(calendarDetails)}`;
+        }
+        if (icsLink) icsLink.href = `/api/calendar?dates=${encodeURIComponent(calendarDates)}`;
+
         // Show success state
         form.style.display = 'none';
         formSuccess.style.display = 'flex';
         formSuccess.style.flexDirection = 'column';
+        const sticky = document.getElementById('stickyRegister');
+        if (sticky) {
+          sticky.dataset.complete = 'true';
+          sticky.classList.remove('is-visible');
+        }
         announce('Success! You are registered. Check your email for confirmation.');
         // Move focus to the confirmation so keyboard/AT users land on it.
         const successHeading = formSuccess.querySelector('h3');
