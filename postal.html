@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light Serving the federal community in Augusta, GA.">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,13 +16,13 @@
   <link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&amp;f[]=satoshi@400,500,700&amp;display=swap" />
   <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&amp;f[]=satoshi@400,500,700&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
 
-  <link rel="stylesheet" href="/style.min.css?v=1.5" />
+  <link rel="stylesheet" href="/style.min.css?v=1.6" />
   <!-- Cloudflare Turnstile -->
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <link rel="icon" type="image/svg+xml" href="/FB_favicon.svg" />
 
   <!-- Structured Data -->
-  <script type="application/ld+json">
+  <script type="application/ld+json" id="eventSchema">
   {
     "@context": "https://schema.org",
     "@type": "Event",
@@ -34,7 +34,33 @@
     },
     "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
     "eventStatus": "https://schema.org/EventScheduled",
-    "isAccessibleForFree": true
+    "isAccessibleForFree": true,
+    "url": "https://federalbenefitsexchange.com/postal/",
+    "image": "https://federalbenefitsexchange.com/fbe_ad_banner.png",
+    "performer": {
+      "@type": "Person",
+      "name": "Shawn McCoy",
+      "jobTitle": "Federal Benefits Educator"
+    },
+    "location": {
+      "@type": "VirtualLocation",
+      "url": "https://federalbenefitsexchange.com/postal/"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "url": "https://federalbenefitsexchange.com/postal/"
+    },
+    "eventSchedule": {
+      "@type": "Schedule",
+      "repeatFrequency": "P1W",
+      "byDay": "https://schema.org/Wednesday",
+      "startTime": "14:00:00",
+      "duration": "PT1H",
+      "scheduleTimezone": "America/New_York"
+    }
   }
   </script>
 
@@ -101,7 +127,7 @@
   <!-- STICKY HEADER -->
   <header class="header" id="header"></header>
 
-  <main>
+  <main id="main">
 
     <!-- INDEPENDENCE DISCLAIMER -->
     <div class="disclaimer-bar">
@@ -276,7 +302,10 @@
             <a href="#save-your-seat" class="btn btn-primary btn-lg">This Is For Me — Register Free</a>
           </div>
           <div class="who-visual">
-            <img src="/fbe_ad_banner.png\" alt="Federal Benefits Exchange USPS Benefits Webinar" class="who-image" width="1672" height="941" loading="lazy" />
+            <picture>
+              <source type="image/webp" srcset="/fbe_ad_banner-800.webp 800w, /fbe_ad_banner-1600.webp 1600w" sizes="(max-width: 900px) 100vw, 600px" />
+              <img src="/fbe_ad_banner.png" alt="Federal Benefits Exchange USPS Benefits Webinar" class="who-image" width="1672" height="941" loading="lazy" />
+            </picture>
           </div>
         </div>
       </div>
@@ -341,7 +370,10 @@
                 <div class="mockup-info">
                   <h4>FREE BONUS: <a href="/blog/what-is-a-psr-report-federal-employees/" class="mockup-title-link">Customized PSHB & GAP Analysis Report</a></h4>
                   <a href="/blog/what-is-a-psr-report-federal-employees/" class="mockup-image-container" aria-label="Read more about the PSR Report">
-                    <img src="/report_mockup.png\" alt="Customized Federal Benefits Analysis Report Mockup" class="mockup-img" width="600" height="450" loading="lazy" />
+                    <picture>
+                    <source type="image/webp" srcset="/report_mockup.webp" sizes="(max-width: 600px) 100vw, 600px" />
+                    <img src="/report_mockup.png" alt="Customized Federal Benefits Analysis Report Mockup" class="mockup-img" width="600" height="450" loading="lazy" />
+                  </picture>
                   </a>
                   <p>Schedule a <strong>free Pay Stub Review (PSR)</strong> to unlock your customized <strong>USPS GAP Analysis Report</strong>. Our specialists will audit your pay stub data to generate a complete, personalized breakdown of your FERS pension, TSP projections, Social Security estimates, and PSHB Medicare decisions.</p>
                   <ul class="mockup-list">
@@ -388,11 +420,7 @@
                 <div class="form-group">
                   <label for="webinarDate">Select Webinar Date</label>
                   <select id="webinarDate" name="webinarDate" required>
-                    <option value="2026-07-22T14:00:00-04:00">Wednesday, July 22 at 2:00 PM EDT</option>
-                    <option value="2026-07-29T14:00:00-04:00">Wednesday, July 29 at 2:00 PM EDT</option>
-                    <option value="2026-08-05T14:00:00-04:00">Wednesday, August 5 at 2:00 PM EDT</option>
-                    <option value="2026-08-12T14:00:00-04:00">Wednesday, August 12 at 2:00 PM EDT</option>
-                    <option value="2026-08-19T14:00:00-04:00">Wednesday, August 19 at 2:00 PM EDT</option>
+                    <option value="" disabled selected>Loading available dates…</option>
                   </select>
                 </div>
                 <div class="form-group">
@@ -417,8 +445,8 @@
                 </div>
                 <div class="form-consent">
                   <label class="checkbox-label">
-                    <input type="checkbox" id="consent" name="consent" required />
-                    <span>I agree to receive webinar reminders and benefits education messages from Federal Benefits Exchange by email and text. Message frequency varies. Message and data rates may apply. Reply STOP to unsubscribe or HELP for help. Consent is not required to attend the webinar. View our <a href="/privacy/" target="_blank">Privacy Policy</a> and <a href="/terms/" target="_blank">Terms of Service</a>.</span>
+                    <input type="checkbox" id="consent" name="consent" />
+                    <span>Optional: I'd also like to receive federal benefits education tips and updates from Federal Benefits Exchange by email and text, on top of the reminders for the webinar I'm registering for. Message frequency varies. Message and data rates may apply. Reply STOP to unsubscribe or HELP for help. Consent is not required to attend the webinar. View our <a href="/privacy/" target="_blank">Privacy Policy</a> and <a href="/terms/" target="_blank">Terms of Service</a>.</span>
                   </label>
                 </div>
                 
@@ -560,6 +588,6 @@
     </div>
   </footer>
 
-  <script src="/script.js?v=2.0"></script>
+  <script src="/script.js?v=2.1"></script>
 </body>
 </html>

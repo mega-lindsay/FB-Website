@@ -43,6 +43,11 @@ const calendarHandler = require('./api/calendar');
 // ICS Calendar Generator Endpoint
 app.get('/api/calendar', calendarHandler);
 
+const scheduleHandler = require('./api/schedule');
+
+// Upcoming webinar schedule (single source for the registration dropdown)
+app.get('/api/schedule', scheduleHandler);
+
 
 
 // For any other non-file route, redirect to home or handle as SPA if desired

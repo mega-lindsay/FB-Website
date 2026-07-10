@@ -5,6 +5,15 @@
   const header = document.getElementById('header');
   if (!header) return;
 
+  // Skip link — first focusable element, lets keyboard/AT users jump past nav.
+  if (!document.querySelector('.skip-link')) {
+    const skip = document.createElement('a');
+    skip.className = 'skip-link';
+    skip.href = '#main';
+    skip.textContent = 'Skip to content';
+    document.body.insertBefore(skip, document.body.firstChild);
+  }
+
   const isIndex = window.location.pathname === '/' || window.location.pathname.endsWith('index.html');
   // Detect if we're in a subdirectory (e.g. /blog/) and prefix paths accordingly
   const pathSegments = window.location.pathname.split('/').filter(Boolean);
@@ -31,7 +40,7 @@
           </button>
           <a href="${baseUrl}#save-your-seat" class="btn btn-outline btn-sm">Register Free</a>
         </nav>
-        <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+        <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
       </div>
@@ -61,6 +70,7 @@
     menuBtn.addEventListener('click', () => {
       const isOpen = mobileNav.classList.toggle('is-open');
       menuBtn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+      menuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       menuBtn.innerHTML = isOpen
         ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
         : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
@@ -75,6 +85,7 @@ function closeMobileNav() {
     mobileNav.classList.remove('is-open');
     if (menuBtn) {
       menuBtn.setAttribute('aria-label', 'Open menu');
+      menuBtn.setAttribute('aria-expanded', 'false');
       menuBtn.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
     }
   }
@@ -96,10 +107,21 @@ function closeMobileNav() {
   });
 })();
 
-// --- Scroll Animations fallback ---
-if (!CSS.supports('animation-timeline', 'view()')) {
-  const animateEls = document.querySelectorAll('.benefit-card, .testimonial-card, .faq-item, .section-header, .who-content, .register-content');
-  animateEls.forEach(el => el.classList.add('animate-in'));
+// --- Scroll reveal (progressive enhancement) ---
+// Content is visible by default. We only hide-then-reveal when we can do it
+// reliably (IntersectionObserver, motion allowed). This avoids content getting
+// stuck invisible in environments where CSS scroll-driven animations misfire.
+(function() {
+  const SELECTOR = '.benefit-card, .testimonial-card, .faq-item, .section-header, .who-content, .register-content';
+  const els = document.querySelectorAll(SELECTOR);
+  if (!els.length) return;
+
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced || !('IntersectionObserver' in window)) {
+    return; // leave everything visible, no animation
+  }
+
+  els.forEach(el => el.classList.add('animate-in'));
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -108,12 +130,11 @@ if (!CSS.supports('animation-timeline', 'view()')) {
       }
     });
   }, { threshold: 0.12 });
-  animateEls.forEach(el => observer.observe(el));
-} else {
-  // If native Scroll-Driven Animations are supported, we still need to add 'animate-in' class to make them active
-  document.querySelectorAll('.benefit-card, .testimonial-card, .faq-item, .section-header, .who-content, .register-content')
-    .forEach(el => el.classList.add('animate-in'));
-}
+  els.forEach(el => observer.observe(el));
+
+  // Safety net: never let content stay hidden, even if the observer misfires.
+  setTimeout(() => els.forEach(el => el.classList.add('visible')), 3000);
+})();
 
 // --- Phone formatting ---
 const phoneInput = document.getElementById('phone');
@@ -127,18 +148,86 @@ if (phoneInput) {
   });
 }
 
+// --- Populate webinar dates from the single schedule source (/api/schedule) ---
+(function() {
+  const select = document.getElementById('webinarDate');
+  if (!select) return;
+  fetch('/api/schedule')
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(data => {
+      const webinars = (data && data.webinars) || [];
+      if (!webinars.length) throw new Error('no upcoming dates');
+      select.innerHTML = '';
+      webinars.forEach((w, idx) => {
+        const opt = document.createElement('option');
+        opt.value = w.iso;
+        opt.textContent = w.human;
+        if (idx === 0) opt.selected = true;
+        select.appendChild(opt);
+      });
+
+      // Keep the Event structured data's startDate fresh (next session).
+      const schemaEl = document.getElementById('eventSchema');
+      if (schemaEl) {
+        try {
+          const obj = JSON.parse(schemaEl.textContent);
+          obj.startDate = webinars[0].iso;
+          obj.endDate = webinars[0].iso.replace('T14:00:00', 'T15:00:00');
+          schemaEl.textContent = JSON.stringify(obj, null, 2);
+        } catch (e) { /* leave static schema as-is */ }
+      }
+    })
+    .catch(() => {
+      select.innerHTML = '<option value="" disabled selected>Unable to load dates — please refresh</option>';
+    });
+})();
+
 // --- Form Submission & Validation ---
 const form = document.getElementById('registerForm');
 const formSuccess = document.getElementById('formSuccess');
 const submitBtn = document.getElementById('submitBtn');
 
 if (form) {
+  // Live region so screen readers hear submission status.
+  let statusRegion = document.getElementById('formStatus');
+  if (!statusRegion) {
+    statusRegion = document.createElement('div');
+    statusRegion.id = 'formStatus';
+    statusRegion.className = 'sr-only';
+    statusRegion.setAttribute('role', 'status');
+    statusRegion.setAttribute('aria-live', 'polite');
+    form.appendChild(statusRegion);
+  }
+  const announce = (msg) => { statusRegion.textContent = msg; };
+
+  // Show/clear a visible, accessible inline error for a field.
+  const setFieldError = (el, isValid) => {
+    if (el.type === 'checkbox') return; // consent uses its own container styling
+    const container = el.closest('.form-group') || el.parentElement;
+    if (!container) return;
+    let msg = container.querySelector('.field-error');
+    if (!isValid) {
+      if (!msg) {
+        msg = document.createElement('p');
+        msg.className = 'field-error';
+        msg.id = (el.id || el.name || 'field') + '-error';
+        container.appendChild(msg);
+        const ids = (el.getAttribute('aria-describedby') || '').split(' ').filter(Boolean);
+        if (!ids.includes(msg.id)) { ids.push(msg.id); el.setAttribute('aria-describedby', ids.join(' ')); }
+      }
+      msg.textContent = el.validationMessage || 'Please check this field.';
+    } else if (msg) {
+      msg.remove();
+    }
+  };
+
   const syncAria = (el) => {
     if (el.checkValidity) {
       const isValid = el.checkValidity();
       el.setAttribute('aria-invalid', isValid ? 'false' : 'true');
       el.classList.toggle('error', !isValid);
-      
+      setFieldError(el, isValid);
+
       if (el.id === 'consent') {
         el.closest('.form-consent').classList.toggle('has-error', !isValid);
       }
@@ -171,6 +260,7 @@ if (form) {
     });
 
     if (!form.checkValidity()) {
+      announce('Please correct the highlighted fields and try again.');
       if (firstInvalid) firstInvalid.focus();
       return;
     }
@@ -178,12 +268,14 @@ if (form) {
     // Turnstile Check
     const turnstileResponse = form.querySelector('[name="cf-turnstile-response"]');
     if (turnstileResponse && !turnstileResponse.value) {
+      announce('Please complete the security check.');
       alert("Please complete the security check.");
       return;
     }
 
     // Loading state
     submitBtn.disabled = true;
+    announce('Submitting your registration…');
     const originalBtnHTML = submitBtn.innerHTML;
     submitBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" opacity="0.2"/><path d="M21 12a9 9 0 00-9-9"/></svg> Registering...';
 
@@ -206,6 +298,7 @@ if (form) {
       yearsService: document.getElementById('yearsService') ? document.getElementById('yearsService').value : '',
       topic: document.getElementById('topic') ? document.getElementById('topic').value : '',
       agency: document.getElementById('agency') ? document.getElementById('agency').value : 'Federal',
+      marketingConsent: document.getElementById('consent') ? document.getElementById('consent').checked : false,
       // Meta CAPI data
       eventId: eventId,
       clientUserAgent: navigator.userAgent,
@@ -214,14 +307,6 @@ if (form) {
       fbc: getCookie('_fbc'),
       turnstileToken: turnstileResponse ? turnstileResponse.value : null
     };
-
-    // Trigger Browser Pixel event manually with the same eventId for deduplication
-    if (typeof fbq === 'function') {
-      fbq('track', 'Lead', {
-        content_name: 'Webinar Registration',
-        content_category: payload.agency === 'USPS' ? 'USPS' : 'Federal'
-      }, { eventID: eventId });
-    }
 
     fetch('/api/register', {
       method: 'POST',
@@ -237,10 +322,18 @@ if (form) {
         form.style.display = 'none';
         formSuccess.style.display = 'flex';
         formSuccess.style.flexDirection = 'column';
+        announce('Success! You are registered. Check your email for confirmation.');
+        // Move focus to the confirmation so keyboard/AT users land on it.
+        const successHeading = formSuccess.querySelector('h3');
+        if (successHeading) { successHeading.setAttribute('tabindex', '-1'); successHeading.focus(); }
 
-        // Track conversion event (if Meta Pixel is installed)
-        if (typeof fbq !== 'undefined') {
-          fbq('track', 'Lead');
+        // Fire a single browser-side Lead only after confirmed success, using
+        // the same eventId as the server CAPI event so Meta deduplicates them.
+        if (typeof fbq === 'function') {
+          fbq('track', 'Lead', {
+            content_name: 'Webinar Registration',
+            content_category: payload.agency === 'USPS' ? 'USPS' : 'Federal'
+          }, { eventID: eventId });
           fbq('track', 'CompleteRegistration', {
             content_name: payload.agency === 'USPS' ? 'USPS Benefits Webinar' : 'Federal Benefits Webinar',
             currency: 'USD',
@@ -248,13 +341,16 @@ if (form) {
           });
         }
       } else {
-        alert(data.error || 'An error occurred during registration. Please check your details and try again.');
+        const msg = data.error || 'An error occurred during registration. Please check your details and try again.';
+        announce(msg);
+        alert(msg);
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalBtnHTML;
       }
     })
     .catch(err => {
       console.error('Registration error:', err);
+      announce('Network error. Please try again later.');
       alert('Network error. Please try again later.');
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalBtnHTML;

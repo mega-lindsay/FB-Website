@@ -2,6 +2,7 @@ const bizSdk = require('facebook-nodejs-business-sdk');
 const { neon } = require('@neondatabase/serverless');
 const { submitLeadToCRM } = require('./_zoho');
 const { verifyTurnstile } = require('./_turnstile');
+const { isValidWebinarDate, humanForDate } = require('./_schedule');
 
 const META_ACCESS_TOKEN = process.env.META_ACCESS_TOKEN;
 const META_PIXEL_ID = process.env.META_PIXEL_ID;
@@ -38,11 +39,33 @@ async function ensureTable(sql) {
       webinar_date_human TEXT,
       zoho_record_id TEXT,
       source_page TEXT,
+      marketing_consent BOOLEAN,
       created_at TIMESTAMPTZ DEFAULT NOW()
     )
   `;
+  // Backfill the column for tables created before marketing_consent existed.
+  await sql`ALTER TABLE registrations ADD COLUMN IF NOT EXISTS marketing_consent BOOLEAN`;
   dbInitialized = true;
   console.log('Postgres registrations table ready.');
+}
+
+// Returns true if this email is already registered for this webinar date.
+// Best-effort: any DB error is swallowed so it never blocks a registration.
+async function isDuplicateRegistration(email, webinarDate) {
+  try {
+    const sql = await getDb();
+    if (!sql) return false;
+    await ensureTable(sql);
+    const rows = await sql`
+      SELECT 1 FROM registrations
+      WHERE lower(email) = ${email.toLowerCase()} AND webinar_date = ${webinarDate}
+      LIMIT 1
+    `;
+    return rows.length > 0;
+  } catch (err) {
+    console.error('Duplicate check error (non-blocking):', err.message);
+    return false;
+  }
 }
 
 async function backupToPostgres(data) {
@@ -51,8 +74,8 @@ async function backupToPostgres(data) {
     if (!sql) return;
     await ensureTable(sql);
     await sql`
-      INSERT INTO registrations (first_name, last_name, email, phone, agency, years_service, topic, webinar_date, webinar_date_human, zoho_record_id, source_page)
-      VALUES (${data.firstName}, ${data.lastName}, ${data.email}, ${data.phone}, ${data.agency}, ${data.yearsService}, ${data.topic}, ${data.webinarDate}, ${data.webinarDateHuman}, ${data.zohoRecordId}, ${data.sourcePage})
+      INSERT INTO registrations (first_name, last_name, email, phone, agency, years_service, topic, webinar_date, webinar_date_human, zoho_record_id, source_page, marketing_consent)
+      VALUES (${data.firstName}, ${data.lastName}, ${data.email}, ${data.phone}, ${data.agency}, ${data.yearsService}, ${data.topic}, ${data.webinarDate}, ${data.webinarDateHuman}, ${data.zohoRecordId}, ${data.sourcePage}, ${data.marketingConsent})
     `;
     console.log('Postgres backup: registration saved successfully.');
   } catch (err) {
@@ -75,13 +98,8 @@ const topicMap = {
   'all': 'All three equally'
 };
 
-const dateMap = {
-  '2026-07-22T14:00:00-04:00': 'Wednesday, July 22 at 2:00 PM EDT',
-  '2026-07-29T14:00:00-04:00': 'Wednesday, July 29 at 2:00 PM EDT',
-  '2026-08-05T14:00:00-04:00': 'Wednesday, August 5 at 2:00 PM EDT',
-  '2026-08-12T14:00:00-04:00': 'Wednesday, August 12 at 2:00 PM EDT',
-  '2026-08-19T14:00:00-04:00': 'Wednesday, August 19 at 2:00 PM EDT'
-};
+// Webinar dates are validated and humanized via the shared schedule module
+// (api/_schedule.js) — the single rolling source of truth.
 
 // Function to send event to Meta Conversions API
 async function sendMetaCapiEvent(req, userData, eventData) {
@@ -119,7 +137,7 @@ async function sendMetaCapiEvent(req, userData, eventData) {
       .setEvents([serverEvent]);
       
     const response = await eventRequest.execute();
-    console.log('Meta CAPI Success:', JSON.stringify(response));
+    console.log('Meta CAPI Success: Lead event accepted.');
     return response;
   } catch (error) {
     console.error('Meta CAPI Error:', error.message);
@@ -142,6 +160,7 @@ module.exports = async function handler(req, res) {
 
   try {
     const { firstName, lastName, email, phone, yearsService, topic, webinarDate, agency } = req.body;
+    const marketingConsent = req.body.marketingConsent === true;
 
     // 1. Cloudflare Turnstile CAPTCHA check
     const { turnstileToken } = req.body;
@@ -165,6 +184,38 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ success: false, error: 'First Name, Last Name, Email, and Webinar Date are required.' });
     }
 
+    // --- Server-side validation (never trust the client) ---
+    // Length caps to reject abuse / oversized payloads.
+    const lengthLimits = {
+      firstName: 100, lastName: 100, email: 254, phone: 30,
+      agency: 50, yearsService: 20, topic: 20
+    };
+    for (const [field, max] of Object.entries(lengthLimits)) {
+      const val = req.body[field];
+      if (typeof val === 'string' && val.length > max) {
+        return res.status(400).json({ success: false, error: `The ${field} field is too long.` });
+      }
+    }
+
+    // Email format.
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRe.test(String(email).trim())) {
+      return res.status(400).json({ success: false, error: 'Please enter a valid email address.' });
+    }
+
+    // Webinar date must be one of the offered upcoming sessions — blocks
+    // arbitrary or expired values from flowing into the CRM and Postgres.
+    if (!isValidWebinarDate(webinarDate)) {
+      return res.status(400).json({ success: false, error: 'Please select a valid webinar date.' });
+    }
+
+    // Duplicate-registration guard: if this email is already booked for this
+    // session, treat it as an idempotent success instead of creating a dupe.
+    if (await isDuplicateRegistration(email.trim(), webinarDate)) {
+      console.log('Duplicate registration ignored (already booked for this session).');
+      return res.status(200).json({ success: true, duplicate: true });
+    }
+
     // Format fields
     const fullName = `${firstName.trim()} ${lastName.trim()}`;
     const cleanPhone = phone ? phone.replace(/\D/g, '') : '';
@@ -173,7 +224,7 @@ module.exports = async function handler(req, res) {
     // Format Notes_Questions from service/topic selection
     let notes = '';
     if (webinarDate) {
-      const humanDate = dateMap[webinarDate] || webinarDate;
+      const humanDate = humanForDate(webinarDate) || webinarDate;
       notes += `Selected Webinar: ${humanDate}\n`;
     }
     if (yearsService && serviceMap[yearsService]) {
@@ -187,6 +238,7 @@ module.exports = async function handler(req, res) {
       notes += `Most Interested Topic: ${topicMap[topic]}\n`;
     }
     notes += `Registration Origin: ${registrationAgency === 'USPS' ? 'USPS Landing Page' : 'General Federal Home Page'}\n`;
+    notes += `Marketing/SMS Consent: ${marketingConsent ? 'Yes' : 'No'}\n`;
 
     const leadPayload = {
       Name: fullName,
@@ -200,7 +252,8 @@ module.exports = async function handler(req, res) {
       Notes_Questions: notes.trim()
     };
 
-    console.log('Sending lead payload to Zoho CRM:', JSON.stringify(leadPayload, null, 2));
+    // Do not log the payload — it contains PII (name, email, phone).
+    console.log('Submitting lead to Zoho CRM...');
 
     let crmResponse;
     try {
@@ -210,11 +263,10 @@ module.exports = async function handler(req, res) {
       return res.status(401).json({ success: false, error: 'Authentication failed with Zoho CRM.' });
     }
 
-    console.log('CRM API response:', JSON.stringify(crmResponse, null, 2));
-
     // Handle Zoho API errors
     if (crmResponse.data && crmResponse.data[0]) {
       const recordStatus = crmResponse.data[0];
+      console.log(`CRM response: status=${recordStatus.status}, code=${recordStatus.code || 'n/a'}`);
       if (recordStatus.status === 'success') {
         // SUCCESS: Meta Conversions API (Fire and forget)
         const metaUserData = {
@@ -231,7 +283,7 @@ module.exports = async function handler(req, res) {
         sendMetaCapiEvent(req, metaUserData).catch(err => console.error('Meta Background Error:', err));
 
         // Backup to Postgres (must await — Vercel kills the function after response)
-        const humanDate = dateMap[webinarDate] || webinarDate;
+        const humanDate = humanForDate(webinarDate) || webinarDate;
         try {
           await backupToPostgres({
             firstName: firstName.trim(),
@@ -244,7 +296,8 @@ module.exports = async function handler(req, res) {
             webinarDate: webinarDate,
             webinarDateHuman: humanDate,
             zohoRecordId: recordStatus.details.id,
-            sourcePage: req.body.eventSourceUrl || null
+            sourcePage: req.body.eventSourceUrl || null,
+            marketingConsent: marketingConsent
           });
         } catch (pgErr) {
           console.error('Postgres backup error:', pgErr.message);
@@ -253,7 +306,7 @@ module.exports = async function handler(req, res) {
         return res.status(200).json({ success: true, id: recordStatus.details.id });
       } else {
         // CRM failed — still try to backup to Postgres so we don't lose the lead
-        const humanDate = dateMap[webinarDate] || webinarDate;
+        const humanDate = humanForDate(webinarDate) || webinarDate;
         try {
           await backupToPostgres({
             firstName: firstName.trim(),
@@ -266,7 +319,8 @@ module.exports = async function handler(req, res) {
             webinarDate: webinarDate,
             webinarDateHuman: humanDate,
             zohoRecordId: null,
-            sourcePage: req.body.eventSourceUrl || null
+            sourcePage: req.body.eventSourceUrl || null,
+            marketingConsent: marketingConsent
           });
         } catch (pgErr) {
           console.error('Postgres backup error:', pgErr.message);
