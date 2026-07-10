@@ -1,4 +1,10 @@
+# Environment / secrets — never commit these
+.env
+.env.*
+!.env.example
+
 node_modules
+.claude/settings.local.json
 .DS_Store
 *.log
 originals/
