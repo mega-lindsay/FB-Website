@@ -27,9 +27,12 @@ function etOffset(instant) {
   return `${sign}${String(m[2]).padStart(2, '0')}:${m[3] || '00'}`;
 }
 
-// Parse a webinar date string to a Date. Handles ISO-8601 with an explicit
-// offset directly; for a timezone-less datetime it assumes Eastern (all
-// webinars run 2 PM ET), so Google/ICS get the correct instant.
+// Every webinar runs at 2:00 PM Eastern (fixed schedule — see api/_schedule.js).
+// The merge field's time is unreliable (Zoho renders it in varying formats and
+// timezones), so we derive only the DATE from it and always apply the known
+// 2 PM ET start. This keeps the calendar time correct regardless of format.
+const WEBINAR_HOUR = 14;
+
 function parseToInstant(raw) {
   if (raw == null) return null;
   let s = String(raw).trim();
@@ -37,24 +40,23 @@ function parseToInstant(raw) {
   s = s.trim();
   if (!s) return null;
 
-  const hasTz = /(?:z|[+-]\d{2}:?\d{2})$/i.test(s);
-  if (hasTz) {
-    const d = new Date(s);
-    return isNaN(d.getTime()) ? null : d;
+  // Extract the calendar date (year, month, day) from common formats.
+  let Y, Mo, D, m;
+  if ((m = s.match(/(\d{4})-(\d{1,2})-(\d{1,2})/))) {            // ISO-ish YYYY-MM-DD
+    Y = +m[1]; Mo = +m[2]; D = +m[3];
+  } else if ((m = s.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/))) {   // US M/D/YYYY
+    Mo = +m[1]; D = +m[2]; Y = +m[3];
+  } else {
+    const d = new Date(s);                                       // last resort
+    if (isNaN(d.getTime())) return null;
+    Y = d.getUTCFullYear(); Mo = d.getUTCMonth() + 1; D = d.getUTCDate();
   }
 
-  // Pull Y-M-D H:M[:S] out of ISO-ish or "YYYY-MM-DD HH:MM:SS" and treat as ET.
-  let m = s.match(/(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})(?::(\d{2}))?/);
-  if (m) {
-    const [, Y, Mo, D, H, Mi, Se] = m;
-    const sample = new Date(Date.UTC(+Y, +Mo - 1, +D, 18, 0, 0)); // afternoon, clear of DST edge
-    const iso = `${Y}-${Mo}-${D}T${H}:${Mi}:${Se || '00'}${etOffset(sample)}`;
-    const d = new Date(iso);
-    return isNaN(d.getTime()) ? null : d;
-  }
-
-  // Fallback: let the engine try (may assume server TZ — last resort only).
-  const d = new Date(s);
+  // Build the instant for 2 PM Eastern on that date (DST-aware offset).
+  const sample = new Date(Date.UTC(Y, Mo - 1, D, 18, 0, 0)); // afternoon, clear of DST edge
+  const iso = `${Y}-${String(Mo).padStart(2, '0')}-${String(D).padStart(2, '0')}`
+    + `T${String(WEBINAR_HOUR).padStart(2, '0')}:00:00${etOffset(sample)}`;
+  const d = new Date(iso);
   return isNaN(d.getTime()) ? null : d;
 }
 
