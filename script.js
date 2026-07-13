@@ -191,17 +191,20 @@ if (phoneInput) {
     });
 })();
 
-// --- Compact registration reminder after the hero ---
+// --- Compact registration reminder, shown only after the form is scrolled past ---
 (function() {
-  const hero = document.getElementById('hero');
+  const registerSection = document.getElementById('register');
   const sticky = document.getElementById('stickyRegister');
-  if (!hero || !sticky || !('IntersectionObserver' in window)) return;
+  if (!registerSection || !sticky || !('IntersectionObserver' in window)) return;
 
   const observer = new IntersectionObserver(([entry]) => {
     if (sticky.dataset.complete === 'true') return;
-    sticky.classList.toggle('is-visible', !entry.isIntersecting);
-  }, { threshold: 0.05 });
-  observer.observe(hero);
+    // Only nudge once the whole form section has scrolled up out of view (its
+    // bottom is above the viewport). Never while the form is on screen or still below.
+    const scrolledPast = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+    sticky.classList.toggle('is-visible', scrolledPast);
+  }, { threshold: 0 });
+  observer.observe(registerSection);
 })();
 
 // --- Form Submission & Validation ---

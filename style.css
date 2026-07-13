@@ -112,8 +112,8 @@
 
 /* --- Base Reset --- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; scroll-padding-top: 80px; -webkit-font-smoothing: antialiased; }
-body { font-family: var(--font-body); font-size: var(--text-base); color: var(--color-text); background: var(--color-bg); line-height: 1.65; overflow-x: hidden; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; -webkit-font-smoothing: antialiased; overflow-x: hidden; overflow-x: clip; }
+body { font-family: var(--font-body); font-size: var(--text-base); color: var(--color-text); background: var(--color-bg); line-height: 1.65; overflow-x: hidden; overflow-x: clip; }
 img, picture, video { display: block; max-width: 100%; height: auto; }
 ul[role="list"] { list-style: none; }
 input, button, textarea, select { font: inherit; color: inherit; }
@@ -231,6 +231,11 @@ button { cursor: pointer; background: none; border: none; }
 .btn-sm { padding: 0.5rem 1.1rem; font-size: var(--text-xs); }
 .btn-lg { padding: 1rem 2rem; font-size: var(--text-base); }
 .btn-full { width: 100%; justify-content: center; }
+/* On very narrow screens (small phones, browser zoom), let long button labels
+   wrap instead of forcing the layout wider than the viewport. */
+@media (max-width: 400px) {
+  .btn { white-space: normal; }
+}
 
 /* Specificity overrides for buttons inside nav links to prevent grey text overrides */
 .header-nav .btn-primary,
@@ -888,6 +893,12 @@ button { cursor: pointer; background: none; border: none; }
   .register-inner { grid-template-columns: 1fr; }
   .section-register-primary .register-form-wrap { order: -1; }
 }
+/* Grid/flex items default to min-width:auto and refuse to shrink below their
+   content — which pushed .register-content past the viewport on phones. Allow
+   them to shrink to their track and let long content wrap instead of overflow. */
+.register-content, .register-form-wrap { min-width: 0; }
+.presenter-proof, .presenter-proof div { min-width: 0; }
+.presenter-proof strong { overflow-wrap: anywhere; }
 
 .register-content h2 {
   font-size: var(--text-2xl);
