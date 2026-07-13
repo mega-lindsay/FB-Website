@@ -105,15 +105,22 @@ module.exports = async function handler(req, res) {
   }
 
   const dtstamp = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+  // Stable UID per session so re-importing updates the event instead of
+  // creating a duplicate.
+  const uid = `${startCompact}-fbe-webinar@federalbenefitsexchange.com`;
   const icsContent = `BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Federal Benefits Exchange//Webinar//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
 BEGIN:VEVENT
+UID:${uid}
 DTSTAMP:${dtstamp}
 DTSTART:${startCompact}
 DTEND:${endCompact}
 SUMMARY:${TITLE}
 DESCRIPTION:${DETAILS}
+LOCATION:${WEBINAR_URL}
 URL:${WEBINAR_URL}
 END:VEVENT
 END:VCALENDAR`;
