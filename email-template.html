@@ -40,12 +40,14 @@
       - This markup is independent of Gmail's action-markup program (separate Google whitelisting
         process, separate schema shape — typically EventReservation, not a bare Event). Getting
         the Apple banner working confirms nothing about Gmail; test Gmail separately.
-      - The Google Calendar link below reuses this same ${FB Clients Leads.Webinar Date} field.
-        That link's `dates=` parameter requires compact format START/END, e.g.
-        20260815T140000Z/20260815T150000Z — NOT whatever human-readable format the field
-        normally renders as. Test the actual "Add to Google Calendar" link in a sent email;
-        if it errors out or shows the wrong date, the field needs a dedicated formula field
-        formatted for this URL rather than reusing the display field.
+      - The calendar links below route through /api/calendar, which parses the raw
+        ${FB Clients Leads.Webinar Date} value server-side and formats it for Google /
+        ICS (Google needs compact UTC START/END, e.g. 20260815T180000Z/20260815T190000Z,
+        which the field does not render directly). The endpoint handles ISO-8601 with an
+        offset (e.g. 2026-08-15T14:00:00-04:00); a timezone-less value is assumed Eastern.
+        Ideal: this field passes an ISO-8601 string. If it renders a format with spaces
+        (e.g. "Aug 15, 2026 2:00 PM"), the URL can break before reaching the server — in
+        that case point these links at a dedicated ISO-formatted field. Always test a real send.
   -->
 
   <script type="application/ld+json">
@@ -233,9 +235,9 @@
             <td style="background-color: #FFFFFF; padding: 0 40px 32px; text-align: center;" class="mobile-padding">
               <p style="margin: 0; font-size: 14px; color: #5A6178; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
                 Can't join now? 
-                <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=The+Federal+Employee+%22Hour+of+Power%22+Benefits+Briefing&dates=${FB Clients Leads.Webinar Date}&details=Join+the+webinar+here:+https://fbe.webinargeek.com/the-federal-employee-hour-of-power-benefits-briefing/join/ouyu0khg" target="_blank" style="color: #F26522; text-decoration: underline; font-weight: 600;">Add to Google Calendar</a>
+                <a href="https://federalbenefitsexchange.com/api/calendar?provider=google&date=${FB Clients Leads.Webinar Date}" target="_blank" style="color: #F26522; text-decoration: underline; font-weight: 600;">Add to Google Calendar</a>
                 &nbsp;&nbsp;&middot;&nbsp;&nbsp;
-                <a href="https://federalbenefitsexchange.com/api/calendar?dates=${FB Clients Leads.Webinar Date}" target="_blank" style="color: #F26522; text-decoration: underline; font-weight: 600;">Add to Apple / Outlook Calendar</a>
+                <a href="https://federalbenefitsexchange.com/api/calendar?date=${FB Clients Leads.Webinar Date}" target="_blank" style="color: #F26522; text-decoration: underline; font-weight: 600;">Add to Apple / Outlook Calendar</a>
               </p>
             </td>
           </tr>
